@@ -1,0 +1,45 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block links %}
+    {% endblock %}
+
+    <title>Document</title>
+
+    {% block title %}
+    {% endblock %}
+</head>
+<body>
+    <header>
+        {% block header %}
+            <nav>
+                <div class = "logo">
+                    <a href="{% static 'icons/logo.svg' %}"></a>
+                </div>
+                <div class = "links">
+                    <a href="{% url 'main' %}"><img src="{% static 'icons/house.svg' %}" alt="">Головна</a>
+                    <a href="{% url 'publications' %}"><img src="{% static 'icons/galery.svg' %}" alt="">Мої публікації</a>
+                    <a href="{% url 'friends' %}"><img src="{% static 'icons/people.svg' %}" alt="">Друзі</a>
+                    <a href="{% url 'chats' %}"><img src="{% static 'icons/chat.svg' %}" alt="">Чати</a>
+                    <a href="{% url 'settings' %}"><img src="{% static 'icons/settings.svg' %}" alt="">Налаштування</a>
+                    <button><img src="{% static 'icons/exit.svg' %}" alt="">Вихід</button>
+                </div>
+            </nav>
+        {% endblock %}
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+        
+        {% block sidebar %}
+        {% endblock %}
+    </main>
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

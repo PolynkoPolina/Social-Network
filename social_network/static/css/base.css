@@ -1,0 +1,21 @@
+nav{
+    max-width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    gap: 5;
+}
+
+.logo{
+    display: flex;
+    height: 10vh;
+}
+
+.logo a{
+    width: 5vw;
+    height: 5vw;
+}
+
+.links{
+    display: flex;
+    gap: 1.5vw;
+}
