@@ -14,32 +14,38 @@
     {% endblock %}
 </head>
 <body>
-    <header>
-        {% block header %}
-            <nav>
-                <div class = "logo">
-                    <a href="{% static 'icons/logo.svg' %}"></a>
-                </div>
-                <div class = "links">
-                    <a href="{% url 'main' %}"><img src="{% static 'icons/house.svg' %}" alt="">Головна</a>
-                    <a href="{% url 'publications' %}"><img src="{% static 'icons/galery.svg' %}" alt="">Мої публікації</a>
-                    <a href="{% url 'friends' %}"><img src="{% static 'icons/people.svg' %}" alt="">Друзі</a>
-                    <a href="{% url 'chats' %}"><img src="{% static 'icons/chat.svg' %}" alt="">Чати</a>
-                    <a href="{% url 'settings' %}"><img src="{% static 'icons/settings.svg' %}" alt="">Налаштування</a>
-                    <button><img src="{% static 'icons/exit.svg' %}" alt="">Вихід</button>
-                </div>
-            </nav>
-        {% endblock %}
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
+        <header>
+            {% block header %}
+                <nav class="nav-header">
+                    <div class = "logo">
+                        <a href=""><img src="{% static 'icons/logo.svg' %}" alt=""></a>
+                    </div>
+                    <div class = "links">
+                        <a href="{% url 'main' %}"><img src="{% static 'icons/house.svg' %}" alt="">Головна</a>
+                        <a href="{% url 'publications' %}"><img src="{% static 'icons/galery.svg' %}" alt="">Мої публікації</a>
+                        <a href="{% url 'friends' %}"><img src="{% static 'icons/people.svg' %}" alt="">Друзі</a>
+                        <a href="{% url 'chats' %}"><img src="{% static 'icons/chat.svg' %}" alt="">Чати</a>
+                        <a href="{% url 'settings' %}"><img src="{% static 'icons/settings.svg' %}" alt="">Налаштування</a>
+                        <button><img src="{% static 'icons/exit.svg' %}" alt="">Вихід</button>
+                    </div>
+                </nav>
+            {% endblock %}
+        </header>
+    <div class="container">
+        <main>
+            <div class="sidebar">
+                {% block sidebar %}
+                {% endblock %}
+            </div>
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+            
+        </main>
         
-        {% block sidebar %}
-        {% endblock %}
-    </main>
-
-    {% block scripts %}
-    {% endblock %}
+            {% block scripts %}
+            {% endblock %}
+    </div>
 </body>
 </html>
