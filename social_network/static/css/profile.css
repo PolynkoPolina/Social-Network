@@ -2,7 +2,7 @@ a{
     text-decoration: none;
 }
 
-.avatar-card{
+.profile{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,14 +13,18 @@ a{
     padding-bottom: 1rem;
     background-color: white;
     gap: 1rem;
+    position: relative;
 }
 
-.profile-container{
+.user-info{
     display: flex;
-    gap: 2vw;
+    width: 100%;
+    justify-content: space-between;
+    gap: auto;
 }
 
 .stats{
+    width: 33%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,7 +39,6 @@ a{
 }
 
 .requests-card{
-    margin-top:0.5rem;
     padding-left: 1rem;
     padding-right: 1rem;
     display: flex;
@@ -52,14 +55,22 @@ a{
 .request-header{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 1.5rem;
+}
+
+.request-header p{
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--greyText);
+    font-size: 1.2rem;
+    font-weight: 600;   
 }
 
 .request-header a{
     color: var(--buttonPurple);
 }
-
-
 
 .requests-container{
     display: flex;
@@ -77,8 +88,84 @@ a{
     height: 3rem;
 }
 
+.messages-frame{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: white;
+    position: relative;
+}
+
+.alert-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    margin: 1rem;
+}
+
+.alert-container p{
+    color: var(--buttonPurple);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.alert-container div{
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--greyText);
+    font-size: 1.2rem;
+}
+
 .request-user{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 0.25rem;
+}
+
+.messsage-icon{
+    width: 1rem;
+    height: 1rem;
+}
+
+.messages-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.message-info-container{
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.message-container{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.message-info{
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.message-time-container{
+    display: flex;
+    justify-content: space-between;
+    width: 20.5rem
+}
+
+.message-time-container p{
+    color: var(--greyText);
+    font-size: 0.7rem;
+}
+.purple{
+    background-color:var(--hover);
 }

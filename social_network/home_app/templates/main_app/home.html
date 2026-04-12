@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'main_app/css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'main_app/css/home_sidebar.css' %}">
+{% endblock links %}
+
+
+{% block title %}
+{% endblock  %}
+
+
+{% block content %}
+{% endblock %}
+
+
+{% block sidebar %}
+   {% include 'profile.html' %}
+    
+    <div class="requests-card">
+        <span class="requests-header">
+            <div class = "request-header">
+                <p><img src="{% static 'icons/people.svg' %}" alt="" class="chat-icon">Запити</p>
+                <a href="">Дивитись всі</a>
+            </div>
+            <div class="requests-container">
+                <div class="people-request">
+                    <img src="{% static 'icons/request_icon1.svg' %}" alt="">
+                    <div class = "request-user">
+                        <strong>Yehor Aung</strong><p>4.3к підписників</p>
+                    </div>
+                </div>
+                <div class="people-request">
+                    <img src="{% static 'icons/request_icon2.svg' %}" alt="">
+                    <div class = "request-user">
+                        <strong>Ann Ann</strong><p>1.6к підписників</p>
+                    </div>
+                </div>
+                <div class="people-request">
+                    <img src="{% static 'icons/request_icon3.svg' %}" alt="">
+                    <div class = "request-user">
+                        <strong>Yeugen Jenua</strong><p>10.3к підписників</p>
+                    </div>
+                </div>
+            </div>
+        </span>
+    </div>
+    <div class="messages-frame">
+        <div class="alert-container">
+            <div>
+                <img src="{% static 'icons/chat.svg' %}" alt="" class = "messsage-icon"><strong>Повідомлення</strong>
+            </div>
+            <p>Дивитись всі</p>
+        </div>
+        <div class="messages-container">
+            <div class="message-info-container purple">
+                <div class = "message-container">
+                    <img src="{% static 'icons/friends_icon1.svg' %}" alt="" class="avatar">
+                    <div class="message-info">
+                        <div class = "message-time-container">
+                            <strong>Mona Lisa</strong><p>09:41</p>
+                        </div>
+                        <div class="message-text">
+                            <p>Привіт! Як справи?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="message-info-container purple">
+                <div class = "message-container">
+                    <img src="{% static 'icons/friends_icon2.svg' %}" alt="" class="avatar">
+                    <div class="message-info">
+                        <div class = "message-time-container">
+                            <strong>Ann Ti</strong><p>25.04.2025</p>
+                        </div>
+                        <div class="message-text">
+                            <p>Привіт!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="message-info-container">
+                <div class = "message-container">
+                    <img src="{% static 'icons/friends_icon3.svg' %}" alt="" class="avatar">
+                    <div class="message-info">
+                        <div class = "message-time-container">
+                            <strong>Ness Ty</strong><p>25.04.2025</p>
+                        </div>
+                        <div class="message-text">
+                            <p>Привіт!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock sidebar %}
+
+
+{% block scripts %}
+    
+{% endblock %}
