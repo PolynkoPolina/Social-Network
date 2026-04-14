@@ -1,0 +1,29 @@
+a{
+    text-decoration: none;
+    color: var(--text)
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 1.5rem;
+}
+
+.chosen{
+    display: flex;
+    flex-direction: column;
+    font-weight: 700;
+    gap: 0.5rem;
+    width: fit-content;
+    position: relative;
+}
+
+.chosen hr{
+    border: 1px solid var(--buttonPurple);
+    width: 100%;
+}
+
+.tab{
+    color: var(--greyText);
+}
