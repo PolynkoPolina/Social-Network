@@ -3,31 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    {% block meta %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    {% block links %}
-    {% endblock %}
+    {% block links %}{% endblock %}
 
-    <title>Document</title>
+    <title>{% block title %}{% endblock %}</title>
 
-    {% block title %}
-    {% endblock %}
+    
 </head>
 <body>
         <header>
             {% block header %}
                 <nav class="nav-header">
                     <div class = "logo">
-                        <a href=""><img src="{% static 'icons/logo.svg' %}" alt=""></a>
+                        <a href="{% url 'home' %}"><img src="{% static 'icons/logo.svg' %}" alt=""></a>
                     </div>
+                {% if request.path != '/auth/' %}
                     <div class = "links">
-                        <a href="{% url 'home' %}"><img src="{% static 'icons/house.svg' %}" alt="">Головна</a>
-                        <a href="{% url 'post' %}"><img src="{% static 'icons/galery.svg' %}" alt="">Мої публікації</a>
-                        <a href="{% url 'friends_main' %}"><img src="{% static 'icons/people.svg' %}" alt="">Друзі</a>
-                        <a href="{% url 'chats' %}"><img src="{% static 'icons/chat.svg' %}" alt="">Чати</a>
-                        <a href="{% url 'personal-info' %}"><img src="{% static 'icons/settings.svg' %}" alt="">Налаштування</a>
-                        <button><img src="{% static 'icons/exit.svg' %}" alt="">Вихід</button>
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'icons/house.svg' %}" alt="">
+                            <span>Головна</span>
+                        </a>
+                        <a href="{% url 'post' %}">
+                            <img src="{% static 'icons/galery.svg' %}" alt="">
+                            <span>Мої публікації</span>
+                        </a>
+                        <a href="{% url 'friends_main' %}">
+                            <img src="{% static 'icons/people.svg' %}" alt="">
+                            <span>Друзі</span>
+                        </a>
+                        <a href="{% url 'chats' %}">
+                            <img src="{% static 'icons/chat.svg' %}" alt="">
+                            <span>Чати<span>
+                        </a>
+                        <a href="{% url 'personal-info' %}">
+                            <img src="{% static 'icons/settings.svg' %}" alt="">
+                            <span>Налаштування<span>
+                        </a>
+                        <a href="{% url 'logout' %}" class="exit-button">
+                            <img src="{% static 'icons/exit_button.svg' %}" alt="" >
+                        </a>
                     </div>
+                {% endif %}
                 </nav>
             {% endblock %}
         </header>

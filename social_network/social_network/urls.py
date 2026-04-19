@@ -23,5 +23,5 @@ urlpatterns = [
     path('post/', include('post_app.urls')),
     path('friends/', include('friends_app.urls')),
     path('chats/', include('chats_app.urls')),
-    path('settings/', include('user_app.urls')),
+    path('', include('user_app.urls')),
 ]

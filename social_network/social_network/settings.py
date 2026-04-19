@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'friends_app',
     'chats_app'
 ]
+ 
+AUTH_USER_MODEL = 'user_app.user'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,7 +61,14 @@ ROOT_URLCONF = 'social_network.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR /'user_app'/ 'templates',
+            BASE_DIR /'chats_app'/ 'templates',
+            BASE_DIR /'friends_app'/ 'templates',
+            BASE_DIR /'home_app'/ 'templates',
+            BASE_DIR /'post_app'/ 'templates',
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,5 +130,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+    BASE_DIR /'user_app'/ 'static',
+    BASE_DIR /'chats_app'/ 'static',
+    BASE_DIR /'friends_app'/ 'static',
+    BASE_DIR /'home_app'/ 'static',
+    BASE_DIR /'post_app'/ 'static',
+    ]
 
