@@ -1,43 +1,39 @@
 from django import forms
 
 class RegisterForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(
+    email = forms.EmailField(label="Електронна пошта", widget=forms.EmailInput(
         attrs={
             'placeholder' : 'you@example.com',
             'class' : 'register-input'
-    }
-    ),
+    }),
     required=True)
 
-    password = forms.CharField(widget=forms.PasswordInput(
+    password = forms.CharField(label="Пароль", widget=forms.PasswordInput(
         attrs={
             'placeholder' : 'Введи пароль',
             'class' : 'register-input'
-    }
-    ), required=True)
+    }), required=True)
 
-    confirm_password = forms.CharField(widget=forms.PasswordInput(
+    confirm_password = forms.CharField(label="Підтвердити пароль", widget=forms.PasswordInput(
         attrs={
             'placeholder' : 'Повтори пароль',
-            'class' : 'refister-input'
-    }
-    ), 
+            'class' : 'register-input'
+    }), 
     required=True)
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput({
+    email = forms.EmailField(label="Електронна пошта", widget=forms.EmailInput({
             'placeholder' : 'you@example.com',
             'class' : 'login-input'
-    }
-    ),
+    }),
     required=True)
-    password = forms.CharField(widget=forms.PasswordInput(
+    password = forms.CharField(label="Пароль", widget=forms.PasswordInput(
         attrs={
             'placeholder' : 'Введи пароль',
             'class' : 'login-input'
-    }
-    ), required=True)
+    }), 
+    required=True)
 
 class ConfirmForm(forms.Form):
     first = forms.CharField(widget = forms.NumberInput, required = True)
@@ -56,8 +52,9 @@ class ConfirmForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         for field in self.fields.values():
+            field.label = ''
             field.widget.attrs.update({
                 'placeholder' : '_',
-                'class' : 'confirm-email-input' 
+                'class' : 'confirm-email-input'
             })
     

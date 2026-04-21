@@ -21,11 +21,12 @@
             {% include 'user_app/particles/form_confirm_email.html' %}
         </div>
         <div class="image-container">
-            <img src="{% static 'icons/auth_image.svg' %}" alt="">
+            <img src="{% static 'user_app/icons/auth-image.png' %}" alt="">
         </div>
     </div>
 {% endblock %}
 
 {% block scripts %}
+    <script src = "{% static 'js/jquery-4.0.0.min.js' %}"></script>
     <script src="{% static 'user_app/js/auth.js' %}"></script>
 {% endblock %}

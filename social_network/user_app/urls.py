@@ -7,6 +7,6 @@ urlpatterns = [
     path(route='auth/', view= AuthTemplateView.as_view(), name= 'auth'),
     path(route='auth/register/', view= RegisterView.as_view(), name= 'register'),
     path(route='auth/login/', view= LoginView.as_view(), name= 'login'),
-    path(route='auth/confirm/', view= ConfrimView.as_view(), name= 'confirm'),
+    path(route='auth/confirm/', view= ConfirmView.as_view(), name= 'confirm'),
     path(route='logout/', view= LogoutView.as_view(), name= 'logout')
 ]

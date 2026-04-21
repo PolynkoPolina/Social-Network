@@ -1,10 +1,11 @@
-<div class="form login">
+<div class="form login disabled">
     <div class="top">
-        <span>Реєстрація</span>
-        <span>Авторизація</span>
+        <span class = "register-btn secondary">Реєстрація</span>
+        <span class = "auth-btn chosen">Авторизація</span>
     </div>
-    <p>Раді тебе знову бачити!</p>
+    <h2>Раді тебе знову бачити!</h2>
     <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
         {{ form_login.as_p }}
         <button type="submit">Увійти</button>
     </form>
