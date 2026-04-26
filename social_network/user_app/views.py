@@ -3,6 +3,10 @@ from django.http import HttpRequest, HttpResponse
 from django.core.mail import send_mail
 from django.views.generic import TemplateView, View, FormView
 from .forms import *
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth import login
+import random
+
 
 # Create your views here.
 class PersonalInfoPageView(TemplateView):
@@ -19,7 +23,7 @@ class AuthTemplateView(TemplateView):
     
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
-        form_register = RegisterForm()
+        form_register = UserCreationForm()
         form_login = LoginForm()
         form_confirm = ConfirmForm()
 
@@ -29,33 +33,73 @@ class AuthTemplateView(TemplateView):
         return context
 
 
-class LoginView(View):
-    def post(self, request: HttpRequest):
-        form = LoginForm(request.POST, request.FILES)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            form.save()
-
 class RegisterView(View):
-    def post(self, request: HttpRequest):
-        form = RegisterForm(request.POST)
+
+    def post(self, request, *args, **kwargs):
+        form = UserCreationForm(request.POST)
+
         if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            confirm_password = form.cleaned_data['confirm_password']
-            if password == confirm_password:
-                return redirect('auth')
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+
+            request.session['email_password'] = [email, password]
+            request.session['register_step'] = 'confirm_password'
+
+            return JsonResponse({"success": True})
+
+        return JsonResponse({
+            "success": False,
+            "errors": form.errors.get_json_data()
+        }, status=400)
+            
+            
             
 
-class ConfirmView(FormView):
-    template_name = 'user_app/particles/form_confirm_email.html'
-    form_class = ConfirmForm
-    success_url = 'home'
-
-    def form_valid(self, form):
-        form.send_mail()
-        return super().form_valid(form)
+class LoginView(View):
+    def post(self, request, *args, **kwargs):
+        form = LoginForm(request = request, data = request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return JsonResponse({
+                "success": True,
+                "message": "Користувач успішно залогінився"
+            })
+        
+        return JsonResponse(
+            {
+                "success": False,
+                "errors": form.errors.get_json_data(),
+            },
+            status = 400
+            )
     
+
+class ConfirmView(View):
+    ...
+   
 class LogoutView(View):
     ...
+
+class SendMail(View):
+     def post(self, request, *args, **kwargs):
+        if not request.session.get('code_sent'):
+
+            if request.session['register_step'] == 'confirm_password':
+                code = ''.join(str(random.randint(0, 9)) for _ in range(6))
+                try:
+                    request.session['confirm_code'] = code
+                    send_mail(
+                        subject='Пароль для аккаунта',
+                        message=code,
+                        from_email='socialnetwork140024@gmail.com',   
+                        recipient_list= [request.session['email_password'][0]],  
+                        fail_silently=False,
+                    )
+                    
+                    request.session['code_sent'] = True
+                    return JsonResponse({"success": True})
+                except Exception as e:
+                    print(e)
+                    return JsonResponse({"success": False}, status=400)
+        

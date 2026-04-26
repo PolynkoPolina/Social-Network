@@ -1,11 +1,10 @@
-<div class="form register disabled">
+<div class="form register">
     <div class="top">
-        <span class = "register-btn chosen">Реєстрація</span>
+        <span class = "chosen">Реєстрація</span>
         <span class = "auth-btn secondary">Авторизація</span>
     </div>
     <h2>Приєднуйся до World IT</h2>
-    <form action="{% url 'register' %}" method="post" class="reg-form">
-        {% csrf_token %}
+    <form action="{% url 'register' %}" method="post" id="reg-form">
         {{ form_register.as_p }}
         <button type="submit" id = 'create-user-btn'>Створити акаунт</button>
     </form>

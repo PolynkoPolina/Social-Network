@@ -1,14 +1,17 @@
 <div class="form confirm disabled">
     <p>Підтвердження пошти</p>
     <p>Ми надіслали 6-значний код на вашу пошту (you@example.com). Введіть його нижче, щоб підтвердити акаунт</p>
-    <form action="url 'confirm'" method="post">
+    <form action="{% url 'confirm' %}" method="post">
         <div class="confirm-div">
             <span>Код підтвердження</span>
-            {% csrf_token %}
             <div class = "inputs">{{ form_confirm.as_p }}</div>
         </div>
         <button type="submit">Підтвердити</button>
     </form>
-   
+    
     <p id="back">Назад</p>
 </div>
+
+<form action="{% url 'send-mail' %}" method = "post" style="display: none;" id = "send-mail">
+    {% csrf_token %}
+</form>

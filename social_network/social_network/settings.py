@@ -133,9 +133,14 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR /'user_app'/ 'static',
-    BASE_DIR /'chats_app'/ 'static',
     BASE_DIR /'friends_app'/ 'static',
     BASE_DIR /'home_app'/ 'static',
-    BASE_DIR /'post_app'/ 'static',
     ]
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'socialnetwork140024@gmail.com'
+EMAIL_HOST_PASSWORD = 'erxr wfsu gnaj emue'

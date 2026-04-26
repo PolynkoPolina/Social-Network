@@ -8,5 +8,6 @@ urlpatterns = [
     path(route='auth/register/', view= RegisterView.as_view(), name= 'register'),
     path(route='auth/login/', view= LoginView.as_view(), name= 'login'),
     path(route='auth/confirm/', view= ConfirmView.as_view(), name= 'confirm'),
-    path(route='logout/', view= LogoutView.as_view(), name= 'logout')
+    path(route='logout/', view= LogoutView.as_view(), name= 'logout'),
+    path(route='send-mail/', view= SendMail.as_view(), name= 'send-mail'),
 ]

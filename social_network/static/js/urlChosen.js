@@ -3,11 +3,11 @@ const pageUrl = window.location.href;
 
 
 urls.forEach(url => {
-    urlName = url.href;
-    if  (urlName == pageUrl){
-        url.classList.add('chosen-page');
-    }
+  url.addEventListener('click', () => {
+
+    urls.forEach(i => i.classList.remove('active'));
+    
+
+    url.classList.add('active');
+  });
 });
-if (pageUrl.split('/').filter(Boolean).pop() == 'albums'){
-    urls[4].classList.add('chosen-page');
-}
