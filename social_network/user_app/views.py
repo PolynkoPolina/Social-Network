@@ -76,30 +76,48 @@ class LoginView(View):
     
 
 class ConfirmView(View):
-    ...
+    def post(self, request, *args, **kwargs):
+        form = ConfirmForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data.get('code')
+            print(code)
+            if code == request.session.get('confirm_code'):
+                ...
+        return JsonResponse({
+            "success": False,
+            "errors": form.errors.get_json_data(),
+        }, status=400)
    
 class LogoutView(View):
     ...
 
 class SendMail(View):
-     def post(self, request, *args, **kwargs):
-        if not request.session.get('code_sent'):
+    def post(self, request, *args, **kwargs):
+        if request.session.get('code_sent'):
 
+            
             if request.session['register_step'] == 'confirm_password':
                 code = ''.join(str(random.randint(0, 9)) for _ in range(6))
-                try:
-                    request.session['confirm_code'] = code
-                    send_mail(
-                        subject='Пароль для аккаунта',
-                        message=code,
-                        from_email='socialnetwork140024@gmail.com',   
-                        recipient_list= [request.session['email_password'][0]],  
-                        fail_silently=False,
-                    )
-                    
-                    request.session['code_sent'] = True
-                    return JsonResponse({"success": True})
-                except Exception as e:
-                    print(e)
-                    return JsonResponse({"success": False}, status=400)
-        
+                request.session['confirm_code'] = code
+
+                
+                send_mail(
+                    subject='Пароль для аккаунта',
+                    message=code,
+                    from_email='socialnetwork140024@gmail.com',   
+                    recipient_list= [request.session['email_password'][0]],  
+                    fail_silently=False,
+                )
+                
+                request.session['code_sent'] = False
+                return JsonResponse({"success": True})
+    
+      
+        return JsonResponse({"success": False})
+    
+
+
+class SetCodeSent(View):
+    def post(self, request, *args, **kwargs):
+        request.session['code_sent'] = True
+        return JsonResponse({"success": True})

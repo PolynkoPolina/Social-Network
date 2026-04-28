@@ -24,7 +24,7 @@ class ConfirmForm(forms.Form):
         for field in self.fields.values():
             field.label = ''
             field.widget.attrs.update({
-                'placeholder' : '_',
+                'placeholder' : '___',
                 'class' : 'confirm-email-input'
             })
 

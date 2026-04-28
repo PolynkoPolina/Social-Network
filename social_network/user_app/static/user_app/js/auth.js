@@ -8,8 +8,37 @@ const formLogin = document.querySelector('.login');
 const formConfirm = document.querySelector('.confirm');
 const authBtn = document.querySelector('.auth-btn');
 const registerBtn = document.querySelector('.register-btn');
+const backBtn = document.getElementById('back');
 
 
+if (localStorage.getItem("authState") == 'confirm'){
+    formRegister.classList.add('disabled');
+    formConfirm.classList.remove('disabled');
+}    
+
+backBtn.addEventListener(
+    'click',
+    (event)=>{
+        formConfirm.classList.add('disabled');
+        formRegister.classList.remove('disabled');
+        localStorage.removeItem('authState');
+        
+        
+        fetch("/set-code-sent/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "X-Requested-With": "XMLHttpRequest",
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                console.log("session code_sent встановлено");
+            }
+        });
+    }
+)
 
 authBtn.addEventListener(
     'click',
@@ -44,25 +73,47 @@ document.getElementById("reg-form").addEventListener(
             },
             body: formData  
         })
-            .then(async (response) => {
-                const data = await response.json()
-                if (!response.ok){
-                    throw data;    
-                }
-                return data
-            })   
-            .then((data)=>{
-                console.log("Користувач успішно створений")
-                formRegister.classList.add('disabled');
-                formConfirm.classList.remove('disabled');
-                document.getElementById("send-mail").submit();
-            })
-            .catch((data)=>{
-                if(data.errors){
-                    console.log(data.errors)
-                }
-            })
-            
+        .then(async (response) => {
+            const data = await response.json()
         
-    }
-)
+            if (!response.ok){
+                throw data;
+            }
+        
+            return data
+        })
+        .then((data)=>{
+            console.log("Користувач успішно створений")
+            formRegister.classList.add('disabled');
+            formConfirm.classList.remove('disabled');
+            sendMail();
+            localStorage.setItem('authState', 'confirm'); 
+        })
+        .catch((error) => {  
+            console.log("Ошибка:", error);
+        
+            if (error.errors){
+                console.log(error.errors);
+            }
+        });
+    });
+
+
+function sendMail(){
+
+        const confForm = document.querySelector('#send-mail');
+        const formDataConf = new FormData(confForm) 
+        fetch(confForm.action, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "X-Requested-With": "XMLHttpRequest",
+            },
+            body: formDataConf
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Код відправлено");
+            }})
+}
