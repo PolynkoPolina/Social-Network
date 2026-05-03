@@ -6,17 +6,17 @@ from django.contrib.auth.forms import AuthenticationForm
 
 class ConfirmForm(forms.Form):
     
-    first = forms.CharField(widget = forms.NumberInput, required = True)
+    first = forms.CharField(widget = forms.NumberInput, required = True, max_length=1)
      
-    second = forms.CharField(widget = forms.NumberInput, required = True)
+    second = forms.CharField(widget = forms.NumberInput, required = True, max_length=1)
      
-    third = forms.CharField(widget = forms.NumberInput, required = True)
+    third = forms.CharField(widget = forms.NumberInput, required = True, max_length=1)
      
-    fourth = forms.CharField(widget = forms.NumberInput, required = True)
+    fourth = forms.CharField(widget = forms.NumberInput, required = True, max_length=1)
     
-    fifth = forms.CharField(widget = forms.NumberInput, required = True)
+    fifth = forms.CharField(widget = forms.NumberInput, required = True, max_length=1)
     
-    sixth = forms.CharField(widget = forms.NumberInput, required = True)
+    sixth = forms.CharField(widget = forms.NumberInput, required = True, max_length=1)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

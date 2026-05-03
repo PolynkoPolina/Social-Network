@@ -42,7 +42,8 @@ class RegisterView(View):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
 
-            request.session['email_password'] = [email, password]
+            request.session['email'] = email
+            request.session['password'] =password
             request.session['register_step'] = 'confirm_password'
 
             return JsonResponse({"success": True})
@@ -61,11 +62,7 @@ class LoginView(View):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return JsonResponse({
-                "success": True,
-                "message": "Користувач успішно залогінився"
-            })
-        
+            return redirect('home')
         return JsonResponse(
             {
                 "success": False,
@@ -79,10 +76,29 @@ class ConfirmView(View):
     def post(self, request, *args, **kwargs):
         form = ConfirmForm(request.POST)
         if form.is_valid():
-            code = form.cleaned_data.get('code')
-            print(code)
-            if code == request.session.get('confirm_code'):
-                ...
+            code = str(request.session['confirm_code'])
+            code_from_inputs = ''.join([
+                form.cleaned_data['first'],
+                form.cleaned_data['second'],
+                form.cleaned_data['third'],
+                form.cleaned_data['fourth'],
+                form.cleaned_data['fifth'],
+                form.cleaned_data['sixth'],
+            ])
+            
+            if code_from_inputs == code:
+                user = User.objects.create_user(
+                    username= request.session.get('email'),
+                    email=request.session.get('email'),
+                    password=request.session.get('password'),
+                )
+                del request.session['email']
+                del request.session['password']
+
+                # 
+                return redirect('home')
+            else:
+                form.add_error(None, "Неправильний код")
         return JsonResponse({
             "success": False,
             "errors": form.errors.get_json_data(),
@@ -110,7 +126,7 @@ class SendMail(View):
                 )
                 
                 request.session['code_sent'] = False
-                return JsonResponse({"success": True})
+                return redirect('auth')
     
       
         return JsonResponse({"success": False})

@@ -5,6 +5,7 @@
     </div>
     <h2>Раді тебе знову бачити!</h2>
     <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
         {{ form_login.as_p }}
         <button type="submit">Увійти</button>
     </form>

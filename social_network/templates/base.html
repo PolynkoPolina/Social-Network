@@ -24,7 +24,7 @@
                             <img src="{% static 'icons/house.svg' %}" alt="">
                             <span>Головна</span>
                         </a>
-                        <a href="{% url 'post' %}">
+                        <a href="{% url 'posts' %}">
                             <img src="{% static 'icons/galery.svg' %}" alt="">
                             <span>Мої публікації</span>
                         </a>
@@ -54,7 +54,7 @@
                 {% block sidebar %}
                 {% endblock %}
             </div>
-            <div class="content">
+            <div class="content" id = 'content'>
                 {% block content %}
                 {% endblock %}
             </div>

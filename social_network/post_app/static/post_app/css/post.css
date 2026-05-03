@@ -1,0 +1,68 @@
+button, a{
+    border: none;
+    background: none;
+    outline: none;
+    text-decoration: none;
+}
+
+.create-post{
+    margin: 1rem, 1rem, 1rem, 1rem;
+}
+
+.create-post input{
+    border: 0px solid var(--primary-color);
+    color: var(--greyText);
+    outline: none;
+    border: none;
+    box-shadow: none;
+
+}
+
+.create-post input:focus{
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.create-post-modal{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 53vw;
+    height: 98vh;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 10rem  100vw rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.buttons-div{
+    display: flex;
+    justify-content: end;
+    gap: 1rem;    
+}
+
+.smile-btn{
+    border: 1px solid var(--buttonPurple);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 11.875rem;
+    width: 2rem;
+    height: 2rem;
+}
+
+#open-create-post{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--buttonPurple);
+    background-color: var(--buttonPurple);
+    color: white;
+    width: 11.875rem;
+    height: 2rem;
+    border-radius:6vh;
+
+
+
+}

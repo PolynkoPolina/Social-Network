@@ -117,3 +117,11 @@ function sendMail(){
                 console.log("Код відправлено");
             }})
 }
+
+fetch("//", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+                "X-Requested-With": "XMLHttpRequest",
+            },
+        })
