@@ -1,40 +1,65 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-
-
-User = get_user_model()
+from django.conf import settings
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    topic = models.CharField(max_length=255, null=True, blank=True)
-    content = models.TextField(null=True)
-    tags = models.ManyToManyField('PostTag', blank=True)
-
-    def __str__(self):
-        return self.title 
+    ''''''
+    author = models.ForeignKey(
+        to = settings.AUTH_USER_MODEL,
+        on_delete= models.CASCADE,
+        related_name= "posts"
+    )
     
-
-class PostTag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-
-    def __str__(self):
-        return self.name 
-
-
-class PostLink(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    url = models.URLField(max_length=500)
-
-    def __str__(self):
-        return self.url 
+    title = models.CharField(max_length= 150)
+    topic = models.CharField(max_length= 150, blank= True, null= True)
+    content = models.TextField(default="")
+    tags = models.ManyToManyField("Tag", related_name= "posts", blank= True)
+    created_at = models.DateTimeField(auto_now_add= True, null = True)
+    updated_at = models.DateTimeField(auto_now= True)
     
+    def __str__(self):
+        return f"{self.author.username}: {self.title}"
+ 
+class Tag(models.Model):
+    ''''''
+    name = models.CharField(max_length= 100, unique= True)
+    
+    def __str__(self):
+        return f"#{self.name}"
+
+class PostLinks(models.Model):
+
+    post = models.ForeignKey(
+        to = Post,
+        on_delete= models.CASCADE,
+        related_name= "links"
+    )
+    url = models.URLField(max_length= 500)
+
+    def __str__(self):
+        return f"Link: {self.url}"
 
 class PostImage(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    original = models.ImageField(upload_to="post_images/originals/")
-    compressed = models.ImageField(upload_to="post_images/compressed/")
 
+    post = models.ForeignKey(
+        to = Post,
+        on_delete= models.CASCADE,
+        related_name= "images"
+    )
+    original_image = models.ImageField(upload_to= "original_image/",null=True)
+    compressed_image = models.ImageField(upload_to= "compressed_image/", null = True)
+    
     def __str__(self):
-        return self.original.name 
+        return f"Image: {self.original_image}"
+
+class PostView(models.Model):
+    ''''''
+    user = models.ForeignKey(
+        to= settings.AUTH_USER_MODEL,
+        on_delete= models.CASCADE
+    )
+    post = models.ForeignKey(
+        to= Post,
+        on_delete= models.CASCADE,
+        related_name= "views"
+    )

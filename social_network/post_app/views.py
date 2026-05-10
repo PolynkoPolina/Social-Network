@@ -1,32 +1,82 @@
-from django.views.generic import FormView, TemplateView
+from django.shortcuts import render
+from django.views.generic import ListView, View, FormView
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PostForm
 from django.urls import reverse_lazy
 
-class PostPageView(TemplateView):
+
+from .models import Post
+from .forms import PostForm
+
+
+class PostListView(ListView, LoginRequiredMixin):
+    model = Post
     template_name = 'post_app/post.html'
+    context_object_name = 'posts'
+    paginate_by = 5
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['postForm'] = PostForm()
+        context['posts'] = Post.objects.filter(author_id= self.request.user)[:5]
+
+        return context
+    
+    def get_queryset(self):
+        return Post.objects.filter(author_id= self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            queryset = self.get_queryset()        
+            paginator = Paginator(queryset, self.paginate_by)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            if int(page_number) > paginator.num_pages:
+                return JsonResponse({'success': False})
+            return JsonResponse({
+                'success': True,
+                'html': render_to_string('post_app/particles/show_post.html', {'posts': page_obj.object_list})
+            })
+        
+        return super().get(request, *args, **kwargs)
+
 
 class PostCreateView(LoginRequiredMixin, FormView):
     template_name = "post_app/create_post.html"
     form_class = PostForm
+    success_url = reverse_lazy("post")
     login_url = reverse_lazy("auth")
 
     def get_form_kwargs(self):
+        
         kwargs = super().get_form_kwargs()
 
         if self.request.method == "POST":
             kwargs["links"] = self.request.POST.getlist("links")
-            kwargs["images"] = self.request.POST.getlist("images")
-        
+            kwargs["images"] = self.request.FILES.getlist("images")
+
         return kwargs
-    
-    def form_valid(self, form: PostForm):
 
-        post = form.save()
+    def form_valid(self, form):
+       
+        post = form.save(author=self.request.user)
+        return JsonResponse(
+            {
+                "success": True,
+                "message": "Публікацію створено успішно",
+                "redirect_url": str(self.success_url),
+                "post_id": post.id,
+            }
+        )
 
-    def from_valid(self, form: PostForm):
-        post = form.save(author = self.request.user)
-        return JsonResponse({"success": True, "message": "Post created successfully!"})
-    
-    def form_invalid(self, form: PostForm):
-        return JsonResponse({"success": False, "message": "Failed to create post.", "errors": form.errors}, status=400)
+    def form_invalid(self, form):
+        return JsonResponse(
+            {
+                "success": False,
+                "errors": form.errors.get_json_data(),
+            },
+            status=400,
+        )

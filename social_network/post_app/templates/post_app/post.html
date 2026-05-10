@@ -1,37 +1,28 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
+
+{% block meta %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+{% endblock %}
+
+{% block title %}Мої публікації{% endblock title %}
 
 {% block links %}
     <link rel="stylesheet" href="{% static 'post_app/css/post.css' %}">
 {% endblock links %}
 
-
-{% block title %}
-    
-{% endblock  %}
-
-
-{% block content %}
-   {% include 'post_app/create_post.html' %}
-   
-    <div>
-        <div class = 'create-post'>
-            <input type="text" placeholder="Текст публікації">
-            <div class = "buttons-div">
-                <button class = "smile-btn"><img src="{% static 'post_app/icons/smile.svg' %}" alt=""></button>
-                <button id = 'open-create-post'>Перейти до оформлення</button>               
-            </div>
-        </div>
-        <div></div>
-    </div>
-{% endblock %}
-
-
 {% block sidebar %}
     {% include 'profile.html' %}
 {% endblock sidebar %}
 
-
-{% block scripts %}
-    <script src = "{% static 'post_app/js/post.js' %}"></script>
+{% block modal-create-post %}
+    {% include 'post_app/particles/create_post.html' %}
 {% endblock %}
+
+{% block content %}
+    {% include 'post_app/particles/content_post.html'   %}
+{% endblock content %}
+
+{% block scripts %}  
+    <script src="{% static 'post_app/js/createPost.js' %}" ></script>
+{% endblock scripts %}

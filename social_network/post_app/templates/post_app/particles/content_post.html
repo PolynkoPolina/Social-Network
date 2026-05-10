@@ -1,0 +1,13 @@
+{% load static %}
+
+<div class = 'create-post'>
+    <input type="text" placeholder="Текст публікації">
+    <div class = "buttons-div">
+        <button class = "smile-btn"><img src="{% static 'post_app/icons/smile.svg' %}" alt=""></button>
+        <button class = 'open-create-post' popovertarget="create-post-modal">Перейти до оформлення</button>               
+    </div>
+</div>
+<div class="post-list">
+    {% include 'post_app/particles/show_posts.html' %}
+    <div id="postLoaderLine" style="width: 100%; height: 1px;"></div>
+</div>

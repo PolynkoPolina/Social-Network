@@ -11,5 +11,5 @@ urlpatterns = [
     path(route='logout/', view= LogoutView.as_view(), name= 'logout'),
     path(route='send-mail/', view= SendMail.as_view(), name= 'send-mail'),
     path(route='set-code-sent/', view= SetCodeSent.as_view(), name= 'set-code-sent'),
-
+    path(route="create-username/", view= CreateUsernameView.as_view(), name= 'create-username'),
 ]

@@ -4,21 +4,24 @@ from django.core.mail import send_mail
 from django.views.generic import TemplateView, View, FormView
 from .forms import *
 from django.http import JsonResponse, HttpResponse
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 import random
+from django.urls import reverse
+from django.contrib.auth import get_user_model
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-class PersonalInfoPageView(TemplateView):
+class PersonalInfoPageView(TemplateView, LoginRequiredMixin):
     template_name = 'user_app/settings_personal_info.html'
 
 
-class AlbumsPageView(TemplateView):
+class AlbumsPageView(TemplateView,LoginRequiredMixin):
     template_name = 'user_app/settings_albums.html'
 
 
 
-class AuthTemplateView(TemplateView):
+class AuthTemplateView(TemplateView, LoginRequiredMixin):
     template_name = 'user_app/auth.html'
     
     def get_context_data(self, **kwargs) -> dict:
@@ -33,7 +36,7 @@ class AuthTemplateView(TemplateView):
         return context
 
 
-class RegisterView(View):
+class RegisterView(View, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         form = UserCreationForm(request.POST)
@@ -56,13 +59,17 @@ class RegisterView(View):
             
             
 
-class LoginView(View):
+class LoginView(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         form = LoginForm(request = request, data = request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('home')
+            return JsonResponse({
+                 "success":True,
+                "redirect_url": reverse("home")},
+            status = 200
+            )
         return JsonResponse(
             {
                 "success": False,
@@ -70,9 +77,10 @@ class LoginView(View):
             },
             status = 400
             )
+
     
 
-class ConfirmView(View):
+class ConfirmView(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         form = ConfirmForm(request.POST)
         if form.is_valid():
@@ -88,7 +96,6 @@ class ConfirmView(View):
             
             if code_from_inputs == code:
                 user = User.objects.create_user(
-                    username= request.session.get('email'),
                     email=request.session.get('email'),
                     password=request.session.get('password'),
                 )
@@ -96,7 +103,7 @@ class ConfirmView(View):
                 del request.session['password']
 
                 # 
-                return redirect('home')
+                return JsonResponse({"success": True})
             else:
                 form.add_error(None, "Неправильний код")
         return JsonResponse({
@@ -104,16 +111,19 @@ class ConfirmView(View):
             "errors": form.errors.get_json_data(),
         }, status=400)
    
-class LogoutView(View):
-    ...
+class LogoutView(View, LoginRequiredMixin):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect("auth")
 
-class SendMail(View):
+class SendMail(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         if request.session.get('code_sent'):
 
             
             if request.session['register_step'] == 'confirm_password':
                 code = ''.join(str(random.randint(0, 9)) for _ in range(6))
+                print(code)
                 request.session['confirm_code'] = code
 
                 
@@ -121,7 +131,7 @@ class SendMail(View):
                     subject='Пароль для аккаунта',
                     message=code,
                     from_email='socialnetwork140024@gmail.com',   
-                    recipient_list= [request.session['email_password'][0]],  
+                    recipient_list= [request.session['email']],  
                     fail_silently=False,
                 )
                 
@@ -133,7 +143,22 @@ class SendMail(View):
     
 
 
-class SetCodeSent(View):
+class SetCodeSent(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         request.session['code_sent'] = True
         return JsonResponse({"success": True})
+    
+
+class CreateUsernameView(View, LoginRequiredMixin):
+    def post(self, request, *args, **kwargs):
+        if request.session.get('create_username_need'):
+            form = CreateUsernameForm(request.POST)
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                first_name = form.cleaned_data['firstname']
+                user = request.user
+                user.first_name = first_name
+                user.username = username
+                del request.session['create_username_need']
+                user.save()
+        return redirect('home')

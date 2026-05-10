@@ -79,16 +79,17 @@ class UserCreationForm(forms.ModelForm):
             raise forms.ValidationError('Паролі не співпадають')
         return cleaned_data
     
-    def save(self, commit = True):
-        user : User = super().save(commit = False) 
-        user.username = ''
-        user.set_password(self.cleaned_data['password'])
-        if commit:
-            user.save()
+    # def save(self, commit = True):
+    #     user : User = super().save(commit = False) 
+    #     user.username = ''
+    #     user.set_password(self.cleaned_data['password'])
+    #     if commit:
+    #         user.save()
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ''
+
 
 class LoginForm(AuthenticationForm):
     username = forms.EmailField(label='Електрона пошта', widget=forms.EmailInput(
@@ -125,3 +126,22 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ''
+
+class CreateUsernameForm(forms.Form):
+    class Meta:
+        model = user
+        fields = ('firstaname', 'username')
+        labels = {
+            'username' : "Ім'я користувача",
+            'firstaname' : 'Псевдонім автора',
+        }
+        widgets = {
+            'username': forms.TextInput(
+                attrs={
+                    'placeholder': '@',
+            }), 
+            'firstname': forms.TextInput(
+                attrs={
+                    'placeholder': 'Введіть псевдонім автора',
+            })
+        }

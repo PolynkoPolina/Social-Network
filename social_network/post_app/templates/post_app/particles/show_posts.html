@@ -1,0 +1,57 @@
+
+{% for post in posts %}
+
+    <article class="post">
+
+        <h2>{{ post.title }}</h2>
+        <p>Автор: {{ post.author.username }}</p>
+
+       
+
+        {% if post.topic %}
+            <p><strong>Тема:</strong> {{ post.topic }}</p>
+        {% endif %}
+
+
+        <p>{{ post.content }}</p>
+
+
+        {% if post.images.all %}
+            <p><strong>Фото:</strong></p>
+
+            {% for image in post.images.all %}
+                <p>
+
+                    <a href="{{ image.original_image.url }}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{ image.compressed_image.url }}" alt="{{ post.title }}" style="max-width: 300px; height: auto;">
+                    </a>
+                </p>
+            {% endfor %}
+        {% endif %}
+
+
+        {% if post.tags.all %}
+            <p>
+                <strong>Теги:</strong>
+
+                {% for tag in post.tags.all %}
+                    #{{ tag.name }}
+                {% endfor %}
+            </p>
+        {% endif %}
+
+
+        {% if post.links.all %}
+            <p><strong>Посилання:</strong></p>
+            <ul>
+
+                {% for link in post.links.all %}
+                    <li>
+                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.url }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </article>
+    <hr>
+{% endfor %}

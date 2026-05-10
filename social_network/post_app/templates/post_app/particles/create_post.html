@@ -1,0 +1,29 @@
+{% load static %}
+<div id='create-post-modal' class="create-post-modal" popover>
+    <div class="top-modal">
+        <button popovertargetaction="hide" popovertarget="create-post-modal"><img src="{% static 'post_app/icons/cross.svg' %}"alt=""></button>
+    </div>
+    <div class="content-modal">
+        <h1>Створення публікації</h1>
+        <form action="{% url 'create_post' %}" method="post" id="create-post-form" enctype="multipart/form-data">
+            {{postForm.as_p}}
+            <p>Посилання</p>
+                <div class="links-list" id = "links-list">
+                    <input type="url" name="links" placeholder="https://example.com">
+                </div>
+                <button type="button" id="addLink"><img src="{% static 'post_app/icons/plus.svg' %}" alt=""></button>
+
+            <div id="image-container">
+                
+            </div>
+            <input type="file" id="addImage" name="images" multiple accept="image/*" style="display: none;">
+            <div class="submit-buttons">
+                    <button type ='button' class = "image-btn" onclick="document.getElementById('addImage').click()"><img src="{% static 'post_app/icons/image.svg' %}" alt=""></button>
+                    <button type ='button' class = "smile-btn"><img src="{% static 'post_app/icons/smile.svg' %}" alt=""></button>
+                    <button type="submit"><img src="{% static 'post_app/icons/publication_button.svg' %}" alt=""></button>
+            </div>
+        </form>
+    </div>
+  
+</div>
+

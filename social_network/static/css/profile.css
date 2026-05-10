@@ -70,12 +70,17 @@ a{
 
 .request-header a{
     color: var(--buttonPurple);
+    font-weight: 600
 }
 
 .requests-container{
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.requests-container span, .message-container span{
+    font-family: var(--mediumFont);
 }
 
 .people-request{

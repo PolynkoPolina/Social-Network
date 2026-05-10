@@ -1,62 +1,85 @@
-from django import forms
-from .models import *
-from PIL import Image
 from io import BytesIO
+from django import forms
 from django.core.files.base import ContentFile
+from PIL import Image
+# 
+from .models import Post, Tag, PostLinks, PostImage, PostView
 
+MAX_COMPRESSED_IMAGE_SIZE = 5 * 1024 * 1024 
 
 class MultipleFileInput(forms.ClearableFileInput):
+    # За замовчуванням можна вибрати тільки один файл, але 
+    # властивість allow_multiple_selected задає можливість вибору декількох файлів
     allow_multiple_selected = True
-
+    
 class MultipleFileField(forms.FileField):
-    def clean(self, data, initial = True):
+    '''
+        Відповідає за очистку та валідацію отриманих файлів
+    '''
+    def clean(self, data, initial = None):
         single_file_clean = super().clean
-
         if isinstance(data, (list, tuple)):
-            return [single_file_clean(file, initial) for file in data]
-        
-        return single_file_clean(data, initial)
-
+            return [single_file_clean(data= file, initial= initial) for file in data]
+        return single_file_clean(data= data, initial= initial)
+    
 class PostForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
-        label = "Теги",
-        required = False,
-        queryset= PostTag.objects.all(),
-        widget = forms.CheckboxSelectMultiple
+        required=False,
+        queryset=Tag.objects.all(),
+        label = '',
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "tags"})
     )
 
-    images = MultipleFileField(
-        label= "Зображення",
-        required=False,
-        widget = MultipleFileInput
-    )
+    # links = forms.CharField(
+    #     label='Посилання',
+    #     required=False,
+    #     widget=forms.TextInput(attrs={
+    #         "class": "input link-input",
+    #         "placeholder": "https://..."
+    #     })
+    # )
+
+    # images = MultipleFileField(
+    #     required=False,
+    #     label="",
+    #     widget=MultipleFileInput(attrs={
+    #         'multiple': True,
+    #         'accept': 'image/*',
+    #     })
+    # )
+
+    field_order = ["title", "topic", "tags", "content"]
 
     class Meta:
         model = Post
         fields = ("title", "topic", "content")
         labels = {
-            "title": "Заголовок публікації",
+            "title": "Назва публікації",
             "topic": "Тема публікації",
-            "content": "Контент публікації"
+            "content": ""
+        }
+        widgets = {
+            "title": forms.TextInput(attrs={"placeholder": "Напишіть назву публікації"}),
+            "topic": forms.TextInput(attrs={"placeholder": "Напишіть тему публікації"}),
+            "content": forms.Textarea(attrs={"row": 5, "placeholder": "Текст посту"})
         }
 
-    def __init__(self, *args, links = None, images = None, **kwargs):
+    
+
+
+    def __init__(self, *args, links : list = None, images= None, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.fields['tags'].queryset = PostTag.objects.all()
-
+        self.fields['tags'].queryset = Tag.objects.all()
+       
         self.links_list = []
         self.images_list = []
-
+    
         if links is None:
             links = []
-
         for link in links:
-            clean_link = link.strip() 
-
+            clean_link = link.strip()
             if clean_link:
                 self.links_list.append(clean_link)
-
         if images is not None:
             self.images_list = list(images)
 
@@ -70,68 +93,76 @@ class PostForm(forms.ModelForm):
             try:
                 url_field.clean(link)
             except forms.ValidationError:
-                self.add_error(None, "Некоректний формат посилання")
-
+                self.add_error('links', f'Некоректне посилання: {link}') #fetch
+                
         for image in self.images_list:
             try:
                 image_field.clean(image)
             except forms.ValidationError:
-                self.add_error(None, "Некоретний файл зображення")
+                self.add_error('images', 'Завантажте коректне зображення') #fetch
 
         return cleaned_data
-    
+
     def save(self, author, commit=True):
         post = super().save(commit=False)
         post.author = author
 
         if commit:
             post.save()
-            post.tags.set(self.cleaned_data["tags"])
+            post.tags.set(self.cleaned_data['tags'])
 
             for url in self.links_list:
-                PostLink.objects.create(post=post, url=url)
+                PostLinks.objects.create(post=post, url=url)
 
             for image in self.images_list:
                 PostImage.objects.create(
                     post=post,
-                    original = image,
-                    compressed = self.compress_image(image)
+                    original_image=image,
+                    compressed_image=self._compressed_image(image)
                 )
+
         return post
-    
-    def compress_image(self, image):
-        
+
+    def _compressed_image(self, image):
+        '''
+            повна робота з модулем Pillow
+        '''
+        # перехід на початок байт рядку
         image.seek(0)
-        image_obj = Image.open(image)
-
-        image_obj = image_obj.convert("RGB")
-
+        compressed_image = Image.open(image)
+        compressed_image = compressed_image.convert("RGB")
+        
         quality = 85
-        width, height = image_obj.size
-
-        MAX_COMPRESSED_IMAGE_SIZE = 5 * 1024 * 1024
-
+        width, height = compressed_image.size
+        
         while True:
             buffer = BytesIO()
-            image_obj.save(buffer, format="JPEG", quality = quality, optimize= True)
-
+            compressed_image.save(
+                fp= buffer,
+                format= 'JPEG', 
+                quality= quality, 
+                optimize= True
+            )
+            
             if buffer.tell() <= MAX_COMPRESSED_IMAGE_SIZE:
                 break
-
+            
             if quality > 35:
                 quality -= 10
             else:
                 if width <= 1 or height <= 1:
                     break
-
+                # Якщо якість вже погана, то просто зменшуєммо розмір на 10%
                 width = int(width * 0.9)
                 height = int(height * 0.9)
-                image_obj = image_obj.resize((width, height), Image.Resampling.LANCZOS)
-
-            image.seek(0)
-            compressed_name = f"compressed_{image.name.rsplit(".", 1)[0]}.jpg"
-            return ContentFile(buffer.getvalue(), name=compressed_name)
+                compressed_image = compressed_image.resize(
+                    size = (width, height),
+                    resample = Image.Resampling.LANCZOS
+                )
 
         
-
-
+        image.seek(0)
+        
+        compressed_name = f'compressed_{image.name.rsplit(".", 1)[0]}.jpg'
+        
+        return ContentFile(buffer.getvalue(), name= compressed_name)

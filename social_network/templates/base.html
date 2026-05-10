@@ -12,6 +12,7 @@
     
 </head>
 <body>
+        {% block modal-create-post %}{% endblock %}
         <header>
             {% block header %}
                 <nav class="nav-header">
@@ -24,7 +25,7 @@
                             <img src="{% static 'icons/house.svg' %}" alt="">
                             <span>Головна</span>
                         </a>
-                        <a href="{% url 'posts' %}">
+                        <a href="{% url 'post' %}">
                             <img src="{% static 'icons/galery.svg' %}" alt="">
                             <span>Мої публікації</span>
                         </a>
