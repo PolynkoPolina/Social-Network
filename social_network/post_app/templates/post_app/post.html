@@ -9,20 +9,25 @@
 
 {% block links %}
     <link rel="stylesheet" href="{% static 'post_app/css/post.css' %}">
+    <link rel="stylesheet" href="{% static 'post_app/css/create_post_modal.css' %}">
+    <link rel="stylesheet" href="{% static 'post_app/css/add_tag.css' %}">
 {% endblock links %}
 
 {% block sidebar %}
-    {% include 'profile.html' %}
+    {% include 'particles/profile.html' %}
 {% endblock sidebar %}
 
-{% block modal-create-post %}
+{% block modal %}
     {% include 'post_app/particles/create_post.html' %}
+    {% include 'post_app/particles/add_tag.html' %}
 {% endblock %}
 
 {% block content %}
-    {% include 'post_app/particles/content_post.html'   %}
+    {% include 'post_app/particles/content_post.html' %}
 {% endblock content %}
 
-{% block scripts %}  
-    <script src="{% static 'post_app/js/createPost.js' %}" ></script>
+{% block scripts %}
+    <script type="module" src="{% static 'js/renderErrors.js' %}" ></script>
+    <script type='module' src="{% static 'post_app/js/createPost.js' %}" ></script>
+    <script type="module" src="{% static 'post_app/js/postList.js' %} "></script>
 {% endblock scripts %}

@@ -144,6 +144,7 @@ a{
 }
 
 .message-info-container{
+    position: relative;
     display: flex;
     gap: 1rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
@@ -153,18 +154,20 @@ a{
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    width: 100%;
 }
 
 .message-info{
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    width: 100%;
 }
 
 .message-time-container{
     display: flex;
     justify-content: space-between;
-    width: 20.5rem
+    width: 100%;
 }
 
 .message-time-container p{

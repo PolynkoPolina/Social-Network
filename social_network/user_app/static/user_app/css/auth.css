@@ -190,36 +190,5 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 
-input[type="number"] {
-    -moz-appearance: textfield;
-}
 
-.craete_username{
-    position: absolute;
-}
 
-.craete_username h2{
-    display: flex;
-    align-items: center;
-    width: 28vw;
-    height: 4.3vh;
-    font-size: 2.4vw;
-    font-family: 'GT Walsheim Pro', sans-serif;
-    font-weight: 34.7vw;
-    color: #070A1C;
-}
-
-.modal-username-creation{
-    display: flex;
-    justify-content: center;
-}
-
-.modal-username-creation p{
-    width: 9.1;
-    height: 2.4vh;
-    padding: 0 3vw;
-    font-family: 'GT Walsheim Pro', sans-serif;
-    font-size: 1.1vw;
-    font-weight: 27.8vw;
-    color: #070A1C;
-}

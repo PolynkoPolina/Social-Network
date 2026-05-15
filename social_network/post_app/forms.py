@@ -48,7 +48,7 @@ class PostForm(forms.ModelForm):
     #     })
     # )
 
-    field_order = ["title", "topic", "tags", "content"]
+    field_order = ["title", "topic", "tags"]
 
     class Meta:
         model = Post
@@ -56,12 +56,13 @@ class PostForm(forms.ModelForm):
         labels = {
             "title": "Назва публікації",
             "topic": "Тема публікації",
-            "content": ""
         }
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "Напишіть назву публікації"}),
             "topic": forms.TextInput(attrs={"placeholder": "Напишіть тему публікації"}),
-            "content": forms.Textarea(attrs={"row": 5, "placeholder": "Текст посту"})
+            "content": forms.Textarea(attrs={
+                "hidden": True
+                })
         }
 
     
@@ -166,3 +167,19 @@ class PostForm(forms.ModelForm):
         compressed_name = f'compressed_{image.name.rsplit(".", 1)[0]}.jpg'
         
         return ContentFile(buffer.getvalue(), name= compressed_name)
+    
+
+
+class AddTagForm(forms.ModelForm):
+    class Meta():
+        model = Tag
+        fields = ('name',)
+        labels = {
+            "name": "Назва "
+        }
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "#"}),
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ''

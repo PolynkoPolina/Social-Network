@@ -12,7 +12,7 @@
     
 </head>
 <body>
-        {% block modal-create-post %}{% endblock %}
+        {% block modal %}{% endblock %}
         <header>
             {% block header %}
                 <nav class="nav-header">
@@ -42,7 +42,6 @@
                             <span>Налаштування<span>
                         </a>
                         <a href="{% url 'logout' %}" class="exit-button">
-                            <img src="{% static 'icons/exit_button.svg' %}" alt="" >
                         </a>
                     </div>
                 {% endif %}

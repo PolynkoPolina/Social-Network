@@ -4,104 +4,40 @@
 {% block links %}
     <link rel="stylesheet" href="{% static 'main_app/css/home.css' %}">
     <link rel="stylesheet" href="{% static 'main_app/css/home_sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'user_app/css/create_username.css' %}">
+    <link rel="stylesheet" href="{% static 'post_app/css/post.css' %}">
+    <link rel="stylesheet" href="{% static 'post_app/css/create_post_modal.css' %}">
+
 {% endblock links %}
 
-
-{% block title %}
-{% endblock  %}
-
-
-{% block content %}
+{% block meta %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
 
+{% block title %}
+    Головна
+{% endblock  %}
+
+{% block modal %}
+    {% include 'post_app/particles/create_post.html' %}
+    {% if create_username %}
+        {% include 'user_app/particles/form_create_username.html' %}
+    {% endif %}
+{% endblock modal %}
 
 {% block sidebar %}
-    {% include 'profile.html' %}
-    {% if username_need %}
-        {% include 'post_app/form_create_username.html' %}
-    {% endif %}
-    
-    <div class="requests-card">
-        <span class="requests-header">
-            <div class = "request-header">
-                <p><img src="{% static 'icons/people.svg' %}" alt="" class="chat-icon">Запити</p>
-                <a href="">Дивитись всі</a>
-            </div>
-            <div class="requests-container">
-                <div class="people-request">
-                    <img src="{% static 'icons/request_icon1.svg' %}" alt="">
-                    <div class = "request-user">
-                        <span>Yehor Aung</span><p>4.3к підписників</p>
-                    </div>
-                </div>
-                <div class="people-request">
-                    <img src="{% static 'icons/request_icon2.svg' %}" alt="">
-                    <div class = "request-user">
-                        <span>Ann Ann</span><p>1.6к підписників</p>
-                    </div>
-                </div>
-                <div class="people-request">
-                    <img src="{% static 'icons/request_icon3.svg' %}" alt="">
-                    <div class = "request-user">
-                        <span>Yeugen Jenua</span><p>10.3к підписників</p>
-                    </div>
-                </div>
-            </div>
-        </span>
-    </div>
-    <div class="messages-frame">
-        <div class="alert-container">
-            <div>
-                <img src="{% static 'icons/chat.svg' %}" alt="" class = "messsage-icon"><span>Повідомлення</span>
-            </div>
-            <p>Дивитись всі</p>
-        </div>
-        <div class="messages-container">
-            <div class="message-info-container purple">
-                <div class = "message-container">
-                    <img src="{% static 'icons/friends_icon1.svg' %}" alt="" class="avatar">
-                    <div class="message-info">
-                        <div class = "message-time-container">
-                            <span>Mona Lisa</span><p>09:41</p>
-                        </div>
-                        <div class="message-text">
-                            <p>Привіт! Як справи?</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="message-info-container purple">
-                <div class = "message-container">
-                    <img src="{% static 'icons/friends_icon2.svg' %}" alt="" class="avatar">
-                    <div class="message-info">
-                        <div class = "message-time-container">
-                            <span>Ann Ti</span><p>25.04.2025</p>
-                        </div>
-                        <div class="message-text">
-                            <p>Привіт!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="message-info-container">
-                <div class = "message-container">
-                    <img src="{% static 'icons/friends_icon3.svg' %}" alt="" class="avatar">
-                    <div class="message-info">
-                        <div class = "message-time-container">
-                            <span>Ness Ty</span><p>25.04.2025</p>
-                        </div>
-                        <div class="message-text">
-                            <p>Привіт!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+    {% include 'particles/profile.html' %}
+    {% include 'particles/requests.html' %}
+    {% include 'particles/messages.html' %}
 {% endblock sidebar %}
 
 
+{% block content %}
+    {% include 'post_app/particles/content_post.html' %}
+{% endblock %}
+
 {% block scripts %}
-    
+    <script type = 'module' src="{% static 'user_app/js/create_username.js' %}"></script>
+    <script type = 'module' src="{% static 'post_app/js/createPost.js' %}"></script>
+    <script type = 'module' src="{% static 'post_app/js/postList.js' %}"></script>
 {% endblock %}

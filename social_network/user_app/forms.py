@@ -127,21 +127,26 @@ class LoginForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         self.label_suffix = ''
 
-class CreateUsernameForm(forms.Form):
+class CreateUsernameForm(forms.ModelForm):
     class Meta:
         model = user
-        fields = ('firstaname', 'username')
+        fields = ('first_name', 'username')
+
         labels = {
             'username' : "Ім'я користувача",
-            'firstaname' : 'Псевдонім автора',
+            'first_name' : 'Псевдонім автора',
         }
         widgets = {
             'username': forms.TextInput(
                 attrs={
                     'placeholder': '@',
             }), 
-            'firstname': forms.TextInput(
+            'first_name': forms.TextInput(
                 attrs={
                     'placeholder': 'Введіть псевдонім автора',
             })
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ''

@@ -8,20 +8,24 @@ from django.contrib.auth import login, logout
 import random
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .utils.friends_queries import get_user_by_section
 
 # Create your views here.
 class PersonalInfoPageView(TemplateView, LoginRequiredMixin):
     template_name = 'user_app/settings_personal_info.html'
+    login_url = reverse_lazy("auth")
 
 
 class AlbumsPageView(TemplateView,LoginRequiredMixin):
     template_name = 'user_app/settings_albums.html'
+    login_url = reverse_lazy("auth")
 
 
 
-class AuthTemplateView(TemplateView, LoginRequiredMixin):
+class AuthTemplateView(TemplateView,):
     template_name = 'user_app/auth.html'
     
     def get_context_data(self, **kwargs) -> dict:
@@ -36,7 +40,7 @@ class AuthTemplateView(TemplateView, LoginRequiredMixin):
         return context
 
 
-class RegisterView(View, LoginRequiredMixin):
+class RegisterView(View):
 
     def post(self, request, *args, **kwargs):
         form = UserCreationForm(request.POST)
@@ -59,7 +63,7 @@ class RegisterView(View, LoginRequiredMixin):
             
             
 
-class LoginView(View, LoginRequiredMixin):
+class LoginView(View):
     def post(self, request, *args, **kwargs):
         form = LoginForm(request = request, data = request.POST)
         if form.is_valid():
@@ -80,7 +84,7 @@ class LoginView(View, LoginRequiredMixin):
 
     
 
-class ConfirmView(View, LoginRequiredMixin):
+class ConfirmView(View,):
     def post(self, request, *args, **kwargs):
         form = ConfirmForm(request.POST)
         if form.is_valid():
@@ -116,7 +120,7 @@ class LogoutView(View, LoginRequiredMixin):
         logout(request)
         return redirect("auth")
 
-class SendMail(View, LoginRequiredMixin):
+class SendMail(View):
     def post(self, request, *args, **kwargs):
         if request.session.get('code_sent'):
 
@@ -143,7 +147,7 @@ class SendMail(View, LoginRequiredMixin):
     
 
 
-class SetCodeSent(View, LoginRequiredMixin):
+class SetCodeSent(View):
     def post(self, request, *args, **kwargs):
         request.session['code_sent'] = True
         return JsonResponse({"success": True})
@@ -151,14 +155,26 @@ class SetCodeSent(View, LoginRequiredMixin):
 
 class CreateUsernameView(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
-        if request.session.get('create_username_need'):
-            form = CreateUsernameForm(request.POST)
-            if form.is_valid():
-                username = form.cleaned_data['username']
-                first_name = form.cleaned_data['firstname']
-                user = request.user
-                user.first_name = first_name
-                user.username = username
-                del request.session['create_username_need']
-                user.save()
+        form = CreateUsernameForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            user = request.user
+            user.first_name = first_name
+            user.username = username
+            user.save()
         return redirect('home')
+    
+
+class FriendsView(TemplateView, LoginRequiredMixin):
+    template_name = 'user_app/friends.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["sections"] = {
+            "requests": {'title': 'Запити', 'users': get_user_by_section(self.request.user, 'requests')[:3]},
+            'recommendations': {'title': 'Рекомендації', 'users': get_user_by_section(self.request.user, 'recommendations')[:6]},
+            'friends': {'title': 'Всі друзі', 'users': get_user_by_section(self.request.user, 'friends')[:6]}
+        }
+        return context
+    
+    

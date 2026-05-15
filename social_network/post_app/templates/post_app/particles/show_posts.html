@@ -1,57 +1,62 @@
-
+{% load static %}
 {% for post in posts %}
-
     <article class="post">
+        <div class="post-top">
+            <div class="avatar-label">
+                    <div class="user-info-container">
+                        <div><img src="{% static 'icons/sidebar-avatar.svg' %}" alt=""></div>
+                        <p>{{ post.author.username }}</p>
+                    </div>
+                <div class="interaction"><img src="{% static 'post_app/icons/Interaction.png' %}" alt=""></div>
+            </div>
+            <div class="edit-post"></div>
+        </div>
 
-        <h2>{{ post.title }}</h2>
-        <p>Автор: {{ post.author.username }}</p>
+        <div class="post-content">   
+            <h1 class="post-content-title">{{ post.title }}</h1>
+            
+            {% if post.topic %}
+                <p> {{ post.topic }}</p>
+            {% endif %}
+            <div>
+                <p>{{ post.content }}</p>
+    
+                {% if post.tags.all %}
+                <div class="post-tag-list">
+                        <p>
+                            {% for tag in post.tags.all %}
+                                #{{ tag.name }}
+                            {% endfor %}
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
 
-       
+            {% if post.links.all %}
+                <div class="post-links-list">
+                    {% for link in post.links.all %}
+                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.url }}</a>
+                    {% endfor %}
+                </div> 
+            {% endif %}
 
-        {% if post.topic %}
-            <p><strong>Тема:</strong> {{ post.topic }}</p>
-        {% endif %}
-
-
-        <p>{{ post.content }}</p>
-
-
-        {% if post.images.all %}
-            <p><strong>Фото:</strong></p>
-
-            {% for image in post.images.all %}
-                <p>
-
+            {% if post.images.all %}
+                <div class="post-images-list">
+                {% for image in post.images.all %}
+                <p>         
                     <a href="{{ image.original_image.url }}" target="_blank" rel="noopener noreferrer">
                         <img src="{{ image.compressed_image.url }}" alt="{{ post.title }}" style="max-width: 300px; height: auto;">
                     </a>
                 </p>
-            {% endfor %}
-        {% endif %}
-
-
-        {% if post.tags.all %}
-            <p>
-                <strong>Теги:</strong>
-
-                {% for tag in post.tags.all %}
-                    #{{ tag.name }}
                 {% endfor %}
-            </p>
-        {% endif %}
+                </div>
+            {% endif %}
 
-
-        {% if post.links.all %}
-            <p><strong>Посилання:</strong></p>
-            <ul>
-
-                {% for link in post.links.all %}
-                    <li>
-                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.url }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+            <div class = 'post-reactions'>
+                <div class = "likes reactions"><img src="{% static 'post_app/icons/heart.svg' %}" alt=""><span>Вподобань</span></div>
+                <div class = "saved reactions"><img src="{% static 'post_app/icons/like.svg' %}" alt=""><span>Вподобань</span></div>
+                <div class = "views reactions"><img src="{% static 'post_app/icons/eye.svg' %}" alt=""><span>Переглядів</span></div>
+            </div>  
+        </div>
     </article>
-    <hr>
 {% endfor %}

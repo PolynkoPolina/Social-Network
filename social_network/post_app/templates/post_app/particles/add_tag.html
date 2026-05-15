@@ -1,0 +1,17 @@
+{% load static %}
+<div class="add-tag-modal" id="add-tag-modal" popover>
+    <div class="add-tag">
+        <div class="top-modal">
+            <button popovertargetaction="hide" popovertarget="add-tag-modal"><img src="{% static 'post_app/icons/cross.svg' %}"alt=""></button>
+        </div>
+        <h2>Додати хештег</h2>
+        <form action="{% url 'add_tag' %}" method="post" id="add-tag-form">
+            {{ addTagForm.as_p }}
+            <div class="tag-btn-container">
+                <button class="button cancel-btn" type="button" popovertargetaction="hide" popovertarget="add-tag-modal">Скасувати</button>
+                <button class="button" type="submit">Зберегти</button>
+            </div>
+        </form>
+    </div>
+</div>
+

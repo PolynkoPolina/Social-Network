@@ -6,12 +6,30 @@
     <div class="content-modal">
         <h1>Створення публікації</h1>
         <form action="{% url 'create_post' %}" method="post" id="create-post-form" enctype="multipart/form-data">
-            {{postForm.as_p}}
-            <p>Посилання</p>
+            <p>
+                <label>Назва публікації</label>
+                {{ postForm.title}}
+            </p>
+            <p>
+                <label>Тема публікації</label>
+                {{ postForm.topic }}
+            </p>
+            <div class="tags-container">
+                <p>{{ postForm.tags }}</p>
+                <button type="button" id="addTag" popovertarget="add-tag-modal"><img src="{% static 'post_app/icons/plus.svg' %}" alt=""></button>
+            </div>
+            <div id="editor">
+                <textarea name="content" row="5" placeholder="Текст посту" required></textarea>
+            </div>
+            <div class="links-container">
+                <span>Посилання</span>
                 <div class="links-list" id = "links-list">
-                    <input type="url" name="links" placeholder="https://example.com">
+                    <div>
+                        <input type="url" name="links" placeholder="https://example.com">
+                        <button type="button" id="addLink"><img src="{% static 'post_app/icons/plus.svg' %}" alt=""></button>
+                    </div>
                 </div>
-                <button type="button" id="addLink"><img src="{% static 'post_app/icons/plus.svg' %}" alt=""></button>
+            </div>
 
             <div id="image-container">
                 
@@ -20,7 +38,7 @@
             <div class="submit-buttons">
                     <button type ='button' class = "image-btn" onclick="document.getElementById('addImage').click()"><img src="{% static 'post_app/icons/image.svg' %}" alt=""></button>
                     <button type ='button' class = "smile-btn"><img src="{% static 'post_app/icons/smile.svg' %}" alt=""></button>
-                    <button type="submit"><img src="{% static 'post_app/icons/publication_button.svg' %}" alt=""></button>
+                    <button type="submit" class="button">Публікація<img src="{% static 'post_app/icons/publication.svg' %}" alt=""></button>
             </div>
         </form>
     </div>

@@ -1,12 +1,15 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'user_app/css/auth.css' %}">
-<div class="form create_username">
+<div class="create_username">
     <h2>Додай деталі про себе</h2>
     <form action="{% url 'create-username' %}" method="post" id="create-username-form">
-        <div class="modal-username-creation">
-            {{form.as_p}}
-            <p class="text-username">Або оберіть:</p><span class="green-text-username">Запропоновані варіанти відносно Ім'я та Призвіща</span>
-            <button type="submit" id="username-confirm-button"></button>
+        {% csrf_token %}
+        <div>
+            {{ create_username_form.as_p }}
+            <span class="text-username">Або оберіть:<span class="green-text-username"> Запропоновані варіанти відносно Ім'я та Призвіща</span></span>
+        </div>
+        <div class="modal-btn-container">
+            <button class="button" type="submit" id="username-confirm-button">Продовжити</button>
         </div>
     </form>
 </div>
+

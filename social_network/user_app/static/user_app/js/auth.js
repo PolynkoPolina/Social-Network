@@ -1,6 +1,6 @@
-function getCSRFToken(){
-    return document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-}
+import { getCSRFToken } from "../../../../static/js/getCSRFToken.js"
+import { renderErrors } from "../../../../static/js/renderErrors.js"
+
 
 
 const formRegister = document.querySelector('.register');
@@ -92,12 +92,8 @@ document.getElementById("reg-form").addEventListener(
             sendMail();
             localStorage.setItem('authState', 'confirm'); 
         })
-        .catch((error) => {  
-            console.log("Ошибка:", error);
-        
-            if (error.errors){
-                console.log(error.errors);
-            }
+        .catch((data) => {  
+            renderErrors("create-errors", data.errors)
         });
     });
 
@@ -151,12 +147,8 @@ document.getElementById("confirm-form").addEventListener(
             sendMail();
             localStorage.setItem('authState', 'login'); 
         })
-        .catch((error) => {  
-            console.log("Ошибка:", error);
-        
-            if (error.errors){
-                console.log(error.errors);
-            }
+        .catch((data) => {  
+            renderErrors("create-errors", data.errors)
         });
     });
 
@@ -190,11 +182,7 @@ document.getElementById("login-form").addEventListener(
             window.location.href = '/'
 
         })
-        .catch((error) => {  
-            console.log("Ошибка:", error);
-        
-            if (error.errors){
-                console.log(error.errors);
-            }
+        .catch((data) => {  
+            renderErrors("create-errors", data.errors)
         });
     });
