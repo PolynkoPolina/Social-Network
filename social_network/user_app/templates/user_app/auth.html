@@ -16,9 +16,9 @@
 {% block content %}
     <div class="main-container">
         <div class="form-container">
-            {% include 'user_app/particles/form_register.html' %}
-            {% include 'user_app/particles/form_login.html' %}
-            {% include 'user_app/particles/form_confirm_email.html' %}
+            {% include 'user_app/particles/auth_forms/form_register.html' %}
+            {% include 'user_app/particles/auth_forms/form_login.html' %}
+            {% include 'user_app/particles/auth_forms/form_confirm_email.html' %}
         </div>
         <div class="image-container">
             <img src="{% static 'user_app/icons/auth-image.png' %}" alt="">

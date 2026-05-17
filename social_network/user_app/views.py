@@ -10,17 +10,19 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.template.loader import render_to_string
+from django.core.paginator import Paginator
 
 from .utils.friends_queries import get_user_by_section
 
 # Create your views here.
 class PersonalInfoPageView(TemplateView, LoginRequiredMixin):
-    template_name = 'user_app/settings_personal_info.html'
+    template_name = 'user_app/particles/user_settings/settings_personal_info.html'
     login_url = reverse_lazy("auth")
 
 
 class AlbumsPageView(TemplateView,LoginRequiredMixin):
-    template_name = 'user_app/settings_albums.html'
+    template_name = 'user_app/particles/user_settings/settings_albums.html'
     login_url = reverse_lazy("auth")
 
 
@@ -171,10 +173,29 @@ class FriendsView(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["sections"] = {
-            "requests": {'title': 'Запити', 'users': get_user_by_section(self.request.user, 'requests')[:3]},
-            'recommendations': {'title': 'Рекомендації', 'users': get_user_by_section(self.request.user, 'recommendations')[:6]},
-            'friends': {'title': 'Всі друзі', 'users': get_user_by_section(self.request.user, 'friends')[:6]}
+            "requests": {'title': 'Запити', 'users': get_user_by_section(self.request.user, 'requests')[:3], 'html': 'requests'},
+            'recommendations': {'title': 'Рекомендації', 'users': get_user_by_section(self.request.user, 'recommendations')[:6], 'html': 'recommendations'},
+            'friends': {'title': 'Всі друзі', 'users': get_user_by_section(self.request.user, 'friends')[:6], 'html': 'friends'}
         }
         return context
     
     
+class FriendSectionView(LoginRequiredMixin, View):
+    paginate_by = 6
+    def get(self, request, section, *args, **kwargs):
+        if section == "requests":
+            users = get_user_by_section(request.user, 'requests')
+        elif section == "recommendations":
+            users = get_user_by_section(request.user, 'recommendations')
+        else:
+            users = get_user_by_section(request.user, 'friends')
+
+        page_obj = Paginator(users, self.paginate_by).get_page(request.GET.get("page", 1))
+
+        html = render_to_string(
+            "user_app/particles/friends/friends_cards.html",
+            {"users": page_obj.object_list, "section": section},
+            request=request
+        )
+        
+        return JsonResponse({"html": html, "has_next_page":page_obj.has_next()})

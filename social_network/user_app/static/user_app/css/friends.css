@@ -1,0 +1,105 @@
+.content{
+    padding-bottom: 1rem;
+    overflow-y: auto;
+}
+
+.content #friendsMain{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.chosen{
+    text-decoration: underline var(--buttonPurple)  3px;
+    text-underline-offset: 5px;
+    color: var(--text) !important;
+    font-weight: 700;
+}
+
+.page{
+    color: var(--greyText);
+}
+
+.disabled{
+    display: none !important;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 1.5rem;
+}
+
+.container span{
+    cursor: pointer;
+    
+}
+
+
+
+.tab{
+    color: var(--greyText);
+}
+
+.section{
+    display: flex;
+    flex-direction: column;
+    gap: 1.1vh;
+    background-color: white;
+    border: 1px solid var(--border);             
+    border-radius: 10px;
+    padding: 1rem 1.3vw;
+    width: 100%;
+    height: fit-content;
+}
+
+section{
+    height: 100% !important;
+}
+
+.section-top{
+    display: flex;
+    justify-content: space-between;
+}
+
+.section-top h2{
+    font-size: 1rem;
+    font-weight: 500;
+    
+}
+
+.section-content{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+    height: fit-content;
+}
+
+.friends-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0 1rem 0;
+    width: 31%;
+    height: fit-content;
+    gap: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: white;
+}
+
+.friends-card .buttons{
+    display: flex;
+    gap: 1vw;
+}
+
+.friends-card .top{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+
+}
+

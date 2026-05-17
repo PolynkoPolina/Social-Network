@@ -138,7 +138,8 @@ input:focus, textarea:focus{
     width: 5.9rem;
     height: 2.5rem;
     background-image: url(../icons/exit_button.svg);
-    background-size: contain;
+    background-size: cover;
+    background-repeat: no-repeat;
     padding: 0 !important;
 }
 

@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'home_app',
     'user_app',
     'post_app',
-    'friends_app',
     'chats_app'
 ]
  
@@ -68,7 +67,6 @@ TEMPLATES = [
             BASE_DIR / 'templates',
             BASE_DIR /'user_app'/ 'templates',
             BASE_DIR /'chats_app'/ 'templates',
-            BASE_DIR /'friends_app'/ 'templates',
             BASE_DIR /'home_app'/ 'templates',
             BASE_DIR /'post_app'/ 'templates',
             ],
@@ -136,7 +134,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR /'user_app'/ 'static',
-    BASE_DIR /'friends_app'/ 'static',
     BASE_DIR /'home_app'/ 'static',
     BASE_DIR /'post_app'/ 'static',
     ]
