@@ -4,27 +4,52 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import Post
 from .forms import PostForm, AddTagForm
+from django.shortcuts import get_object_or_404
+
+
+from user_app.models import User, Friendship
 
 
 class PostListView(ListView, LoginRequiredMixin):
-    # model = Post
     template_name = 'post_app/post.html'
-    # context_object_name = 'posts'
     paginate_by = 5
     login_url = reverse_lazy("auth")
 
     
     def get_context_data(self, **kwargs):
+        username = self.kwargs.get('username')
+        user = get_object_or_404(User, username=username)
+        id = user.id
+        section = 'recommendations'
+        try:
+            status = Friendship.objects.get(to_user = self.request.user, from_user = user).status
+        except:
+            status = False
+            
+        if status:
+            if status == 'accepted':
+                section = 'friends'
+            elif status == 'pending':
+                section = 'requests'
         context = super().get_context_data(**kwargs)
         context['postForm'] = PostForm()
         context["addTagForm"] = AddTagForm()
-        context['posts'] = Post.objects.filter(author_id = self.request.user).order_by('-created_at')[:self.paginate_by]
+        context['posts'] = Post.objects.filter(author_id = id).order_by('-created_at')[:self.paginate_by]
+        context["profile_user"] = user
+        context["section"] = section
+        print(section)
         return context
+    
     def get_queryset(self):
-        return Post.objects.filter(author_id = self.request.user)
+        username = self.kwargs.get('username')
+        user = get_object_or_404(User, username=username)
+        id = user.id
+        
+        return Post.objects.filter(author_id =id)
+
     def get(self, request, *args, **kwargs):
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             queryset = self.get_queryset()        
@@ -37,7 +62,7 @@ class PostListView(ListView, LoginRequiredMixin):
                 'success': True,
                 'html': render_to_string('post_app/particles/show_posts.html', {'posts': page_obj.object_list})
             })
-        
+
         return super().get(request, *args, **kwargs)
     
 
@@ -56,19 +81,7 @@ class PostCreateView(LoginRequiredMixin, FormView):
             kwargs["images"] = self.request.FILES.getlist("images")
 
         return kwargs
-
-    def form_valid(self, form):
-       
-        post = form.save(author=self.request.user)
-        return JsonResponse(
-            {
-                "success": True,
-                "message": "Публікацію створено успішно",
-                "redirect_url": str(self.success_url),
-                "post_id": post.id,
-            }
-        )
-
+    
     def form_invalid(self, form):
         return JsonResponse(
             {
@@ -78,6 +91,15 @@ class PostCreateView(LoginRequiredMixin, FormView):
             status=400,
         )
 
+    def form_valid(self, form):
+        post = form.save(author=self.request.user)
+    
+        return JsonResponse({
+            "success": True,
+            "redirect_url": reverse("post", kwargs={
+                "username": self.request.user.username
+            })
+        })
 
 class AddTag(LoginRequiredMixin, View):
     login_url = reverse_lazy("auth")
@@ -92,7 +114,7 @@ class AddTag(LoginRequiredMixin, View):
                 {
                     "success": True,
                     "message": "Тег створено успішно",
-                    "redirect_url": str(self.success_url),
+                    "redirect_url": reverse("post", kwargs={"username": request.user.username}),
                 }
             )
         return JsonResponse(

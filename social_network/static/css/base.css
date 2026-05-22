@@ -190,6 +190,11 @@ input:focus, textarea:focus{
     background-color:var(--hover);
 }
 
+.disabled{
+    display: none !important;
+}
+
+
 ::-webkit-scrollbar {
     width: 0;
 }

@@ -199,3 +199,6 @@ class FriendSectionView(LoginRequiredMixin, View):
         )
         
         return JsonResponse({"html": html, "has_next_page":page_obj.has_next()})
+    
+
+

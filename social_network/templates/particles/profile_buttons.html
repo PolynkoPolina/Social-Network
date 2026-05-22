@@ -1,0 +1,14 @@
+<div class = "buttons">
+    <a href="{% url 'post' username=user.username %}" class="button succes-btn" >
+        {% if section == 'requests' %}
+            Підтвердити
+        {% endif %}
+        {% if section == 'recommendations' %}
+            Додати
+        {% endif %}
+        {% if section == 'friends' %}
+            Повідомлення
+        {% endif %}
+    </a>
+    <button class=" button cancel-btn" type="button">Відхилити</button>
+</div>

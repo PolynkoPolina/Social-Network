@@ -177,3 +177,17 @@ a{
 .purple{
     background-color:var(--hover);
 }
+
+
+.buttons{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+}
+
+.buttons a, .buttons button{
+    text-decoration: none;
+    font-family: var(--mediumFont);
+    font-size: 400;
+    font-size: 14px;
+}

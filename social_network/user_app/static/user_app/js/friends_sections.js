@@ -68,7 +68,7 @@ async function openSection(section) {
 
 async function loadSectionPage(section, page) {
   isLoading = true;
-  const response = await fetch(`${section}?${page}`, {
+  const response = await fetch(`/friends/${section}/?page=${page}`, {
     headers: { "X-Requested-With": "XMLHttpRequest" },
   });
   const data = await response.json();

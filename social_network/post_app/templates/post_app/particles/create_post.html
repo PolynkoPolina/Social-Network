@@ -6,6 +6,7 @@
     <div class="content-modal">
         <h1>Створення публікації</h1>
         <form action="{% url 'create_post' %}" method="post" id="create-post-form" enctype="multipart/form-data">
+            {% csrf_token %}
             <p>
                 <label>Назва публікації</label>
                 {{ postForm.title}}

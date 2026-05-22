@@ -15,12 +15,14 @@ class HomePageView(LoginRequiredMixin, TemplateView):
     template_name = 'main_app/home.html'
     paginate_by = 5
     login_url = reverse_lazy("auth")
+    success_url = reverse_lazy("post")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['postForm'] = PostForm()
         context["addTagForm"] = AddTagForm()
         context['posts'] = Post.objects.all().order_by('-created_at')[:self.paginate_by]
+        context["profile_user"] = self.request.user
         if not self.request.user.username:
             context['create_username_form'] = CreateUsernameForm()
             context['create_username'] = True
@@ -41,6 +43,5 @@ class HomePageView(LoginRequiredMixin, TemplateView):
                 'success': True,
                 'html': render_to_string('post_app/particles/show_posts.html', {'posts': page_obj.object_list})
             })
-        
         return super().get(request, *args, **kwargs)
     

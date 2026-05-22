@@ -2,14 +2,16 @@ import { renderErrors } from "../../../../static/js/renderErrors.js"
 import { getCSRFToken } from "../../../../static/js/getCSRFToken.js"
 
 
-const linksDiv = document.getElementById('links-list')
-const postModal = document.getElementById('create-post-modal')
+const linksDiv = document.getElementById('links-list');
+const postModal = document.getElementById('create-post-modal');
 const imageDiv = document.getElementById('image-container');
 const addLink = document.getElementById('addLink');
 const addImage = document.getElementById('addImage');
 const postTags = document.querySelectorAll('.tags label');
 const editor = document.getElementById('editor');
 const addTag = document.getElementById("addTag");
+const tagModal = document.getElementById('add-tag-modal');
+
 
 addTag.remove();
 document.querySelector('.tags').appendChild(addTag);
@@ -101,7 +103,7 @@ addImage.addEventListener('change', function () {
 
 
 document.getElementById('add-tag-form').addEventListener('submit', function (e) {
-    event.preventDefault();
+    e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
 
@@ -122,9 +124,7 @@ document.getElementById('add-tag-form').addEventListener('submit', function (e) 
         })
         .then((data) => {
             console.log("Тег успішно створено");
-            if (data.redirect_url) {
-                window.location.href = data.redirect_url;
-            }
+            tagModal.hidePopover()
         })
         .catch((data) => {
             if (data.errors){
@@ -135,7 +135,7 @@ document.getElementById('add-tag-form').addEventListener('submit', function (e) 
 
 
 document.getElementById('create-post-form').addEventListener('submit', function(e){
-    event.preventDefault();
+    e.preventDefault();
     const form = e.target;
     const dt = new DataTransfer();
     selectedFiles.forEach(file => {

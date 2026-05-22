@@ -3,9 +3,6 @@ body{
 }
 
 
-.disabled{
-    display: none !important;
-}
 
 .sidebar{
     width: 0;
@@ -70,6 +67,7 @@ body{
     gap: 2vw;
     margin-bottom: 2vh;
 }
+
 
 .chosen{
     color: black;

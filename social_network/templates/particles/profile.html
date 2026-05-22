@@ -5,8 +5,8 @@
 
 <div class="profile">
         <img src="{% static 'icons/sidebar-avatar.svg' %}" alt="Lina Li" class="profile-img">
-        <h1>{{ user.first_name }}</h1>
-        <p class="username">@{{ user.username }}</p>
+        <h1>{{ profile_user.first_name }}</h1>
+        <p class="username">@{{ profile_user.username }}</p>
         <div class="user-info">
             <div class="stats posts">
                 <strong>566</strong>
@@ -23,4 +23,7 @@
                 <p>Друзі</p>
             </div>
         </div>
-    </div>
+        {% if request.user != profile_user %}
+            {% include 'particles/profile_buttons.html' %}
+        {% endif %}
+</div>

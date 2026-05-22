@@ -25,8 +25,8 @@
                             <img src="{% static 'icons/house.svg' %}" alt="">
                             <span>Головна</span>
                         </a>
-                        <a href="{% url 'post' %}">
-                            <img src="{% static 'icons/galery.svg' %}" alt="">
+                        <a href="{% url 'post' username=request.user.username %}">
+                            <img src="{% static 'icons/galery.svg' %}" alt=""> 
                             <span>Мої публікації</span>
                         </a>
                         <a href="{% url 'friends' %}">
