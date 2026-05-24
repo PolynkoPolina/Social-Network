@@ -9,8 +9,23 @@
                 <p>@{{user.username}}</p>
             </div>
         </div>
-        {% include 'particles/profile_buttons.html' %}
+        <div class = "buttons">
+            {% if section == 'requests' %}
+                <a href="{% url 'post' username=user.username %}" class="button action-btn" >Підтвердити</a>
+                <button class=" button  action-btn cancel-btn" type="button" data-url="{% url 'friends-action' user.id 'delete' %}">Відхилити</button>
+            {% elif section == 'recommendations' %}
+                <a href="{% url 'post' username=user.username %}" class="button action-btn" >Додати</a>
+                <button class=" button  action-btn cancel-btn" type="button" data-url="{% url 'friends-action' user.id 'dismiss' %}">Не цікавить</button>
+            {% elif section == 'friends' %}
+                <a href="{% url 'post' username=user.username %}" class="button action-btn" >Повідомлення</a>
+                <button class=" button  action-btn cancel-btn" type="button" data-url="{% url 'friends-action' user.id 'delete' %}">Видалити</button>
+            {% endif %}
+        </div>
     </div>
 {% empty %}
 
 {% endfor %}
+
+{% block scripts %}
+    <script type = 'module' src="{% static 'user_app/js/friends_action.js' %}"></script>
+{% endblock scripts %}

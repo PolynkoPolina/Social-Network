@@ -73,8 +73,10 @@ async function loadSectionPage(section, page) {
   });
   const data = await response.json();
   sectionList.insertAdjacentHTML("beforeend", data.html);
+  connectFriendActionButtons(sectionList);
   hasNextPage = data.has_next_page;
   isLoading = false;
+  console.log("scroll", sectionBlock.scrollHeight, sectionBlock.clientHeight);
 }
 
 
@@ -85,12 +87,13 @@ const observer = new IntersectionObserver(
       await loadSectionPage(currentSection, currentPage);
     }
   },
-  { rootMargin: "50px" },
+  {
+    root: sectionBlock,
+    rootMargin: "50px",
+  }
 );
 
 observer.observe(sectionSentinel);
-
-
 
 backMainButtons.forEach((button) => {
   button.addEventListener("click", () => {

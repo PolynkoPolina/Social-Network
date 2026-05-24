@@ -136,6 +136,7 @@ STATICFILES_DIRS = [
     BASE_DIR /'user_app'/ 'static',
     BASE_DIR /'home_app'/ 'static',
     BASE_DIR /'post_app'/ 'static',
+    BASE_DIR /'chats_app'/ 'static',
     ]
 
 

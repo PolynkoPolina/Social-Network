@@ -14,6 +14,8 @@ from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 
 from .utils.friends_queries import get_user_by_section
+from .utils.friends_actions import *
+
 
 # Create your views here.
 class PersonalInfoPageView(TemplateView, LoginRequiredMixin):
@@ -159,12 +161,7 @@ class CreateUsernameView(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         form = CreateUsernameForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            first_name = form.cleaned_data['first_name']
-            user = request.user
-            user.first_name = first_name
-            user.username = username
-            user.save()
+            form.save()
         return redirect('home')
     
 
@@ -201,4 +198,32 @@ class FriendSectionView(LoginRequiredMixin, View):
         return JsonResponse({"html": html, "has_next_page":page_obj.has_next()})
     
 
+
+class FriendsActionView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("auth")
+
+    def post(self, request, other_user_id, action, *args, **kwargs):
+        other_user = User.objects.get(id = other_user_id)
+        current_user = request.user
+
+        if action == 'add':
+            return JsonResponse(add_friend_request(current_user = current_user, other_user= other_user))
+        
+        if action == 'dismiss':
+            return JsonResponse(dismiss_recommendation(current_user = current_user, other_user= other_user))
+
+        if action == 'delete':
+            return JsonResponse(delete_friend(current_user = current_user, other_user= other_user))
+        
+        if action == 'accept':
+            action_result = accept_friend_request(current_user = current_user, other_user= other_user)
+            action_result['friend_html'] = render_to_string(
+                "user_app/particles/friends/friends_cards.html",
+                context= {"user": [action_result["friend"]], 'section': "friends"},
+                request=request
+            )
+            
+            del action_result["friend"]
+            return JsonResponse(action_result)
+        
 

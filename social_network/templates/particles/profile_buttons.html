@@ -1,14 +1,19 @@
-<div class = "buttons">
-    <a href="{% url 'post' username=user.username %}" class="button succes-btn" >
-        {% if section == 'requests' %}
-            Підтвердити
-        {% endif %}
-        {% if section == 'recommendations' %}
-            Додати
-        {% endif %}
-        {% if section == 'friends' %}
-            Повідомлення
-        {% endif %}
-    </a>
-    <button class=" button cancel-btn" type="button">Відхилити</button>
+{% load static%}
+
+<div class="buttons">
+    {% if section == "requests" %}
+        <button class="action-btn button" data-url="{% url 'friends-action' profile_user.id 'accept' %}">Підтвердити</button>
+        <button class="action-btn button cancel-btn" data-url="{% url 'friends-action' profile_user.id 'delete' %}">Відхилити</button>
+    {% elif section == "recommendations" %}
+        <button class="action-btn button" data-url="{% url 'friends-action' profile_user.id 'add' %}">Додати</button>
+        <button class="action-btn button cancel-btn" data-url="{% url 'friends-action' profile_user.id 'dismiss' %}">Не цікавить</button>
+    {% else %}
+        <button class="button">Повідомлення</button>
+        <button class="action-btn button cancel-btn" data-url="{% url 'friends-action' profile_user.id 'delete' %}">Видалити</button>
+    {% endif %}
 </div>
+
+
+{% block scripts %}
+    <script type = 'module' src="{% static 'user_app/js/friends_action.js' %}"></script>
+{% endblock scripts %}
