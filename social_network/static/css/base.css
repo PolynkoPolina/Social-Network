@@ -66,6 +66,8 @@ main{
     height: 100vh;
     gap: 1vw;
     padding-top: 6.5rem;
+    padding-bottom: 1rem;
+    position: relative; 
 }
 
 main, .nav-header {
@@ -152,18 +154,17 @@ input:focus, textarea:focus{
 }
 
 .sidebar{
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     width: 30%;
     height: 100%;
-    padding-bottom: 1rem;
 }
 
 .content{
     width: 70%;
     overflow-y: auto;
-    padding-bottom: 1rem;
 }
 
 .button{

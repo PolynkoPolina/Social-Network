@@ -1,14 +1,26 @@
-
-
-.create-chat{
-    color: transparent;
-    gap: 0.6vh;
-    padding: 0.7vh 1.1vw 0.7vh 1.1vw;
-    cursor: pointer;
-
+.content{
+    display: flex;
+    gap: 0.3vw;
+    width: 100%;
+}
+.sidebar{
+    width: 0;
+    position: absolute;
 }
 
-.friends-sidebar{
+
+/* contacts sidebar */
+
+.contacts{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 34%;
+    height: 100%;
+}
+
+.contacts-sidebar{
+    position: relative;
     display: flex;
     background-color: white;
     border: 1px solid var(--border);
@@ -16,27 +28,32 @@
     flex-direction: column;
     gap: 1.5rem;
     padding: 1rem;
+    max-height: 81.5vh;
+    height: 100%;
 }
 
-.sidebar-contacts{
+.sidebar-top{
     display: flex;
     justify-content: left;
     align-items: center;
+    gap: 0.6vw;
 }
 
-.sidebar-contacts p{
-    font-size: 20px;
-    font-weight: 500px;
-    padding-left: 0.6vw;
+.messages-top div p, .group-chat-top p, .sidebar-top p{
     color: var(--greyText);
+    font-size: 20px;
+    font-family: var(--mediumFont);
+    font-weight: 500;
 }
 
 .sidebar-search{
     display: flex;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 0.6rem 1rem;
+    height: 2.6rem;
 }
+
 
 .sidebar-search input{
     width: 100%;
@@ -45,29 +62,48 @@
     border: none;
 }
 
-.friend-div{
+.sidebar-contacts-list{
     display: flex;
-    padding: 1.1vh 1.1vw 1.1vh 1.1vw;
-}
-
-.friend-div strong{
-    align-items: center;
-    padding: 1vh 0 1vh 0.8vw;
-    gap: 0.25rem;
+    flex-direction: column;
+    gap: 0.5rem;
     width: 100%;
     height: 100%;
+    overflow-y: auto;
 }
 
-/* .sidebar-search img, input{
-} */
+::-webkit-scrollbar{
+    background-color: var(--hover);
+    width: 0.5rem !important;
+    border-radius: 10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: var(--buttonPurple);
+    border-radius: 10px;
+}
 
 
-.content{
+.friend-div{
     display: flex;
-    gap: 0.3vw;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 10px;
 }
 
-.chat{
+.friend-div p, .group-title{
+    font-family: var(--mediumFont);
+    font-weight: 500;
+}
+
+
+
+/* main chat */
+
+
+.chat-main{
     width: 61%;
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -77,52 +113,52 @@
     background-color: white;
 }
 
-.chat div{
+.chat-main div{
     display: flex;
     align-items: center;
     flex-direction: column;
     gap: 1.5rem;
 }
-.chat p{
+.chat-main p{
     width: 80%;
     text-align: center;
 }
 
-.friends-chats{
+/* alerts */
+
+.alerts{
     display: flex;
     flex-direction: column;
-    width: 38%;
-
+    width: 34%;
     gap: 0.5rem;
-
 }
 
-.messages, .group-chat-name{
+.messages, .group-chats{
+    height: 50%;
+}
+
+.messages-top, .group-chat-top{
     display: flex;
     justify-content: space-between;
-    padding-right: 1.3vw;
-    padding-left: 1.3vw;
-    padding-top: 2vh;
-    padding-bottom: 2vh;
+    align-items: center;
+    padding: 2vh 1.3vw;
 }
 
-.messages div, .group-chat-name div{
+.messages-top div, .group-chat-top div{
     display: flex;
     align-items: center;
-    gap: 0.3vw;
+    gap: 0.6vw;
 }
 
-.messages div p, .group-chat-name p{
-    color: var(--greyText);
-}
 
-.messages a, .group-chat-name a{
+
+.messages-top a, .group-chat-top a{
     color: var(--buttonPurple);
     text-decoration: none;
-    
 }
 
-.chats, .group-chats{
+
+.messages, .group-chats{
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -130,7 +166,9 @@
     border-radius: 10px;
 }
 
-.user{
+
+
+.group-div{
     display: flex;
     align-items: center;
     padding-left: 1.5vw;
@@ -138,28 +176,30 @@
     padding-bottom: 0.5vh;
     padding-right: 1.5vw;
     gap: 0.3vw;
+    height: 6.2vh;
+    cursor: pointer;
 }
 
-.user:hover{
+.group-div:hover, .friend-div:hover{
     background-color: var(--hover);
 }
 
-.user img{
+.group-div img{
     height: 4vh;
 }
 
-.user-info{
+.group-info{
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
-.user-info span{
+.group-info span{
     color: var(--greyText);
     font-size: 0.75rem;
 }
 
-.user-info div{
+.group-info div{
     display: flex;
     flex-direction: column;
     gap: 0.5vh;

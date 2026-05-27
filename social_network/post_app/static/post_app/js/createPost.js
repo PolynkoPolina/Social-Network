@@ -11,6 +11,22 @@ const postTags = document.querySelectorAll('.tags label');
 const editor = document.getElementById('editor');
 const addTag = document.getElementById("addTag");
 const tagModal = document.getElementById('add-tag-modal');
+const createPostInput = document.querySelector('.create-post input')
+const editorTextarea = document.querySelector('#editor textarea')
+const openCreatePost = document.getElementById('open-create-post')
+const closePost = document.getElementById('close-create-post')
+
+
+openCreatePost.addEventListener('click', () => {
+    postModal.classList.remove("disabled")
+    if (createPostInput.value){
+        editorTextarea.value = createPostInput.value
+    }
+})
+
+closePost.addEventListener('click', () => {
+    postModal.classList.add("disabled")
+})
 
 
 addTag.remove();
@@ -44,22 +60,34 @@ postTags.forEach(tag => {
 addLink.addEventListener('click', function(){
     if(linksCount < 3){
         linksCount++;
-        console.log(linksCount)
         const inputDiv = document.createElement('div');
         const input = document.createElement('input');
         input.type = 'url';
         input.name = 'links';
         input.placeholder = 'Додайте посилання';
+        
+        const deleteLink = document.createElement('button')
+        deleteLink.classList.add('delete-link')
+        deleteLink.addEventListener("click", () => {
+            linksDiv.children[linksCount-2].appendChild(addLink);
+            inputDiv.remove();
+            linksCount--
+        })
+
+        
         addLink.remove();
         
         inputDiv.appendChild(input)
         inputDiv.appendChild(addLink);
+        inputDiv.appendChild(deleteLink)
         linksDiv.appendChild(inputDiv);
     } else{
         addLink.remove();
     }
 
 })
+
+
 
 
 addImage.addEventListener('change', function () {

@@ -46,8 +46,8 @@ class PostImage(models.Model):
         on_delete= models.CASCADE,
         related_name= "images"
     )
-    original_image = models.ImageField(upload_to= "original_image/",null=True)
-    compressed_image = models.ImageField(upload_to= "compressed_image/", null = True)
+    original_image = models.ImageField(upload_to= "post_app/original_image/",null=True)
+    compressed_image = models.ImageField(upload_to= "post_app/compressed_image/", null = True)
     
     def __str__(self):
         return f"Image: {self.original_image}"

@@ -88,7 +88,6 @@ const observer = new IntersectionObserver(
     }
   },
   {
-    root: sectionBlock,
     rootMargin: "50px",
   }
 );

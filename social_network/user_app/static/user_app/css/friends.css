@@ -1,7 +1,3 @@
-.content{
-    overflow: visible;
-}
-
 .content #friendsMain{
     display: flex;
     flex-direction: column;
@@ -51,7 +47,7 @@
 }
 
 section{
-    height: 700px!important;
+    position: relative;
     overflow-y: auto;
 }
 
@@ -70,7 +66,6 @@ section{
     display: flex;
     flex-wrap: wrap;
     gap: 1vw;
-    height: fit-content;
 }
 
 .friends-card{
@@ -118,4 +113,10 @@ section{
     flex-direction: column;
     align-items: center;
     gap: 10px;
+}
+
+
+#loadSentinel{
+    width: 100%;
+    height: 1px;
 }

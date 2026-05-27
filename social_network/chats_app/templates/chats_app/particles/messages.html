@@ -1,0 +1,27 @@
+{% load static %}
+
+
+<section class = "messages">
+    <div class = "messages-top">
+        <div>
+            <img src="{% static 'icons/grey_chat.svg' %}" alt="">
+            <p>Повідомлення</p>
+        </div>
+        <a href="">Дивитись всі</a>
+    </div>
+    <div class = "chat-block">
+         {% for chat in personal_chats %}
+        {% for person in chat.users.all %}
+            {% if person.id != request.user.id %}
+                <button type="button" class="chat-user-button" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
+
+                    {{  person.email }}
+                </button>
+            {% endif %}
+        {% endfor %}
+    {% empty %}
+    {% endfor %}
+    </div>
+    
+</section> 
+

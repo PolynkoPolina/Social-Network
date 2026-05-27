@@ -178,7 +178,7 @@ class FriendsView(TemplateView, LoginRequiredMixin):
     
     
 class FriendSectionView(LoginRequiredMixin, View):
-    paginate_by = 6
+    paginate_by = 9
     def get(self, request, section, *args, **kwargs):
         if section == "requests":
             users = get_user_by_section(request.user, 'requests')

@@ -1,8 +1,9 @@
 const urls = document.querySelectorAll('.links a');
+const path = window.location.pathname;
 
 
 urls.forEach(url => {
-  url.addEventListener('click', (e) => {
-    url.classList.add('chosen-page');
-  });
+  if (path == url.pathname){
+    url.classList.add('chosen-page')
+  }
 });

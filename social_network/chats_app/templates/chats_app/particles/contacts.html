@@ -1,0 +1,25 @@
+{% load static %}
+
+<aside class="contacts">
+
+    <button class="button"><img src="{% static 'icons/plus.svg' %}" alt="">Створити груповий чат</button>
+    <section class = "contacts-sidebar">
+        <div class = "sidebar-top">
+            <img src="{% static 'icons/greyPeople.svg' %}" alt="">
+            <p>Контакти</p>
+        </div>
+        <div class = "sidebar-search">
+            <img src="{% static 'icons/search.svg' %}" alt="">
+            <input name= "sidebar-search"placeholder="Пошук">
+        </div>
+        <div class = "sidebar-contacts-list">
+            {% for friend in friends %}
+                <div class = "friend-div"  data-chat-user="{{ friend.id }}" data-chat-username="{{ friend.email }}">
+                    <img src="{% static 'icons/friends_icon3.svg' %}" alt="">
+                    <p>{{friend.username}}</p>
+                </div>
+            {% empty %}
+            {% endfor %}
+        </div>
+    </section>
+</aside>

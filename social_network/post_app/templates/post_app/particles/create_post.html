@@ -1,7 +1,7 @@
 {% load static %}
-<div id='create-post-modal' class="create-post-modal" popover>
+<div id='create-post-modal' class="create-post-modal disabled">
     <div class="top-modal">
-        <button popovertargetaction="hide" popovertarget="create-post-modal"><img src="{% static 'post_app/icons/cross.svg' %}"alt=""></button>
+        <button id="close-create-post"><img src="{% static 'post_app/icons/cross.svg' %}"alt=""></button>
     </div>
     <div class="content-modal">
         <h1>Створення публікації</h1>

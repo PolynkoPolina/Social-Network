@@ -217,3 +217,11 @@
 .delete-image-btn:hover{
     background-image: url('/static/post_app/icons/trash_hover.svg');
 }
+
+
+
+.delete-link{
+    background-image: url('/static/post_app/icons/delete-link-btn.svg');
+    width: 1.5rem;
+    height: 1.5rem;
+}
