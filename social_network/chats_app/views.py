@@ -37,9 +37,9 @@ class ChatWithView(LoginRequiredMixin, View):
         if other_user not in friends:
             return JsonResponse({"success": False}, status= 403) 
         
-        user_id_chats = Chat.objects.filter(users= request.user, is_group = False).value_list('id', flat = True)
+        user_id_chats = Chat.objects.filter(users= request.user, is_group = False).values_list('id', flat = True)
         chat = Chat.objects.filter(id__in= user_id_chats, users= other_user, is_group= False).first()
-
+        chat_users_count = 2
         if chat is None:
             chat = Chat.objects.create(is_group = False)
             chat.users.add(request.user, other_user)
@@ -48,6 +48,7 @@ class ChatWithView(LoginRequiredMixin, View):
             {
                 "success": True,
                 "chat_id": chat.id,
-                "username": other_user.username
+                "username": other_user.username,
+                "users_count": chat_users_count
             }
         )

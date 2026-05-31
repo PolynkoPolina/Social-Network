@@ -78,6 +78,7 @@ main, .nav-header {
 
 input, textarea{
     border: 1px solid var(--border);
+    border-radius: 10px;
 }
 
 input:focus, textarea:focus{

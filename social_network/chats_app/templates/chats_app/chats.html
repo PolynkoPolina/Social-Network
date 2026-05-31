@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="{% static 'chats_app/css/chats.css' %}">
 {% endblock links %}
 
+{% block meta %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+{% endblock meta %}
 
 {% block title %}
     

@@ -1,8 +1,8 @@
 {% load static %}
 
 
-<section class = "messages">
-    <div class = "messages-top">
+<section class = "sidebar-messages">
+    <div class = "sidebar-messages-top">
         <div>
             <img src="{% static 'icons/grey_chat.svg' %}" alt="">
             <p>Повідомлення</p>
@@ -10,17 +10,25 @@
         <a href="">Дивитись всі</a>
     </div>
     <div class = "chat-block">
-         {% for chat in personal_chats %}
-        {% for person in chat.users.all %}
-            {% if person.id != request.user.id %}
-                <button type="button" class="chat-user-button" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
-
-                    {{  person.email }}
-                </button>
-            {% endif %}
+        {% for chat in personal_chats %}
+            {% for person in chat.users.all %}
+                {% if person.id != request.user.id %}
+                    <button type="button" class="chat-user-button group-div" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
+                        <div class = "user">
+                            <img src="{% static 'icons/offline_user.svg' %}" alt="">
+                            <div class = "user-info">
+                                <div>
+                                    <h4>{{  person.username }}</h4>
+                                    <p>Привіт!</p>
+                                </div> 
+                                <span>25.04.2025</span>
+                            </div>
+                        </div>
+                    </button>
+                {% endif %}
+            {% endfor %}
+        {% empty %}
         {% endfor %}
-    {% empty %}
-    {% endfor %}
     </div>
     
 </section> 

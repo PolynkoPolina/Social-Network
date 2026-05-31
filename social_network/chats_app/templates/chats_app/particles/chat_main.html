@@ -1,8 +1,35 @@
 {% load static %}
+<p class="disabled" id="currentUser">
+    {{ user.username }}
+</p>
 
 <section class = "chat-main">
-    <div>
-        <h2 id="chat-title">Почніть нове спілкування</h2>
-        <p id= chat-status> Оберіть контакти зі списку ліворуч або створіть нову групу, щоб почати спілкування</p>
+    <div class="before-chat" id = 'beforeChat'>
+        <h2 >Почніть нове спілкування</h2>
+        <p> Оберіть контакти зі списку ліворуч або створіть нову групу, щоб почати спілкування</p>
+    </div>
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-top">
+            <div class="chat-info-exit">
+                <button class="chat-exit" id="chatExit"></button>
+                <div class="chat-info">
+                    <div class="chat-avatar">
+                        <img src="" alt="">
+                    </div>
+                    <div class="chat-name-users">
+                        <p id="chatName"></p>
+                        <p id="chatUsers"></p>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="chat-actions"></button>
+        </div>
+        <div id="messages" class="messages"></div>
+        <form id="messageForm" class="message-form">
+            <input id="messageInput" type="text" placeholder="Повідомлення">
+            <button class="button btn"><img src="{% static 'icons/smiles-btn.svg' %}" alt=""></button>
+            <button class="button btn"><img src="{% static 'icons/images-btn.svg' %}" alt=""></button>
+            <button class="button send-btn"><img src="{% static 'icons/send-btn.svg' %}" alt=""></button>
+        </form>
     </div>
 </section>
