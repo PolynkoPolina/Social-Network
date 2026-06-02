@@ -182,8 +182,8 @@ document.getElementById('create-post-form').addEventListener('submit', function(
         },
         body: formData,
     })
-        .then(async (response) => {
-            const data = await response.json()
+        .then((response) => {
+            const data = response.json()
             if (!response.ok){
                 throw data;
             }

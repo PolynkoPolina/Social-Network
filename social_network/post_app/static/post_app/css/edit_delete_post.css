@@ -1,0 +1,8 @@
+#edit-delete-post-container{
+    position: absolute;
+    display: flex;
+    width: 23.8vw;
+    height: 9.7vh;
+    z-index: 1090;
+    background-color: var(--hover);
+}

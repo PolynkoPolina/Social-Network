@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'post_app/css/post.css' %}">
     <link rel="stylesheet" href="{% static 'post_app/css/create_post_modal.css' %}">
     <link rel="stylesheet" href="{% static 'post_app/css/add_tag.css' %}">
+    <link rel="stylesheet" href="{% static 'post_app/css/edit_delete_post.css' %}">
 {% endblock links %}
 
 {% block sidebar %}
@@ -20,6 +21,7 @@
 {% block modal %}
     {% include 'post_app/particles/create_post.html' %}
     {% include 'post_app/particles/add_tag.html' %}
+
 {% endblock %}
 
 {% block content %}
@@ -30,4 +32,5 @@
     <script type="module" src="{% static 'js/renderErrors.js' %}" ></script>
     <script type='module' src="{% static 'post_app/js/createPost.js' %}" ></script>
     <script type="module" src="{% static 'post_app/js/postList.js' %} "></script>
+    <script type="module" src="{% static 'post_app/js/deletePost.js' %} "></script>
 {% endblock scripts %}

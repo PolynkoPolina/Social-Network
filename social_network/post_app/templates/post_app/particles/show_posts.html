@@ -9,12 +9,15 @@
                     </div>
                 <div class="interaction"><img src="{% static 'post_app/icons/Interaction.png' %}" alt=""></div>
             </div>
-            <div class="edit-post"></div>
+            {% if post.author.username == user.username  %}
+                <div class="edit-post" data-post-id = "{{post.id}}">
+                    {% include 'post_app/particles/edit_delete_post.html' %}
+                </div>
+            {% endif %}
         </div>
 
         <div class="post-content">   
             <h1 class="post-content-title">{{ post.title }}</h1>
-            
             {% if post.topic %}
                 <p> {{ post.topic }}</p>
             {% endif %}

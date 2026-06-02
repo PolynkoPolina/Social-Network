@@ -35,7 +35,6 @@ function connectWebSocket(chatId) {
             const messageElement = document.createElement("div");
             messageElement.classList.add("message");
 
-            console.log(`${currentUser.textContent } ${data.sender}`)
             if (data.sender === currentUser.textContent.trim()){
                 messageElement.classList.add('your-message');
                 messageContainer.classList.add('your-message-container');

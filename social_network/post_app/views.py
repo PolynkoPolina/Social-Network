@@ -124,3 +124,18 @@ class AddTag(LoginRequiredMixin, View):
             },
             status=400,
         )
+    
+
+class DeletePostView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("auth")
+
+    def post(self, request, *args, **kwargs):
+        post_id = self.kwargs.get('id')
+        post = Post.objects.filter(id = post_id).first()
+        post.delete()
+        return JsonResponse({
+            "success": True,
+            "message": "Пост успішно видалено",
+            "redirect_url": reverse("post", kwargs={"username": request.user.username})
+        })
+    
