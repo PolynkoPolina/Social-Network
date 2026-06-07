@@ -3,6 +3,8 @@
 
 {% block links %}
     <link rel="stylesheet" href="{% static 'chats_app/css/chats.css' %}">
+    <link rel="stylesheet" href="{% static 'chats_app/css/group_modal.css' %}">
+
 {% endblock links %}
 
 {% block meta %}
@@ -18,10 +20,14 @@
     {% include 'chats_app/particles/contacts.html' %}
     {% include 'chats_app/particles/chat_main.html' %}
     {% include 'chats_app/particles/alerts.html' %}
+    {% include "chats_app/particles/group_modal.html" %}
+
 {% endblock %}
 
 
 
 {% block scripts %}
     <script type="module" src="{% static 'chats_app/js/chats.js' %} "></script>
+    <script type="module" src="{% static 'chats_app/js/group_chat.js' %} "></script>
+    <script type="module" src="{% static 'chats_app/js/chat_history.js' %} "></script>
 {% endblock %}

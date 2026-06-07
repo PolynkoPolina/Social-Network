@@ -401,9 +401,8 @@
 .message-text{
     text-align: start !important;
     font-size: 14px;
-    max-width:75%;
     height: auto;   
-    width: fit-content;
+    min-width: 100%;
     word-break: break-word;     
     overflow-wrap: break-word;
 }

@@ -20,6 +20,49 @@ const users_text = {
     'five-plus': "учасників"
 }
 
+function padDateNumber(num){
+    return String(num).padStart(2, "0");
+}
+
+function getMessageDate(createdAt){
+    return new Date(createdAt);
+}
+
+function formatMessageTime(createdAt){
+    const date = getMessageDate(createdAt);
+    return `${padDateNumber(date.getHours())}:${padDateNumber(date.getMinutes())}`;
+}
+
+function formatMessageDate(createdAt){
+    const date = getMessageDate(createdAt);
+    return `${padDateNumber(date.getDate())}.${padDateNumber(date.getMonth()+1)}.${padDateNumber(date.getFullYear())}`;
+}
+window.formatMessageDate = formatMessageDate;
+
+function renderDateSeparator(dateText){
+    const separator = document.createElement("div");
+    separator.classList.add('.message-date-separator');
+    separator.textContent = dateText;
+    return separator;
+}
+
+function updateDateSeparators(){
+    const dateSeparators = document.querySelectorAll('.message-date-separator');
+    dateSeparators.forEach((separator)=>{
+        separator.remove();
+    });
+    let previousDate = '';
+    const allMessages = document.querySelectorAll('.message');
+    allMessages.forEach((message)=>{
+        const messageDate = message.dataset.messageDate;
+        if(messageDate !== previousDate){
+            message.before(renderDateSeparator(messageDate));
+            previousDate = messageDate;
+        }
+    })
+}
+
+window.updateDateSeparators = updateDateSeparators;
 
 function connectWebSocket(chatId) {
     
@@ -58,8 +101,7 @@ function connectWebSocket(chatId) {
 
             const messageTime =  document.createElement("div");
             messageTime.classList.add('message-time');
-            const dateSource = data.timestamp ? new Date(data.timestamp) : new Date();
-            messageTime.textContent = dateSource.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            messageTime.textContent = formatMessageTime(data.created_at);
         
 
             messageInfo.appendChild(messageText);
@@ -68,9 +110,44 @@ function connectWebSocket(chatId) {
             messageContainer.appendChild(messageElement);
             messages.appendChild(messageContainer);
         }
+        updateDateSeparators()
         
     };
 }
+
+function openChatById(chatId, title) {
+    chatWindow.classList.add("is-open");
+    beforeChat.classList.add('disabled');
+    messages.innerHTML = "";
+    chatName.textContent = `${title}`
+    
+    // if (data.users_count == 1){
+    //     chat_users_text = users_text['one']
+    // } else if (data.users_count>= 2 && data.users_count<= 4){
+    //     chat_users_text = users_text['two-four']
+    // } else{
+    //     chat_users_text = users_text['five-plus']
+    // }
+
+    // chatUsers.textContent = `${data.users_count} ${chat_users_text}`
+    connectWebSocket(chatId);
+}
+
+function bindGroupChatButtons() {
+  const groupButtons = document.querySelectorAll(".chat-group-button");
+  groupButtons.forEach((button) => {
+    if (button.dataset.groupBound == "true") return;
+
+    button.dataset.groupBound = "true";
+    button.addEventListener("click", () => {
+      openChatById(button.dataset.chatId, button.dataset.chatTitle);
+    });
+  });
+}
+
+bindGroupChatButtons();
+window.openChatById = openChatById;
+window.bindGroupChatButtons = bindGroupChatButtons;
 
 async function openChatWithUser(userId, username) {
     const response = await fetch(
@@ -83,25 +160,13 @@ async function openChatWithUser(userId, username) {
         }
     );
     const data = await response.json();
-    if (!data.success) {
-        return
-    }
-    chatWindow.classList.add("is-open");
-    beforeChat.classList.add('disabled');
-    messages.innerHTML = "";
-    chatName.textContent = `${data.username || username}`
-    
-    if (data.users_count == 1){
-        chat_users_text = users_text['one']
-    } else if (data.users_count>= 2 && data.users_count<= 4){
-        chat_users_text = users_text['two-four']
-    } else{
-        chat_users_text = users_text['five-plus']
-    }
 
-    chatUsers.textContent = `${data.users_count} ${chat_users_text}`
-    connectWebSocket(data.chat_id); 
+    if (data.success) {
+        openChatById(data.chat_id, username);
+    }
+    
 }
+
 
 chatExitBtn.addEventListener('click', () => {
     chatWindow.classList.remove("is-open");
