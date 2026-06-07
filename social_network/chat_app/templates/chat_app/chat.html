@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'chat_app/css/chat.css' %}">
+    <link rel="stylesheet" href="{% static 'chat_app/css/group_modal.css' %}">
+
+{% endblock links %}
+
+{% block meta %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+{% endblock meta %}
+
+{% block title %}
+    
+{% endblock  %}
+
+
+{% block content %}
+    {% include 'chat_app/particles/chat_contacts.html' %}
+    {% include 'chat_app/particles/chat_main.html' %}
+    {% include 'chat_app/particles/chat_sidebar.html' %}
+    {% include "chat_app/particles/group_modal.html" %}
+{% endblock %}
+
+
+
+{% block scripts %}
+    <script type="module" src="{% static 'chat_app/js/chat.js' %} "></script>
+    <script type="module" src="{% static 'chat_app/js/group_chat.js' %} "></script>
+    <script type="module" src="{% static 'chat_app/js/chat_history.js' %} "></script>
+{% endblock %}

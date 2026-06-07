@@ -3,7 +3,8 @@
     {{ user.username }}
 </p>
 
-<section class = "chat-main">
+
+<section class="chat-main">
     <div class="before-chat" id = 'beforeChat'>
         <h2 >Почніть нове спілкування</h2>
         <p> Оберіть контакти зі списку ліворуч або створіть нову групу, щоб почати спілкування</p>
@@ -24,7 +25,9 @@
             </div>
             <button type="button" class="chat-actions"></button>
         </div>
-        <div id="messages" class="messages"></div>
+        <div class="messages-container">
+            <div id="messages" class="messages"></div>
+        </div>
         <form id="messageForm" class="message-form">
             <textarea id="messageInput" type="text" placeholder="Повідомлення"></textarea>
             <button class="button btn"><img src="{% static 'icons/smiles-btn.svg' %}" alt=""></button>

@@ -5,8 +5,11 @@ const groupModal = document.querySelector("#group-modal");
 const groupStepUsers = document.querySelector("#group-step-users");
 const groupStepName = document.querySelector("#group-step-name");
 const closeGroupModalButton = document.querySelector("#close-group-modal");
-const closeGroupNameModalButton = document.querySelector("#close-group-name-modal");
+const closeGroupNameModalButton = document.querySelector(
+  "#close-group-name-modal",
+);
 const cancelGroupModalButton = document.querySelector("#cancel-group-modal");
+
 const nextGroupStepButton = document.querySelector("#next-group-step");
 const backGroupStepButton = document.querySelector("#back-group-step");
 const createGroupButton = document.querySelector("#create-group");
@@ -16,9 +19,6 @@ const selectedUsersList = document.querySelector("#selected-users-list");
 const groupUserCheckboxes = document.querySelectorAll(".group-user-checkbox");
 const groupList = document.querySelector("#group-list");
 
-
-
-
 function openGroupModal() {
   groupModal.hidden = false;
   groupStepUsers.hidden = false;
@@ -26,12 +26,13 @@ function openGroupModal() {
 }
 
 function closeGroupModal() {
-    groupModal.hidden = true;
-    groupNameInput.value = "";
-    selectedUsersList.innerHTML = "";
-    groupUserCheckboxes.forEach((checkbox) => {
-        checkbox.checked = false;
-    });
+  groupModal.hidden = true;
+  groupNameInput.value = "";
+  selectedUsersList.innerHTML = "";
+  groupUserCheckboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+  updateSelectedCount();
 }
 
 function updateSelectedCount() {
@@ -64,6 +65,11 @@ function showUsersStep() {
 }
 
 function addGroupButton(chatId, groupName) {
+  const groupEmpty = document.querySelector("#group-empty");
+  if (groupEmpty) {
+    groupEmpty.remove();
+  }
+
   const button = document.createElement("button");
   button.type = "button";
   button.className = "chat-group-button";
@@ -72,7 +78,6 @@ function addGroupButton(chatId, groupName) {
   button.textContent = groupName;
   groupList.appendChild(button);
   window.bindGroupChatButtons();
-
 }
 
 async function createGroup() {
@@ -86,9 +91,7 @@ async function createGroup() {
 
   const response = await fetch("/chat/create_group/", {
     method: "POST",
-    headers: {
-         "X-CSRFToken": getCSRFToken()
-        },
+    headers: { "X-CSRFToken": getCSRFToken() },
     body: formData,
   });
 
@@ -100,14 +103,13 @@ async function createGroup() {
   }
 }
 
-
 openGroupModalButton.addEventListener("click", openGroupModal);
-nextGroupStepButton.addEventListener("click", showNameStep);
 closeGroupModalButton.addEventListener("click", closeGroupModal);
 closeGroupNameModalButton.addEventListener("click", closeGroupModal);
+nextGroupStepButton.addEventListener("click", showNameStep);
 backGroupStepButton.addEventListener("click", showUsersStep);
 createGroupButton.addEventListener("click", createGroup);
 
-groupUserCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener("change", updateSelectedCount)
+groupUserCheckboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", updateSelectedCount);
 });

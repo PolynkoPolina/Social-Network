@@ -158,9 +158,6 @@
     gap: 0.6vw;
 }
 
-.chat-user-button{
-    all: unset;
-}
 
 .sidebar-messages-top a, .group-chat-top a{
     color: var(--buttonPurple);
@@ -191,6 +188,8 @@
     height: 6.2vh;
     cursor: pointer;
     width: 100%;
+    background-color: transparent;
+    border: none;
 }
 
 .group-div:hover, .friend-div:hover{
@@ -270,6 +269,12 @@
     padding: 1rem;
 }
 
+.messages-container{
+    display: flex;
+    height: 85%;
+    flex-direction: column;
+    justify-content: end;
+}
 
 .messages {
     height:auto;

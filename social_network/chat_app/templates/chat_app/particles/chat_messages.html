@@ -13,13 +13,13 @@
         {% for chat in personal_chats %}
             {% for person in chat.users.all %}
                 {% if person.id != request.user.id %}
-                    <button type="button" class="chat-user-button group-div" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
+                    <button type="button" class="chat-user-button group-div" data-chat-user="{{ person.id }}" data-chat-username="{{ person.username }}">
                         <div class = "user">
                             <img src="{% static 'icons/offline_user.svg' %}" alt="">
                             <div class = "user-info">
                                 <div>
                                     <h4>{{  person.username }}</h4>
-                                    <p>Привіт!</p>
+                                    <p>{{chat.messages}}</p>
                                 </div> 
                                 <span>25.04.2025</span>
                             </div>
@@ -32,4 +32,3 @@
     </div>
     
 </section> 
-

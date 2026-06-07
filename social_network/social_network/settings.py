@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'home_app',
     'user_app',
     'post_app',
-    'chats_app'
+    'chat_app'
 ]
  
 AUTH_USER_MODEL = 'user_app.User'
@@ -74,7 +74,7 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',
             BASE_DIR /'user_app'/ 'templates',
-            BASE_DIR /'chats_app'/ 'templates',
+            BASE_DIR /'chat_app'/ 'templates',
             BASE_DIR /'home_app'/ 'templates',
             BASE_DIR /'post_app'/ 'templates',
             ],
@@ -153,7 +153,7 @@ STATICFILES_DIRS = [
     BASE_DIR /'user_app'/ 'static',
     BASE_DIR /'home_app'/ 'static',
     BASE_DIR /'post_app'/ 'static',
-    BASE_DIR /'chats_app'/ 'static',
+    BASE_DIR /'chat_app'/ 'static',
     ]
 
 

@@ -5,19 +5,50 @@ let currentPage = 1;
 let hasNext = false;
 let isLoading = false;
 let observer = null;
-const messages = document.getElementById("messages");
+const messages = document.getElementById('messages');
+const currentUser = document.getElementById('currentUser');
+
 
 function renderMessage(data) {
-  console.log('sdfafsdasfss')
-  const message = document.createElement("div");
-  message.className = "message";
-  message.dataset.messageDate = window.formatMessageDate(data.created_at);
-  message.textContent = `${data.sender}: ${data.text} (${formatMessageTime(data.created_at)})`;
-  return message;
+  const messageContainer =  document.createElement("div");
+  messageContainer.classList.add('message-container');
+
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message");
+
+  if (data.sender === currentUser.textContent.trim()){
+    messageElement.classList.add('your-message');
+    messageContainer.classList.add('your-message-container');
+  }
+      
+  const messageInfo =  document.createElement("div");
+  messageInfo.classList.add('message-info');
+        
+  const messageText = document.createElement("p");
+  messageText.classList.add('message-text');
+  messageText.textContent = `${data.text}`;
+        
+        
+  if (!messageElement.classList.contains('your-message')){
+    const senderName = document.createElement("div");
+    senderName.classList.add('sender-name');
+    senderName.textContent = `${data.sender}`
+    messageInfo.appendChild(senderName);
+  }
+  
+  const messageTime =  document.createElement("div");
+  messageTime.classList.add('message-time');
+  messageTime.textContent = formatMessageTime(data.created_at);
+    
+  messageInfo.appendChild(messageText);
+  messageElement.appendChild(messageInfo);
+  messageElement.appendChild(messageTime);
+  messageContainer.appendChild(messageElement);
+  messages.appendChild(messageContainer);
+  return messageContainer;
 }
 
 function resetMessages(chatId) {
-  console.log('sdsssfs')
   activeChatId = chatId;
   currentPage = 1;
   hasNext = true;
@@ -34,25 +65,27 @@ async function loadMessages(prepend = false) {
   if (isLoading || !hasNext) return;
   isLoading = true;
   const oldHeight = messages.scrollHeight;
-  const response = await fetch(`/chats/${activeChatId}/messages/?page=${currentPage}`,
+  const response = await fetch(
+    `/chat/${activeChatId}/messages/?page=${currentPage}`,
     {
       headers: { "X-Requested-With": "XMLHttpRequest" },
     },
   );
-  console.log('fs')
+
   const data = await response.json();
   const fragment = document.createDocumentFragment();
   data.messages.forEach((message) =>
     fragment.appendChild(renderMessage(message)),
   );
-  
+  window.updateDateSeparators()
   const sentinel = document.querySelector("#message-load-sentinel");
+
   if (prepend) {
     sentinel.after(fragment);
   } else {
     messages.appendChild(fragment);
   }
-  window.updateDateSeparators();
+  
   hasNext = data.has_next;
   currentPage++;
   if (prepend) {
@@ -65,7 +98,6 @@ async function loadMessages(prepend = false) {
 }
 
 function startObserver() {
-  console.log('sdfs')
   const sentinel = document.querySelector("#message-load-sentinel");
   observer = new IntersectionObserver(
     async (entries) => {
@@ -78,6 +110,7 @@ function startObserver() {
   observer.observe(sentinel);
 }
 
-resetMessages(chatId);  
-await loadMessages();   
-startObserver();
+window.resetMessages = resetMessages;
+window.renderMessage = renderMessage;
+window.loadMessages = loadMessages;
+window.startObserver = startObserver;

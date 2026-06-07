@@ -1,20 +1,23 @@
-from channels.generic.websocket import AsyncWebsocketConsumer
+'''Обробка WebSocket-запитів (аналог views.py для Вебсокетів)'''
+
 import json
-from channels.db import database_sync_to_async
-from django.utils import timezone
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .models import Chat, Message
 
+from channels.db import database_sync_to_async
+from django.utils import timezone
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        self.chat_id= self.scope["url_route"]['kwargs']['chat_id']
-        self.room_group_name = f"chat_{self.chat_id}"
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
+        
+        self.chat_id = self.scope["url_route"]["kwargs"]["chat_id"]
+
+        self.group_name = f"chat_{self.chat_id}"
+
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+
         await self.accept()
 
         await self.send(
@@ -25,7 +28,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
         )
 
-        
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
+
     async def receive(self, text_data):
         dict_data = json.loads(text_data)
         message_text = dict_data.get("messageText", None)
@@ -33,12 +38,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if message_text:
             message = await self.save_message(message_text)
             await self.channel_layer.group_send(
-                group= self.room_group_name,
-                message= {
+                self.group_name,
+                {
                     'type': 'chat_message',
                     'message_text': message_text,
                     'sender': sender.username,
-                    'created_at': message['created_at']
+                    "created_at": message["created_at"]
                 }
             )
   
@@ -48,12 +53,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'action': 'chat_message',
             'message_text': event['message_text'],
             'sender':event['sender'],
-            'created_at': event['created_at']
+            'created_at': event["created_at"]
             }))
         
+
+    # Дозволяємо async-коду створити повідомлення в БД.
     @database_sync_to_async
+    # Зберігаємо нове повідомлення.
     def save_message(self, text):
+        # Беремо поточного користувача.
         user = self.scope["user"]
+        # Створюємо повідомлення.
         message = Message.objects.create(chat_id=self.chat_id, sender=user, text=text)
-        created_at = timezone.localdate(message.created_at)
-        return {"id": message.id, "text": message.text, "sender": user.email, "created_at": created_at.isoformat()}
+        created_at = timezone.localtime(message.created_at)
+        # Повертаємо дані для браузера.
+        return {"id": message.id, "text": message.text, "sender": user.username, "created_at": created_at.isoformat()}
