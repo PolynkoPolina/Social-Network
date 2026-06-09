@@ -7,7 +7,7 @@ let isLoading = false;
 let observer = null;
 const messages = document.getElementById('messages');
 const currentUser = document.getElementById('currentUser');
-
+let senderAvatar = null;
 
 function renderMessage(data) {
   const messageContainer =  document.createElement("div");
@@ -15,6 +15,8 @@ function renderMessage(data) {
 
   const messageElement = document.createElement("div");
   messageElement.classList.add("message");
+  messageElement.dataset.messageDate = window.formatMessageDate(data.created_at);
+
 
   if (data.sender === currentUser.textContent.trim()){
     messageElement.classList.add('your-message');
@@ -34,18 +36,27 @@ function renderMessage(data) {
     senderName.classList.add('sender-name');
     senderName.textContent = `${data.sender}`
     messageInfo.appendChild(senderName);
+    senderAvatar = document.createElement("div");
+    senderAvatar.classList.add('sender-avatar');
+    const senderImg = document.createElement("img");
+    senderImg.classList.add("sender-img");
+    senderImg.setAttribute('src', data.sender_avatar);
+    senderAvatar.appendChild(senderImg);
+    messageContainer.appendChild(senderAvatar)
   }
   
   const messageTime =  document.createElement("div");
   messageTime.classList.add('message-time');
   messageTime.textContent = formatMessageTime(data.created_at);
-    
+  
+
   messageInfo.appendChild(messageText);
   messageElement.appendChild(messageInfo);
   messageElement.appendChild(messageTime);
   messageContainer.appendChild(messageElement);
   messages.appendChild(messageContainer);
   return messageContainer;
+  window.updateDateSeparators()
 }
 
 function resetMessages(chatId) {

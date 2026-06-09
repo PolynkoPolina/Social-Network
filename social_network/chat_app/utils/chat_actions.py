@@ -31,7 +31,7 @@ def get_or_create_chat(request, user_id):
         chat = Chat.objects.create(is_group=False)
         chat.users.add(current_user, other_user)
 
-    return {'success': True, 'chat_id': chat.id}
+    return {'success': True, 'chat_id': chat.id, "users_count": chat.users.count()}
 
 
 def create_group(request: HttpRequest):
@@ -42,11 +42,9 @@ def create_group(request: HttpRequest):
         return {"success": False, "error": "name required"}
     
     friend_ids = get_user_by_section(request.user, 'friends').filter(id__in=user_ids).values_list("id", flat=True)
-
     chat = Chat.objects.create(name=name, is_group=True, admin=request.user)
-
     chat.users.add(request.user)
-
     chat.users.add(*User.objects.filter(id__in=friend_ids) )
 
-    return {"success": True, 'chat_id': chat.id, "name":name}
+    
+    return {"success": True, 'chat_id': chat.id, "name":name, "users_count": chat.users.count()}

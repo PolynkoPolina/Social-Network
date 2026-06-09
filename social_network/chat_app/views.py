@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from .models import Chat, Message
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from .services.chat_actions import *
+from .utils.chat_actions import *
 from django.core.paginator import Paginator
 from django.utils import timezone
 
@@ -55,7 +55,8 @@ class MessageHistoryView(LoginRequiredMixin, View):
                         "id": message.id, 
                         "text": message.text, 
                         "sender": message.sender.username,
-                        "created_at": timezone.localtime(message.created_at).isoformat()
+                        "created_at": timezone.localtime(message.created_at).isoformat(),
+                        "sender_avatar": '/static/icons/friends_icon1.svg'
                     } 
                     for message in messages
                 ],

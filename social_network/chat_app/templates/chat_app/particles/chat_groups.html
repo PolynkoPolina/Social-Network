@@ -12,8 +12,7 @@
 
     <div id="group-list">
         {% for chat in group_chats %}
-            <button type="button" class="chat-group-button" data-chat-id="{{ chat.id }}" data-chat-title="{{ chat.name }}">
-                <div class = "group-div group-chat">
+            <button type="button" class="chat-group-button group-div group-chat" data-chat-id="{{ chat.id }}" data-chat-title="{{ chat.name }}" data-chat-users = "{% for user in chat.users.all %}{{ user.username }} {% endfor %}">
                     <img src="{% static 'icons/offline_user.svg' %}" alt="">
                     <div class = "group-info">
                         <div>
@@ -22,7 +21,6 @@
                         </div> 
                         <span class="group-time">09:41</span>
                     </div>
-                </div>
             </button>
 
         {% endfor %}

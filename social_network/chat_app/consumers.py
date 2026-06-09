@@ -43,7 +43,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'type': 'chat_message',
                     'message_text': message_text,
                     'sender': sender.username,
-                    "created_at": message["created_at"]
+                    "created_at": message["created_at"],
+                    "sender_avatar": '/static/icons/friend_icon1.svg'
                 }
             )
   
@@ -53,18 +54,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'action': 'chat_message',
             'message_text': event['message_text'],
             'sender':event['sender'],
-            'created_at': event["created_at"]
+            'created_at': event["created_at"],
+            "sender_avatar": event["sender_avatar"],
             }))
         
 
-    # Дозволяємо async-коду створити повідомлення в БД.
+
     @database_sync_to_async
-    # Зберігаємо нове повідомлення.
     def save_message(self, text):
-        # Беремо поточного користувача.
         user = self.scope["user"]
-        # Створюємо повідомлення.
         message = Message.objects.create(chat_id=self.chat_id, sender=user, text=text)
         created_at = timezone.localtime(message.created_at)
-        # Повертаємо дані для браузера.
         return {"id": message.id, "text": message.text, "sender": user.username, "created_at": created_at.isoformat()}

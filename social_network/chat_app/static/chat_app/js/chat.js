@@ -1,6 +1,7 @@
 import {getCSRFToken} from '/static/js/getCSRFToken.js'
 
 let chatSocket = null;
+let senderAvatar = null;
 const chatName = document.getElementById('chatName');
 const chatButtons = document.querySelectorAll(".chat-user-button");
 const chatWindow = document.getElementById("chatWindow");
@@ -10,6 +11,18 @@ const messageInput = document.getElementById("messageInput");
 const chatExitBtn = document.getElementById('chatExit');
 const currentUser = document.getElementById('currentUser');
 const beforeChat = document.getElementById('beforeChat');
+
+const allMonths=['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня']
+
+const users_text = {
+    'one': 'учасник',
+    'two-four': 'учасника',
+    'five-plus': "учасників"
+}
+
+function formatMessageMonth(month){
+  return allMonths[month]
+}
 
 function padDateNumber(number) {
   return String(number).padStart(2, "0");
@@ -31,7 +44,8 @@ window.formatMessageTime = formatMessageTime;
 
 function formatMessageDate(createdAt) {
   const date = getMessageDate(createdAt);
-  return `${padDateNumber(date.getDate())}:${padDateNumber(date.getMonth()+ 1)}:${padDateNumber(date.getFullYear())}`;
+  const messageMonth =date.getMonth();
+  return `${padDateNumber(date.getDate())} ${formatMessageMonth(messageMonth)} ${padDateNumber(date.getFullYear())}`;
 } // -> 07.06.2026
 
 window.formatMessageDate = formatMessageDate;
@@ -55,7 +69,7 @@ function updateDateSeparators() {
   allMessages.forEach((message) => {
     const messageDate = message.dataset.messageDate;
     if (messageDate !== previousDate) {
-      message.before(renderDateSeparator(messageDate));
+      message.parentElement.before(renderDateSeparator(messageDate));
       previousDate = messageDate;
     }
   });
@@ -63,26 +77,35 @@ function updateDateSeparators() {
 
 window.updateDateSeparators = updateDateSeparators;
 
-async function openChatById(chatId, title) {
+async function openChatById(chatId, title, users_count) {
   chatWindow.classList.add("is-open");
   beforeChat.classList.add('disabled');
   messages.innerHTML = "";
   chatName.textContent = `${title}`
+  let chat_users_text = ''
+  if (users_count == 1){
+      chat_users_text = users_text['one']
+  } else if (users_count>= 2 && users_count<= 4){
+      chat_users_text = users_text['two-four']
+  } else{
+      chat_users_text = users_text['five-plus']
+  }
+
+  chatUsers.textContent = `${users_count} ${chat_users_text}`
   connectWebsocket(chatId);
   resetMessages(chatId);
   await loadMessages();
   startObserver();
 }
 
-async function openChatWithUser(userId, username) {
-  const response = await fetch(`/chat/chat_with/${userId}/`, {
+async function openChatWithUser(chatId, username) {
+  const response = await fetch(`/chat/chat_with/${chatId}/`, {
     method: "POST",
     headers: { "X-CSRFToken": getCSRFToken() },
   });
   const data = await response.json();
-
   if (data.success) {
-    openChatById(data.chat_id, username);
+    openChatById(data.chat_id, username, data.users_count);
   }
 }
 
@@ -94,7 +117,8 @@ function bindGroupChatButtons() {
 
     button.dataset.groupBound = "true";
     button.addEventListener("click", () => {
-      openChatById(button.dataset.chatId, button.dataset.chatTitle);
+      let users =  button.dataset.chatUsers
+      openChatById(button.dataset.chatId, button.dataset.chatTitle, users.split(' '));
     });
   });
 }
@@ -120,7 +144,8 @@ function connectWebsocket(chatId) {
 
             const messageElement = document.createElement("div");
             messageElement.classList.add("message");
-
+            messageElement.dataset.messageDate = formatMessageDate(data.created_at);
+            
             if (data.sender === currentUser.textContent.trim()){
                 messageElement.classList.add('your-message');
                 messageContainer.classList.add('your-message-container');
@@ -140,6 +165,13 @@ function connectWebsocket(chatId) {
                 senderName.classList.add('sender-name');
                 senderName.textContent = `${data.sender}`
                 messageInfo.appendChild(senderName);
+                senderAvatar = document.createElement("div");
+                senderAvatar.classList.add('sender-avatar');
+                const senderImg = document.createElement("img");
+                senderImg.classList.add("sender-img");
+                senderImg.setAttribute('src', `${data.sender_avatar}`);
+                senderAvatar.appendChild(senderImg);
+                messageContainer.appendChild(senderAvatar)
             }
 
             const messageTime =  document.createElement("div");

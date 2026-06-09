@@ -5,9 +5,7 @@ const groupModal = document.querySelector("#group-modal");
 const groupStepUsers = document.querySelector("#group-step-users");
 const groupStepName = document.querySelector("#group-step-name");
 const closeGroupModalButton = document.querySelector("#close-group-modal");
-const closeGroupNameModalButton = document.querySelector(
-  "#close-group-name-modal",
-);
+const closeGroupNameModalButton = document.querySelector("#close-group-name-modal",);
 const cancelGroupModalButton = document.querySelector("#cancel-group-modal");
 
 const nextGroupStepButton = document.querySelector("#next-group-step");
@@ -20,13 +18,13 @@ const groupUserCheckboxes = document.querySelectorAll(".group-user-checkbox");
 const groupList = document.querySelector("#group-list");
 
 function openGroupModal() {
-  groupModal.hidden = false;
-  groupStepUsers.hidden = false;
-  groupStepName.hidden = true;
+  groupModal.classList.remove('disabled');
+  groupStepUsers.classList.remove('disabled');
+  groupStepName.classList.add('disabled');
 }
 
 function closeGroupModal() {
-  groupModal.hidden = true;
+  groupModal.classList.add('disabled');
   groupNameInput.value = "";
   selectedUsersList.innerHTML = "";
   groupUserCheckboxes.forEach((checkbox) => {
@@ -55,13 +53,13 @@ function renderSelectedUsers() {
 
 function showNameStep() {
   renderSelectedUsers();
-  groupStepUsers.hidden = true;
-  groupStepName.hidden = false;
+  groupStepUsers.classList.add('disabled');
+  groupStepName.classList.remove('disabled');
 }
 
 function showUsersStep() {
-  groupStepUsers.hidden = false;
-  groupStepName.hidden = true;
+  groupStepUsers.classList.remove('disabled');
+  groupStepName.classList.add('disabled');
 }
 
 function addGroupButton(chatId, groupName) {
@@ -106,6 +104,7 @@ async function createGroup() {
 openGroupModalButton.addEventListener("click", openGroupModal);
 closeGroupModalButton.addEventListener("click", closeGroupModal);
 closeGroupNameModalButton.addEventListener("click", closeGroupModal);
+cancelGroupModalButton.addEventListener("click", closeGroupModal);
 nextGroupStepButton.addEventListener("click", showNameStep);
 backGroupStepButton.addEventListener("click", showUsersStep);
 createGroupButton.addEventListener("click", createGroup);
