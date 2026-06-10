@@ -3,22 +3,30 @@
 <div id="group-modal" class="group-modal disabled" >
     <div class="group-modal__box">
         <div id="group-step-users">
-            <button id="close-group-modal" class="group-modal__close" type="button"><img src="{% static 'post_app/icons/cross.svg' %}" alt=""></button>
+            <div class = 'close'>
+                <button id="close-group-modal" class="group-modal__close" type="button"><img src="{% static 'post_app/icons/cross.svg' %}" alt=""></button>
+            </div>
             <h2>Нова група</h2>
             <div class = "search">
                 <img src="{% static 'icons/search.svg' %}" alt="">
-                <input name= "sidebar-search" placeholder="Пошук">
+                <input name= "sidebar-search" placeholder="Пошук" class = 'search-input'>
             </div>
             <div class = "chosen">
                 <p>Вибрано: <span id="selected-count">0</span></p>
             </div>
             <div class="group-friends">
                 {% for friend in friends %}
+                    <hr>
                     <label class="group-friend">
-                        <span>{{ friend.username }}</span>
+                        <div>
+                            <img src="{% static 'icons/friends_icon2.svg' %}" alt="">
+                            <span class="friend-username">{{ friend.username }}</span>
+                        </div>
                         <input class="group-user-checkbox" type="checkbox" value="{{ friend.id }}" data-user-name="{{ friend.username }}">
+                        <span class="checkbox"></span>
                     </label>
                 {% endfor %}
+                <hr>
             </div>
             <div class="group-modal__actions">
                 <button id="cancel-group-modal" type="button" class="button cancel-btn">Скасувати</button>
@@ -43,7 +51,9 @@
             </div>
             <div class = 'members'>
                 <p>Учасники</p>
-                <div id="selected-users-list"></div>
+                <div class="selected-users">
+                    <div id="selected-users-list"></div>
+                </div>
                 <div class="group-modal__actions">
                     <button id="back-group-step" type="button"  class="button cancel-btn">Назад</button>
                     <button id="create-group" type="button"  class="button">Створити групу</button>

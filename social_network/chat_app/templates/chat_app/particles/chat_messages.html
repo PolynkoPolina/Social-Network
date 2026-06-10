@@ -18,10 +18,10 @@
                             <img src="{% static 'icons/offline_user.svg' %}" alt="">
                             <div class = "user-info">
                                 <div>
-                                    <h4>{{  person.username }}</h4>
-                                    <p>{{chat.messages}}</p>
+                                    <h4>{{ person.username }}</h4>
+                                    <p class="latest-message" data-message-text = "{% for message in chat.messages.all %}{{ message.text }},{% endfor %}"></p>
                                 </div> 
-                                <span>25.04.2025</span>
+                                <span class="latest-message-time" data-message-time="{% for message in chat.messages.all %}{{ message.created_at }},{% endfor %}"></span>
                             </div>
                         </div>
                     </button>

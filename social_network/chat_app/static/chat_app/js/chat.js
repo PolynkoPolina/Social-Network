@@ -11,12 +11,35 @@ const messageInput = document.getElementById("messageInput");
 const chatExitBtn = document.getElementById('chatExit');
 const currentUser = document.getElementById('currentUser');
 const beforeChat = document.getElementById('beforeChat');
+const latestMessages = document.querySelectorAll('.latest-message');
+const latestMessagesTimes = document.querySelectorAll('.latest-message-time');
+
+latestMessages.forEach(message=>{
+  let messageTextArray = message.dataset.messageText.split(',');
+  let messageText = messageTextArray[messageTextArray.length - 2];
+  if (String(messageText).length >= 25){
+    messageText = messageText.substring(0, 25) + "...";
+  }
+
+  message.textContent = messageText;
+})
+
+latestMessagesTimes.forEach(time =>{
+  let messageTimeArray = time.dataset.messageTime.split(',');
+  let messageTime = messageTimeArray[messageTimeArray.length - 2];
+  let messageTimeFormat = messageTime
+  if(messageTime){
+    messageTimeFormat = messageTime.split(" ")[1];
+  }
+  time.textContent = messageTimeFormat;
+})
 
 const allMonths=['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня']
 
 const users_text = {
     'one': 'учасник',
-    'two-four': 'учасника',
+    'two': "у мережі",
+    'three-four': 'учасники',
     'five-plus': "учасників"
 }
 
@@ -82,16 +105,16 @@ async function openChatById(chatId, title, users_count) {
   beforeChat.classList.add('disabled');
   messages.innerHTML = "";
   chatName.textContent = `${title}`
-  let chat_users_text = ''
   if (users_count == 1){
-      chat_users_text = users_text['one']
-  } else if (users_count>= 2 && users_count<= 4){
-      chat_users_text = users_text['two-four']
+    chatUsers.textContent = `${users_count} ${ users_text['one']}`
+  } else if (users_count> 2 && users_count<= 4){
+    chatUsers.textContent = `${users_count} ${users_text['three-four']}`
+  } else if (users_count== 2 ){
+    chatUsers.textContent = `${users_text['two']}`
   } else{
-      chat_users_text = users_text['five-plus']
+    chatUsers.textContent = `${users_count} ${users_text['five-plus']}`
   }
 
-  chatUsers.textContent = `${users_count} ${chat_users_text}`
   connectWebsocket(chatId);
   resetMessages(chatId);
   await loadMessages();
@@ -117,8 +140,17 @@ function bindGroupChatButtons() {
 
     button.dataset.groupBound = "true";
     button.addEventListener("click", () => {
-      let users =  button.dataset.chatUsers
-      openChatById(button.dataset.chatId, button.dataset.chatTitle, users.split(' '));
+      let users_count =  button.dataset.chatUsers.split(' ').length - 1
+      openChatById(button.dataset.chatId, button.dataset.chatTitle, users_count);
+      const openedChat = document.querySelector('.opened-chat');
+      if( openedChat){
+        openedChat.classList.remove('opened-chat');
+      }
+      const openedGroup= document.querySelector('.opened-group');
+      if( openedGroup){
+        openedGroup.classList.remove('opened-group');
+      }
+      button.classList.add('opened-group');
     });
   });
 }
@@ -189,12 +221,34 @@ function connectWebsocket(chatId) {
   };
 }
 
+
+
+function disconnectWebSocket() {
+    if (chatSocket) {
+        chatSocket.onmessage = null;
+        chatSocket.onerror = null;
+        chatSocket.onclose = null;
+        
+        chatSocket.close();
+        chatSocket = null;
+    }
+}
+
 chatButtons.forEach((button) => {
   button.addEventListener("click", async () => {
     await openChatWithUser(
       button.dataset.chatUser,
       button.dataset.chatUsername,
     );
+    const openedGroup= document.querySelector('.opened-group');
+    if( openedGroup){
+      openedGroup.classList.remove('opened-group');
+    }
+    const openedChat = document.querySelector('.opened-chat');
+    if( openedChat){
+      openedChat.classList.remove('opened-chat');
+    }
+    button.classList.add('opened-chat');
   });
 });
 
@@ -210,5 +264,7 @@ messageForm.addEventListener("submit", (event) => {
 chatExitBtn.addEventListener('click', () => {
     chatWindow.classList.remove("is-open");
     beforeChat.classList.remove('disabled');
-   disconnectWebSocket();
+    disconnectWebSocket();
+    const button = document.querySelector('.opened-chat')
+    button.classList.remove('opened-chat')
 });

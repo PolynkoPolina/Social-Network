@@ -44,7 +44,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'message_text': message_text,
                     'sender': sender.username,
                     "created_at": message["created_at"],
-                    "sender_avatar": '/static/icons/friend_icon1.svg'
+                    "sender_avatar": '/static/icons/friends_icon1.svg'
                 }
             )
   

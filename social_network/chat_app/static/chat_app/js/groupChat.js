@@ -16,6 +16,8 @@ const selectedCount = document.querySelector("#selected-count");
 const selectedUsersList = document.querySelector("#selected-users-list");
 const groupUserCheckboxes = document.querySelectorAll(".group-user-checkbox");
 const groupList = document.querySelector("#group-list");
+const deleteBtn = document.querySelector('.delete-user-from-group')
+
 
 function openGroupModal() {
   groupModal.classList.remove('disabled');
@@ -46,7 +48,28 @@ function renderSelectedUsers() {
     if (checkbox.checked) {
       const user = document.createElement("p");
       user.textContent = checkbox.dataset.userName;
-      selectedUsersList.appendChild(user);
+
+      const infoDiv = document.createElement('div');
+      infoDiv.classList.add('info-div')
+      const userDiv = document.createElement('div');
+      userDiv.classList.add('user-div')
+
+      const userImage = document.createElement('img');
+      userImage.setAttribute('src', `../../../../static/icons/friends_icon3.svg`);
+
+      const deleteImg = document.createElement('button')
+      deleteImg.classList.add('delete-user-from-group')
+      
+      deleteImg.addEventListener("click", () => {
+        userDiv.remove();
+        checkbox.checked = false;
+      })
+
+      infoDiv.appendChild(userImage);
+      infoDiv.appendChild(user);
+      userDiv.appendChild(infoDiv);
+      userDiv.appendChild(deleteImg);
+      selectedUsersList.appendChild(userDiv);
     }
   });
 }
@@ -70,10 +93,24 @@ function addGroupButton(chatId, groupName) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "chat-group-button";
+  button.className = "chat-group-button group-div group-chat";
   button.dataset.chatId = chatId;
   button.dataset.chatTitle = groupName;
-  button.textContent = groupName;
+
+  const groupImg = document.createElement("image");
+  groupImg.setAttribute('src', `../../../../static/icons/offline_user.svg`);
+  groupImg.setAttribute('style', 'height: 4vh; width: 4vh')
+  const groupInfo = document.createElement("div");
+  groupInfo.classList.add('group-info');
+  
+  const groupInfoDiv = document.createElement("div");
+  const groupTitle = document.createElement("p");
+  groupTitle.textContent = groupName;
+
+  button.appendChild(groupImg);
+  groupInfoDiv.appendChild(groupTitle);
+  groupInfo.appendChild(groupInfoDiv);
+  button.appendChild(groupInfo);
   groupList.appendChild(button);
   window.bindGroupChatButtons();
 }
@@ -112,3 +149,4 @@ createGroupButton.addEventListener("click", createGroup);
 groupUserCheckboxes.forEach((checkbox) => {
   checkbox.addEventListener("change", updateSelectedCount);
 });
+

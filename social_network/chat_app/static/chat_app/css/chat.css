@@ -2,6 +2,7 @@
     display: flex;
     gap: 0.3vw;
     width: 100%;
+    overflow-y: hidden;
 }
 .sidebar{
     width: 0;
@@ -105,7 +106,7 @@
     padding-top: 0.5vh;
     padding-bottom: 0.5vh;
     padding-right: 1.5vw;
-    gap: 0.3vw;
+    gap: 0.5vw;
     width: 100%;
 }
 
@@ -128,6 +129,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5vh;
+    align-items: start;
 }
 
 
@@ -184,7 +186,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.3vw;
+    gap: 0.5vw;
     height: 6.2vh;
     cursor: pointer;
     width: 100%;
@@ -192,7 +194,7 @@
     border: none;
 }
 
-.group-div:hover, .friend-div:hover{
+.group-div:hover, .friend-div:hover, .opened-chat, .opened-group{
     background-color: var(--hover);
 }
 
@@ -215,6 +217,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5vh;
+    align-items: start;
 }
 
 
@@ -435,4 +438,8 @@
     color: var(--greyText);
     padding: 0.25rem 0.375rem;
     border-radius: 4px;
+}
+
+#group-list, .chat-block{
+    overflow-y: auto;
 }
