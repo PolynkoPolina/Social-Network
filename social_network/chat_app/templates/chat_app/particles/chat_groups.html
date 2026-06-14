@@ -7,13 +7,12 @@
             <img src="{% static 'icons/grey_chat.svg' %}" alt="">
             <p>Групові чати</p>
         </div>
-        <a href="">Дивитись всі</a>
     </div>
 
     <div id="group-list">
         {% for chat in group_chats %}
             <button type="button" class="chat-group-button group-div group-chat" data-chat-id="{{ chat.id }}" data-chat-title="{{ chat.name }}" data-chat-users = "{% for user in chat.users.all %}{{ user.username }} {% endfor %}">
-                    <img src="{% static 'icons/offline_user.svg' %}" alt="">
+                    <img src="{% static 'icons/no_avatar.svg' %}" alt="">
                     <div class = "group-info">
                         <div>
                             <p class="group-title">{{ chat.name }}</p>

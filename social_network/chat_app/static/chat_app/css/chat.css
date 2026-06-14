@@ -376,7 +376,7 @@
 .message-container{
     display: flex;
     justify-content: start;
-    align-items: center;
+    align-items: end;
     width: 100%;
     height: fit-content;
     gap: 0.6vw;
@@ -442,4 +442,13 @@
 
 #group-list, .chat-block{
     overflow-y: auto;
+}
+
+.message-images{
+    max-width: 100%;
+}
+
+.message-images img{
+    width: 100%;
+    border-radius: 0.5rem;
 }

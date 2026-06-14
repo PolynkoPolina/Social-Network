@@ -31,8 +31,9 @@
         <form id="messageForm" class="message-form">
             <textarea id="messageInput" type="text" placeholder="Повідомлення"></textarea>
             <button class="button btn"><img src="{% static 'icons/smiles-btn.svg' %}" alt=""></button>
-            <button class="button btn"><img src="{% static 'icons/images-btn.svg' %}" alt=""></button>
+            <button class="button btn" id = 'messageImageButton'><img src="{% static 'icons/images-btn.svg' %}" alt=""></button>
             <button class="button send-btn"><img src="{% static 'icons/send-btn.svg' %}" alt=""></button>
+            <input id = 'messageImages' type="file" accept="image/*" hidden multiple>
         </form>
     </div>
 </section>

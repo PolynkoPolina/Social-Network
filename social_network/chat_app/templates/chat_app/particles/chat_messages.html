@@ -7,7 +7,6 @@
             <img src="{% static 'icons/grey_chat.svg' %}" alt="">
             <p>Повідомлення</p>
         </div>
-        <a href="">Дивитись всі</a>
     </div>
     <div class = "chat-block">
         {% for chat in personal_chats %}
@@ -15,7 +14,7 @@
                 {% if person.id != request.user.id %}
                     <button type="button" class="chat-user-button group-div" data-chat-user="{{ person.id }}" data-chat-username="{{ person.username }}">
                         <div class = "user">
-                            <img src="{% static 'icons/offline_user.svg' %}" alt="">
+                            <img src="{% static 'icons/friends_icon3.svg' %}" alt="" class = 'user-avatar'>
                             <div class = "user-info">
                                 <div>
                                     <h4>{{ person.username }}</h4>

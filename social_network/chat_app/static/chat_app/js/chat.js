@@ -1,4 +1,5 @@
 import {getCSRFToken} from '/static/js/getCSRFToken.js'
+import {activeChatId} from './chatHistory.js'
 
 let chatSocket = null;
 let senderAvatar = null;
@@ -171,55 +172,9 @@ function connectWebsocket(chatId) {
   chatSocket.onmessage = function (event) {
     let data = JSON.parse(event.data);
     if (data.action == 'chat_message'){
-            const messageContainer =  document.createElement("div");
-            messageContainer.classList.add('message-container');
-
-            const messageElement = document.createElement("div");
-            messageElement.classList.add("message");
-            messageElement.dataset.messageDate = formatMessageDate(data.created_at);
-            
-            if (data.sender === currentUser.textContent.trim()){
-                messageElement.classList.add('your-message');
-                messageContainer.classList.add('your-message-container');
-            }
-            
-            const messageInfo =  document.createElement("div");
-            messageInfo.classList.add('message-info');
-            
-            const messageText = document.createElement("p");
-            messageText.classList.add('message-text');
-            messageText.textContent = `${data.message_text}`;
-            
-            
-
-            if (!messageElement.classList.contains('your-message')){
-                const senderName = document.createElement("div");
-                senderName.classList.add('sender-name');
-                senderName.textContent = `${data.sender}`
-                messageInfo.appendChild(senderName);
-                senderAvatar = document.createElement("div");
-                senderAvatar.classList.add('sender-avatar');
-                const senderImg = document.createElement("img");
-                senderImg.classList.add("sender-img");
-                senderImg.setAttribute('src', `${data.sender_avatar}`);
-                senderAvatar.appendChild(senderImg);
-                messageContainer.appendChild(senderAvatar)
-            }
-
-            const messageTime =  document.createElement("div");
-            messageTime.classList.add('message-time');
-            messageTime.textContent = formatMessageTime(data.created_at);
-        
-
-            messageInfo.appendChild(messageText);
-            messageElement.appendChild(messageInfo);
-            messageElement.appendChild(messageTime);
-            messageContainer.appendChild(messageElement);
-            messages.appendChild(messageContainer);
-      }
-    window.updateDateSeparators()
-  };
-}
+      window.renderMessage(data)
+    };
+}};
 
 
 
@@ -252,11 +207,25 @@ chatButtons.forEach((button) => {
   });
 });
 
-messageForm.addEventListener("submit", (event) => {
+messageForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+
   const messageText = messageInput.value.trim();
+
+  if (!messageText && !window.hasSelectedImages()) return;
+
+  if (window.hasSelectedImages()) {
+    const data = await window.sendMessageWithImages(messageText);
+
+    if (!data.success) return;
+
+    messageInput.value = "";
+    window.clearSelectedImages();
+    return;
+  }
+
   if (messageText && chatSocket && chatSocket.readyState === WebSocket.OPEN) {
-    chatSocket.send(JSON.stringify({ messageText: messageText }));
+    chatSocket.send(JSON.stringify({ messageText }));
     messageInput.value = "";
   }
 });

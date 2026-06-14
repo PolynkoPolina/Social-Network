@@ -199,6 +199,20 @@ input:focus, textarea:focus{
     display: none !important;
 }
 
+.online, .offline{
+    width: 0.75rem;
+    height: 0.75rem;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.online{
+    background-image: url(../icons/online.svg);
+}
+
+.offline{
+    background-image: url(../icons/offline.svg);
+}
 
 ::-webkit-scrollbar {
     width: 0;

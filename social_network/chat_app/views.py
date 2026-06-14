@@ -2,12 +2,15 @@ from django.views.generic import TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from user_app.utils.friends_queries import get_user_by_section
 from django.urls import reverse_lazy
-from .models import Chat, Message
+from .models import *
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from .utils.chat_actions import *
 from django.core.paginator import Paginator
 from django.utils import timezone
+from django.http import HttpRequest
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 User = get_user_model()
@@ -53,10 +56,11 @@ class MessageHistoryView(LoginRequiredMixin, View):
                 "messages": [
                     {
                         "id": message.id, 
-                        "text": message.text, 
+                        "message_text": message.text, 
                         "sender": message.sender.username,
                         "created_at": timezone.localtime(message.created_at).isoformat(),
-                        "sender_avatar": '/static/icons/friends_icon1.svg'
+                        "sender_avatar": '/static/icons/friends_icon1.svg',
+                        "images": [img.image.url for img in message.images.all()]
                     } 
                     for message in messages
                 ],
@@ -73,3 +77,38 @@ class CreateGroupView(LoginRequiredMixin, View):
         return JsonResponse(response_dict)
         
 
+class MessageImagesUploadView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth')
+
+    def post(self, request: HttpRequest, chat_id):
+        if not Chat.objects.filter(id=chat_id, users=request.user).exists():
+            return JsonResponse({'success': False}, status=403)
+        
+        text = request.POST.get("text", "").strip()
+        images = request.FILES.getlist('images')
+        if not text and not images:
+            return JsonResponse({'success': False, 'error': "empty_message"}, status=400)
+        
+        message = Message.objects.create(chat_id=chat_id, sender=request.user, text=text)
+
+        for img in images:
+            MessageImage.objects.create(message=message, image=img)
+
+        image_urls = [image_obj.image.url for image_obj in message.images.all()]
+ 
+
+        channel_layer = get_channel_layer()
+
+        async_to_sync(channel_layer.group_send)(
+            f"chat_{chat_id}",
+            {
+                "type": "chat_message",
+                'message_text': message.text,
+                'sender': message.sender.username,
+                "created_at": timezone.localtime(message.created_at).isoformat(),
+                'sender_avatar': '/static/icons/friends_icon1.svg',
+                "images": image_urls
+            }
+        )
+
+        return JsonResponse({'success': True})

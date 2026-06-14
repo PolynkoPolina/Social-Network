@@ -3,7 +3,7 @@
 {% for user in users %}
     <div class="friends-card">
         <div class="top">
-            <img src="{% static 'icons/sidebar-avatar.svg' %}" alt="">
+            <img src="{% static 'icons/sidebar-avatar.svg' %}" alt="" class = 'user-avatar'>
             <div>
                 <h3>{{user.first_name}}</h3>
                 <p>@{{user.username}}</p>

@@ -19,7 +19,7 @@
                     <hr>
                     <label class="group-friend">
                         <div>
-                            <img src="{% static 'icons/friends_icon2.svg' %}" alt="">
+                            <img src="{% static 'icons/friends_icon2.svg' %}" alt="" class = 'user-avatar'>
                             <span class="friend-username">{{ friend.username }}</span>
                         </div>
                         <input class="group-user-checkbox" type="checkbox" value="{{ friend.id }}" data-user-name="{{ friend.username }}">
@@ -43,7 +43,7 @@
                 <input id="group-name" type="text" placeholder="Введіть назву">
             </div>
             <div class = 'profile'>
-                <img src="{% static 'icons/request_icon3.svg' %}" alt="">
+                <img src="{% static 'icons/request_icon3.svg' %}" alt="" class = 'user-avatar'>
                 <div>
                     <p><img src="{% static 'icons/purple-plus.svg' %}" alt="">Додайте фото</p>
                     <p><img src="{% static 'icons/purple-img.svg' %}" alt="">Оберіть фото</p>

@@ -8,7 +8,7 @@ class Chat(models.Model):
     users = models.ManyToManyField(User, related_name="chats")
     name = models.CharField(max_length=50, blank=True, null=True)
     is_group = models.BooleanField(default=False)
-    avatar = models.ImageField(upload_to='images/chat_avatars/', blank=True, null=True)
+    avatar = models.ImageField(upload_to='chat_app/images/chat_avatars/', blank=True, null=True)
     admin = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
@@ -28,3 +28,8 @@ class Message(models.Model):
 
     def __str__(self):
         return self.text[:30]
+    
+
+class MessageImage(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to='chat_app/images/chat_images/')

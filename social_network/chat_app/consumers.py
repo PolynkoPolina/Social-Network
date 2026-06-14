@@ -44,11 +44,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'message_text': message_text,
                     'sender': sender.username,
                     "created_at": message["created_at"],
-                    "sender_avatar": '/static/icons/friends_icon1.svg'
+                    "sender_avatar": '/static/icons/friends_icon1.svg',
+                    "images": message['images']
                 }
             )
   
-
     async def chat_message(self, event):
         await self.send(text_data=json.dumps({
             'action': 'chat_message',
@@ -56,6 +56,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'sender':event['sender'],
             'created_at': event["created_at"],
             "sender_avatar": event["sender_avatar"],
+            'images': event.get("images", [])
             }))
         
 
@@ -65,4 +66,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = self.scope["user"]
         message = Message.objects.create(chat_id=self.chat_id, sender=user, text=text)
         created_at = timezone.localtime(message.created_at)
-        return {"id": message.id, "text": message.text, "sender": user.username, "created_at": created_at.isoformat()}
+        return {"id": message.id, "text": message.text, "sender": user.username, "created_at": created_at.isoformat(),  'sender_avatar': '/static/icons/friends_icon1.svg', 'images': []}
+
+
+

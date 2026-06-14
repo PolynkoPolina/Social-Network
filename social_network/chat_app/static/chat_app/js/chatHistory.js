@@ -1,6 +1,6 @@
 // Логіка підгрузки повідомлень
 // Створюємо HTML для одного повідомлення.
-let activeChatId = null;
+export let activeChatId = null;
 let currentPage = 1;
 let hasNext = false;
 let isLoading = false;
@@ -28,7 +28,7 @@ function renderMessage(data) {
         
   const messageText = document.createElement("p");
   messageText.classList.add('message-text');
-  messageText.textContent = `${data.text}`;
+  messageText.textContent = `${data.message_text}`;
         
         
   if (!messageElement.classList.contains('your-message')){
@@ -50,6 +50,9 @@ function renderMessage(data) {
   messageTime.textContent = formatMessageTime(data.created_at);
   
 
+  if (window.hasMessageImages(data)) {
+    messageInfo.appendChild(window.renderMessageImages(data.images))
+  }
   messageInfo.appendChild(messageText);
   messageElement.appendChild(messageInfo);
   messageElement.appendChild(messageTime);
@@ -58,6 +61,8 @@ function renderMessage(data) {
   return messageContainer;
   window.updateDateSeparators()
 }
+
+window.renderMessage= renderMessage
 
 function resetMessages(chatId) {
   activeChatId = chatId;
@@ -69,6 +74,8 @@ function resetMessages(chatId) {
   const sentinel = document.createElement("div");
   sentinel.id = "message-load-sentinel";
   messages.prepend(sentinel);
+  console.log(activeChatId);
+
 }
 
 
