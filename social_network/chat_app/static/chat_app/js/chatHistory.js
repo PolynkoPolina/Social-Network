@@ -5,6 +5,7 @@ let currentPage = 1;
 let hasNext = false;
 let isLoading = false;
 let observer = null;
+let message_observer = null;
 const messages = document.getElementById('messages');
 const currentUser = document.getElementById('currentUser');
 let senderAvatar = null;
@@ -16,7 +17,14 @@ function renderMessage(data) {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message");
   messageElement.dataset.messageDate = window.formatMessageDate(data.created_at);
+  messageElement.dataset.messageId = data.id;
 
+
+  const messageReader = document.createElement('div')
+  messageReader.classList.add('message-reader')
+
+  const messageDetails = document.createElement('div')
+  messageDetails.classList.add('message-details')
 
   if (data.sender === currentUser.textContent.trim()){
     messageElement.classList.add('your-message');
@@ -29,7 +37,20 @@ function renderMessage(data) {
   const messageText = document.createElement("p");
   messageText.classList.add('message-text');
   messageText.textContent = `${data.message_text}`;
-        
+
+ 
+
+  message_observer = new IntersectionObserver(
+    async (entries) => {
+      if (entries[0].isIntersecting) {
+        readMessage(data.id, messageReader);
+        message_observer.unobserve(entries[0].target);
+      }
+    },
+    { root: messages, rootMargin: "20px" },
+  );
+  message_observer.observe(messageReader);
+
         
   if (!messageElement.classList.contains('your-message')){
     const senderName = document.createElement("div");
@@ -48,19 +69,39 @@ function renderMessage(data) {
   const messageTime =  document.createElement("div");
   messageTime.classList.add('message-time');
   messageTime.textContent = formatMessageTime(data.created_at);
-  
+
+  if (data.is_read) {
+    messageReader.classList.add("read-message");
+  }
 
   if (window.hasMessageImages(data)) {
     messageInfo.appendChild(window.renderMessageImages(data.images))
   }
   messageInfo.appendChild(messageText);
+  messageDetails.appendChild(messageTime)
+  messageDetails.appendChild(messageReader)
   messageElement.appendChild(messageInfo);
-  messageElement.appendChild(messageTime);
+  messageElement.appendChild(messageDetails);
   messageContainer.appendChild(messageElement);
   messages.appendChild(messageContainer);
   return messageContainer;
   window.updateDateSeparators()
 }
+
+
+
+async function readMessage(messageId, checkmark) {
+  const response = await fetch(`/chat/read_message/${messageId}/`, {
+    headers: { "X-Requested-With": "XMLHttpRequest" },
+  });
+
+  const data = await response.json();
+
+  if (!data.success) return;
+
+  checkmark.classList.add('read-message');
+}
+
 
 window.renderMessage= renderMessage
 
@@ -74,8 +115,6 @@ function resetMessages(chatId) {
   const sentinel = document.createElement("div");
   sentinel.id = "message-load-sentinel";
   messages.prepend(sentinel);
-  console.log(activeChatId);
-
 }
 
 

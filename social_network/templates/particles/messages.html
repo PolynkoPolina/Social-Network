@@ -1,49 +1,25 @@
 {% load static %}
 
-<div class="messages-frame">
+<div class="messages sidebar-card">
         <div class="alert-container">
             <div>
-                <img src="{% static 'icons/chat.svg' %}" alt="" class = "messsage-icon"><span>Повідомлення</span>
+                <img src="{% static 'icons/grey_chat.svg' %}" alt="" class = "messsage-icon">
+                <span>Повідомлення</span>
             </div>
-            <p>Дивитись всі</p>
+            <a href="{% url 'chat' %}">Дивитись всі</a>
         </div>
         <div class="messages-container">
-            <div class="message-info-container purple">
-                <div class = "message-container">
-                    <img src="{% static 'icons/friends_icon1.svg' %}" alt="" class="avatar user-avatar">
-                    <div class="message-info">
-                        <div class = "message-time-container">
-                            <span>Mona Lisa</span><p>09:41</p>
-                        </div>
-                        <div class="message-text">
-                            <p>Привіт! Як справи?</p>
-                        </div>
-                    </div>
+            <div class="message-container">
+                <div class = 'user-avatar' data-user-id = "{{ person.id }}">
+                    <img src="{% static 'icons/friends_icon3.svg' %}" alt="" class="avatar">
+                    <div class="status offline"></div>
                 </div>
-            </div>
-            <div class="message-info-container purple">
-                <div class = "message-container">
-                    <img src="{% static 'icons/friends_icon2.svg' %}" alt="" class="avatar user-avatar">
-                    <div class="message-info">
-                        <div class = "message-time-container">
-                            <span>Ann Ti</span><p>25.04.2025</p>
-                        </div>
-                        <div class="message-text">
-                            <p>Привіт!</p>
-                        </div>
+                <div class="message-info">
+                    <div class = "message-time-container">
+                        <span>Mona Lisa</span><p>09:41</p>
                     </div>
-                </div>
-            </div>
-            <div class="message-info-container">
-                <div class = "message-container">
-                    <img src="{% static 'icons/friends_icon3.svg' %}" alt="" class="avatar user-avatar">
-                    <div class="message-info">
-                        <div class = "message-time-container">
-                            <span>Ness Ty</span><p>25.04.2025</p>
-                        </div>
-                        <div class="message-text">
-                            <p>Привіт!</p>
-                        </div>
+                    <div class="message-text">
+                        <p>Привіт! Як справи?</p>
                     </div>
                 </div>
             </div>

@@ -12,7 +12,6 @@ from django.http import HttpRequest
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-
 User = get_user_model()
 
 class ChatView(LoginRequiredMixin, TemplateView):
@@ -30,6 +29,8 @@ class ChatView(LoginRequiredMixin, TemplateView):
             users=self.request.user,
             is_group=True
         ).order_by('id')
+        context['requests_count'] = len(get_user_by_section(self.request.user, 'requests'))
+
         return context
     
 
@@ -56,7 +57,8 @@ class MessageHistoryView(LoginRequiredMixin, View):
                 "messages": [
                     {
                         "id": message.id, 
-                        "message_text": message.text, 
+                        "message_text": message.text,
+                        "is_read": message.readers.exists(),
                         "sender": message.sender.username,
                         "created_at": timezone.localtime(message.created_at).isoformat(),
                         "sender_avatar": '/static/icons/friends_icon1.svg',
@@ -103,6 +105,8 @@ class MessageImagesUploadView(LoginRequiredMixin, View):
             f"chat_{chat_id}",
             {
                 "type": "chat_message",
+                'id': message.id,
+                "is_read": message.readers.exists(),
                 'message_text': message.text,
                 'sender': message.sender.username,
                 "created_at": timezone.localtime(message.created_at).isoformat(),
@@ -112,3 +116,26 @@ class MessageImagesUploadView(LoginRequiredMixin, View):
         )
 
         return JsonResponse({'success': True})
+    
+
+class ReadMessageView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest, message_id):
+        message = Message.objects.get(id=message_id)
+
+        if message.sender == self.request.user:
+            return JsonResponse({"success": False})
+
+        message.readers.add(self.request.user)
+
+        channel_layer = get_channel_layer()
+
+        async_to_sync(channel_layer.group_send)(
+            f"chat_{message.chat_id}",
+            {
+                "type": "message_read",
+                "id": message.id,
+                "sender": self.request.user.username,
+            }
+        )
+
+        return JsonResponse({"success": True})

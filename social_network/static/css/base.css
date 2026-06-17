@@ -121,6 +121,7 @@ input:focus, textarea:focus{
 }
 
 .links a{
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0.2vw;
@@ -199,9 +200,22 @@ input:focus, textarea:focus{
     display: none !important;
 }
 
-.online, .offline{
-    width: 0.75rem;
-    height: 0.75rem;
+.user-avatar{
+    position: relative;
+}
+
+.big{
+    top: 76% !important;
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+}
+
+.status{
+    position: absolute;
+    left: 70%;
+    top: 70%;
+    width: 0.8rem;
+    height: 0.8rem;
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -210,10 +224,35 @@ input:focus, textarea:focus{
     background-image: url(../icons/online.svg);
 }
 
+.online.big{
+    background-image: url(../icons/online_big.svg) !important;
+}
+
+.offline.big{
+    background-image: url(../icons/offline_big.svg) !important;
+
+}
 .offline{
     background-image: url(../icons/offline.svg);
 }
 
+.notification{
+    position: absolute;
+    left: 20%;
+    top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    background-image: url(../icons/notification.svg);
+}
+
+.notification p{
+    color: white;
+    font-size: 0.6rem;
+    font-family: var(--mediumFont);
+}
 ::-webkit-scrollbar {
     width: 0;
 }

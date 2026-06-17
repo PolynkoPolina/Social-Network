@@ -1,30 +1,26 @@
 {% load static %}
-
-<div class="requests-card">
-        <span class="requests-header">
-            <div class = "request-header">
-                <p><img src="{% static 'icons/people.svg' %}" alt="" class="chat-icon">Запити</p>
-                <a href="">Дивитись всі</a>
+<div class="requests sidebar-card">
+        <div class="alert-container">
+            <div>
+                <img src="{% static 'icons/greyPeople.svg' %}" alt="" class = "messsage-icon">
+                <span>Запити</span>
             </div>
-            <div class="requests-container">
-                <div class="people-request">
-                    <img src="{% static 'icons/request_icon1.svg' %}" alt="" class = 'user-avatar'>
-                    <div class = "request-user">
-                        <span>Yehor Aung</span><p>4.3к підписників</p>
+            <a href="{% url 'friends' %}">Дивитись всі</a>
+        </div>
+        <div class="requests-container">
+            {% for user in requests %}  
+                <a class="request-container" href="{% url 'post' username=user.username %}">
+                    <div class = 'user-avatar' data-user-id = "{{ user.id }}">
+                        <img src="{% static 'icons/friends_icon3.svg' %}" alt="" class="avatar">
+                        <div class="status offline"></div>
                     </div>
-                </div>
-                <div class="people-request">
-                    <img src="{% static 'icons/request_icon2.svg' %}" alt="" class = 'user-avatar'>
-                    <div class = "request-user">
-                        <span>Ann Ann</span><p>1.6к підписників</p>
+                    <div class="request-info">
+                        <h3>{{ user.first_name }}</h3>
+                        <p>1.4к підписників </p>
                     </div>
-                </div>
-                <div class="people-request">
-                    <img src="{% static 'icons/request_icon3.svg' %}" alt="" class = 'user-avatar'>
-                    <div class = "request-user">
-                        <span>Yeugen Jenua</span><p>10.3к підписників</p>
-                    </div>
-                </div>
-            </div>
-        </span>
+                </a>
+            {% empty %}
+            {% endfor %}
+            
+        </div>
     </div>

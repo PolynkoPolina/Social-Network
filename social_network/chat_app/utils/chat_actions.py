@@ -6,8 +6,6 @@ from django.http import HttpRequest
 
 User = get_user_model()
 
-
-
 def get_or_create_chat(request, user_id):
     current_user = request.user
     other_user = User.objects.get(id=user_id)

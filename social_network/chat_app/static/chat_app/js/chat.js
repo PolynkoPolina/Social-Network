@@ -15,6 +15,7 @@ const beforeChat = document.getElementById('beforeChat');
 const latestMessages = document.querySelectorAll('.latest-message');
 const latestMessagesTimes = document.querySelectorAll('.latest-message-time');
 
+
 latestMessages.forEach(message=>{
   let messageTextArray = message.dataset.messageText.split(',');
   let messageText = messageTextArray[messageTextArray.length - 2];
@@ -39,7 +40,6 @@ const allMonths=['січня', 'лютого', 'березня', 'квітня',
 
 const users_text = {
     'one': 'учасник',
-    'two': "у мережі",
     'three-four': 'учасники',
     'five-plus': "учасників"
 }
@@ -110,8 +110,8 @@ async function openChatById(chatId, title, users_count) {
     chatUsers.textContent = `${users_count} ${ users_text['one']}`
   } else if (users_count> 2 && users_count<= 4){
     chatUsers.textContent = `${users_count} ${users_text['three-four']}`
-  } else if (users_count== 2 ){
-    chatUsers.textContent = `${users_text['two']}`
+  } else if (users_count== 2){
+    chatUsers.textContent = "у мережі";
   } else{
     chatUsers.textContent = `${users_count} ${users_text['five-plus']}`
   }
@@ -174,6 +174,16 @@ function connectWebsocket(chatId) {
     if (data.action == 'chat_message'){
       window.renderMessage(data)
     };
+
+    if (data.action === "message_read") {
+    const message = document.querySelector(
+      `[data-message-id="${data.id}"]`
+    );
+
+    if (!message) return;
+
+    message.querySelector('.message-reader').classList.add("read-message");
+  }
 }};
 
 

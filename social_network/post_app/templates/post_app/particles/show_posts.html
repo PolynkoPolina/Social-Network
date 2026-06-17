@@ -4,8 +4,11 @@
         <div class="post-top">
             <div class="avatar-label">
                     <div class="user-info-container">
-                        <div><img src="{% static 'icons/sidebar-avatar.svg' %}" alt="" class = 'user-avatar'></div>
-                        <p>{{ post.author.username }}</p>
+                        <div class = 'user-avatar' data-user-id = "{{ post.author.id }}">
+                            <img src="{% static 'icons/sidebar-avatar.svg' %}" alt="">
+                            <div class="status offline"></div>
+                        </div>
+                        <p>{{ post.author.first_name }}</p>
                     </div>
                 <div class="interaction"><img src="{% static 'post_app/icons/Interaction.png' %}" alt=""></div>
             </div>

@@ -1,0 +1,103 @@
+.sidebar-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: white;
+    position: relative;
+}
+
+.alert-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    margin: 1rem;
+}
+
+.alert-container a{
+    color: var(--buttonPurple);
+    font-family: var(--mediumFont);
+}
+
+.alert-container div{
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.alert-container div span{
+    color: var(--greyText);
+    font-size: 1.2rem;
+    font-family: var(--mediumFont);
+}
+
+.messsage-icon{
+    width: 1rem;
+    height: 1rem;
+}
+
+.requests-container, .messages-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.message-container, .request-container{
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+
+.message-info, .request-info{
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.request-info h3{
+    font-family: var(--mediumFont);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.request-info p{
+    color: var(--greyText);
+    font-size: 1rem;
+
+}
+
+.message-time-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.message-time-container p{
+    color: var(--greyText);
+    font-size: 0.7rem;
+}
+
+.message-container:hover, .request-container:hover{
+    background-color:var(--hover);
+}
+
+
+.buttons{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+}
+
+.buttons a, .buttons button{
+    text-decoration: none;
+    font-family: var(--mediumFont);
+    font-size: 400;
+    font-size: 14px;
+}
+

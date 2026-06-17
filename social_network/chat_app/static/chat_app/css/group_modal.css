@@ -249,3 +249,43 @@ hr{
     font-family: var(--mediumFont);
 }
 
+
+.edit-group-div{
+    position: absolute;
+    right: 26.6%;
+    top: 6.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: space-between;
+    padding: 1rem;
+    gap: 1rem;
+    background-color: var(--hover);
+    width: 20vw;
+    height: fit-content;
+    border-radius: 6px;
+    box-shadow: 0em 1rem 1rem 0px #00000029;
+    border: none;
+}
+
+.edit-media{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+}
+
+.edit-media span{
+    display: flex;
+    gap: 0.7rem;
+}
+
+.edit-media hr{
+    width: 100%;
+    border: 1px solid var(--border);
+}
+
+.disabled{
+    display: none !important;
+}

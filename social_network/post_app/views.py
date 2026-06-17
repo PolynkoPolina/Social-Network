@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 
 
 from user_app.models import User, Friendship
+from user_app.utils.friends_queries import get_user_by_section
 
 
 class PostListView(ListView, LoginRequiredMixin):
@@ -40,6 +41,8 @@ class PostListView(ListView, LoginRequiredMixin):
         context['posts'] = Post.objects.filter(author_id = id).order_by('-created_at')[:self.paginate_by]
         context["profile_user"] = user
         context["section"] = section
+        context['requests_count'] = len(get_user_by_section(self.request.user, 'requests'))
+
         print(section)
         return context
     

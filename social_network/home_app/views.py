@@ -9,7 +9,8 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 
-# Create your views here.
+
+from user_app.utils.friends_queries import get_user_by_section
 
 class HomePageView(LoginRequiredMixin, TemplateView):
     template_name = 'main_app/home.html'
@@ -23,9 +24,12 @@ class HomePageView(LoginRequiredMixin, TemplateView):
         context["addTagForm"] = AddTagForm()
         context['posts'] = Post.objects.all().order_by('-created_at')[:self.paginate_by]
         context["profile_user"] = self.request.user
+        context['requests'] = get_user_by_section(self.request.user, 'requests')
+        context['requests_count'] = len(get_user_by_section(self.request.user, 'requests'))
         if not self.request.user.username:
             context['create_username_form'] = CreateUsernameForm()
             context['create_username'] = True
+
         return context
     
     def get_queryset(self):

@@ -21,11 +21,21 @@ from .utils.friends_actions import *
 class PersonalInfoPageView(TemplateView, LoginRequiredMixin):
     template_name = 'user_app/particles/user_settings/settings_personal_info.html'
     login_url = reverse_lazy("auth")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['requests_count'] = len(get_user_by_section(self.request.user, 'requests'))
+
+        return context
 
 
 class AlbumsPageView(TemplateView,LoginRequiredMixin):
     template_name = 'user_app/particles/user_settings/settings_albums.html'
     login_url = reverse_lazy("auth")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['requests_count'] = len(get_user_by_section(self.request.user, 'requests'))
+
+        return context
 
 
 
@@ -174,6 +184,7 @@ class FriendsView(TemplateView, LoginRequiredMixin):
             'recommendations': {'title': 'Рекомендації', 'users': get_user_by_section(self.request.user, 'recommendations')[:6], 'html': 'recommendations'},
             'friends': {'title': 'Всі друзі', 'users': get_user_by_section(self.request.user, 'friends')[:6], 'html': 'friends'}
         }
+        context['requests_count'] = len(get_user_by_section(self.request.user, 'requests'))
         return context
     
     

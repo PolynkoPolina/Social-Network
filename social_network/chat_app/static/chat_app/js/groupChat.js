@@ -16,7 +16,26 @@ const selectedCount = document.querySelector("#selected-count");
 const selectedUsersList = document.querySelector("#selected-users-list");
 const groupUserCheckboxes = document.querySelectorAll(".group-user-checkbox");
 const groupList = document.querySelector("#group-list");
-const deleteBtn = document.querySelector('.delete-user-from-group')
+const deleteBtn = document.querySelector('.delete-user-from-group');
+const editGroupBtn = document.querySelectorAll('.chat-actions');
+const editModal = document.querySelector('.edit-group-div');
+
+
+
+  editGroupBtn.forEach(button =>
+    button.addEventListener('click', () => {
+      editModal.classList.toggle('disabled');
+    })
+  );
+  
+  document.addEventListener('click', (element) => {
+    const isClickInsideModal = editModal.contains(element.target);
+    const isButton = [...editGroupBtn].some(btn => btn.contains(element.target));
+  
+    if (!isClickInsideModal && !isButton) {
+      editModal.classList.add('disabled');
+    }
+  });
 
 
 function openGroupModal() {

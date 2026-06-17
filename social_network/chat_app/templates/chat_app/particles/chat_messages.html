@@ -12,15 +12,18 @@
         {% for chat in personal_chats %}
             {% for person in chat.users.all %}
                 {% if person.id != request.user.id %}
-                    <button type="button" class="chat-user-button group-div" data-chat-user="{{ person.id }}" data-chat-username="{{ person.username }}">
+                    <button type="button" class="chat-user-button group-div" data-chat-user="{{ person.id }}" data-chat-username="{{ person.first_name }}">
                         <div class = "user">
-                            <img src="{% static 'icons/friends_icon3.svg' %}" alt="" class = 'user-avatar'>
+                            <div class = 'user-avatar' data-user-id = "{{ person.id }}">
+                                <img src="{% static 'icons/friends_icon3.svg' %}" alt="">
+                                <div class="status offline"></div>
+                            </div>
                             <div class = "user-info">
                                 <div>
-                                    <h4>{{ person.username }}</h4>
+                                    <h4>{{ person.first_name }}</h4>
                                     <p class="latest-message" data-message-text = "{% for message in chat.messages.all %}{{ message.text }},{% endfor %}"></p>
                                 </div> 
-                                <span class="latest-message-time" data-message-time="{% for message in chat.messages.all %}{{ message.created_at }},{% endfor %}"></span>
+                                <span class="latest-message-time" data-message-time="{% for message in chat.messages.all %}{{ message.id }},{% endfor %}"></span>
                             </div>
                         </div>
                     </button>

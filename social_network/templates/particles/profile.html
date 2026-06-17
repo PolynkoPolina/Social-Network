@@ -1,12 +1,16 @@
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 
 
 <div class="profile">
-        <img src="{% static 'icons/sidebar-avatar.svg' %}" alt="Lina Li" class="profile-img user-avatar">
-        <h1>{{ profile_user.first_name }}</h1>
-        <p class="username">@{{ profile_user.username }}</p>
+        <div class = 'user-avatar' data-user-id = "{{ profile_user.id }}">
+            <img src="{% static 'icons/sidebar-avatar.svg' %}" alt="Lina Li" class="profile-img">
+            <div class="status offline big"></div>
+        </div>
+        <div class="usernames-container">
+            <h1>{{ profile_user.first_name }}</h1>
+            <p class="username">@{{ profile_user.username }}</p>
+        </div>
         <div class="user-info">
             <div class="stats posts">
                 <strong>566</strong>

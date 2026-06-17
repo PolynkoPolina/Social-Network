@@ -92,6 +92,10 @@ article{
     gap: 0.4vw;
 }
 
+.user-info-container p{
+    font-family: var(--mediumFont);
+}
+
 .interaction{
     justify-content: end;
 }

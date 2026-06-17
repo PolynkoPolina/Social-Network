@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block meta %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
     {% block links %}{% endblock %}
 
     <title>{% block title %}{% endblock %}</title>
@@ -30,6 +31,9 @@
                             <span>Мої публікації</span>
                         </a>
                         <a href="{% url 'friends' %}">
+                            <div class="requests notification">
+                                <p id="requestsCount">{{requests_count}}</p>
+                            </div>
                             <img src="{% static 'icons/people.svg' %}" alt="">
                             <span>Друзі</span>
                         </a>
@@ -63,7 +67,7 @@
         
             <script src="{% static 'js/urlChosen.js' %}" ></script>
             <script src="{% static 'js/onlineStatus.js' %}" ></script>
-
+            <script src="{% static 'js/requestNotification.js' %}" ></script>
             {% block scripts %}
             {% endblock %}
 </body>
