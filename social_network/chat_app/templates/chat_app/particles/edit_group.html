@@ -1,16 +1,19 @@
 {% load static %}
 
-<div class = "edit-group-div disabled">
-    <img src="{% static 'icons/triple_dots.svg' %}" alt="" class = 'chat-actions'>
-    <div class = 'edit-media'>
-        <span><img src="{% static 'icons/media.svg' %}" alt="">Медіа</span>
-        {% if user.is_admin %}
-            <span><img src="{% static 'icons/edit.svg' %}" alt="">Редагувати группу</span>
-            <hr>
-            <span><img src="{% static 'icons/trash.svg' %}" alt="">Видалити чат</span>
-        {% else %}
-            <hr>
-            <span><img src="{% static 'icons/leave.svg' %}" alt="">Покинути групу</span>
-        {% endif %}
+<div class = "edit-group-div" id = "edit-group-div" popover>
+    <div class="edit-group-top">
+        <button popovertarget= 'edit-group-div' popovertargetaction="hide" class = 'chat-actions'></button>
     </div>
+    <button class="edit-group-btn" id="mediaBtn">
+        <div class="media-img"></div>
+        <span>Медіа</span>
+    </button>
+    <hr>
+    <button class="edit-group-btn" id="leaveGroupBtn">
+        <div class="leave-group-img"></div>
+        <span>Покинути групу</span>
+    </button>
 </div>
+
+
+

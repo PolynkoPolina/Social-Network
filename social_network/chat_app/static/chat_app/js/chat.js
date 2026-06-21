@@ -1,5 +1,7 @@
 import {getCSRFToken} from '/static/js/getCSRFToken.js'
 import {activeChatId} from './chatHistory.js'
+import {deleteGroup} from './editGroup.js'
+
 
 let chatSocket = null;
 let senderAvatar = null;
@@ -14,27 +16,50 @@ const currentUser = document.getElementById('currentUser');
 const beforeChat = document.getElementById('beforeChat');
 const latestMessages = document.querySelectorAll('.latest-message');
 const latestMessagesTimes = document.querySelectorAll('.latest-message-time');
+const chatTop = document.querySelector(".chat-top")
+const editModal = document.querySelector('.edit-group-div');
 
 
-latestMessages.forEach(message=>{
-  let messageTextArray = message.dataset.messageText.split(',');
-  let messageText = messageTextArray[messageTextArray.length - 2];
-  if (String(messageText).length >= 25){
-    messageText = messageText.substring(0, 25) + "...";
-  }
+function addAdminModal(chatId){
+    editModal.innerHTML =  
+      `    
+      <div class="edit-group-top">
+          <button popovertarget= 'edit-group-div' popovertargetaction="hide" class = 'chat-actions'></button>
+      </div>
+      <button class="edit-group-btn" id="mediaBtn">
+          <div class="media-img"></div>
+          <span>Медіа</span>
+      </button>
+      <button class="edit-group-btn" id="editGroupBtn">
+          <div class="edit-group-img"></div>
+          <span>Редагувати групу</span>
+      </button>
+      <hr>
+      <button class="edit-group-btn" id="deleteGroupBtn" data-chat-id = ${chatId}>
+          <div class="delete-group-img"></div>
+          <span>Видалити чат</span>
+      </button>
+      ` 
+}
 
-  message.textContent = messageText;
-})
 
-latestMessagesTimes.forEach(time =>{
-  let messageTimeArray = time.dataset.messageTime.split(',');
-  let messageTime = messageTimeArray[messageTimeArray.length - 2];
-  let messageTimeFormat = messageTime
-  if(messageTime){
-    messageTimeFormat = messageTime.split(" ")[1];
-  }
-  time.textContent = messageTimeFormat;
-})
+function addDeleteEditChatBtn(action){
+  if(action=="add"){
+    const oldChatEditBtn = chatTop.querySelector('.chat-actions');
+    if(oldChatEditBtn) return;
+    const chatEditBtn = document.createElement('button')
+    chatEditBtn.classList.add('chat-actions');
+    chatEditBtn.setAttribute('type', 'button');
+    chatEditBtn.setAttribute('popovertarget', 'edit-group-div')
+    chatTop.appendChild(chatEditBtn);
+  } else if(action == 'delete'){
+    const chatEditBtn = chatTop.querySelector('.chat-actions');
+    if(chatEditBtn){
+      chatEditBtn.remove();
+    }
+  } else return;
+}
+
 
 const allMonths=['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня']
 
@@ -109,16 +134,17 @@ async function openChatById(chatId, title, users_count) {
   if (users_count == 1){
     chatUsers.textContent = `${users_count} ${ users_text['one']}`
   } else if (users_count> 2 && users_count<= 4){
-    chatUsers.textContent = `${users_count} ${users_text['three-four']}`
+    chatUsers.textContent = `${users_count} ${users_text['three-four']}`;
   } else if (users_count== 2){
     chatUsers.textContent = "у мережі";
   } else{
-    chatUsers.textContent = `${users_count} ${users_text['five-plus']}`
+    chatUsers.textContent = `${users_count} ${users_text['five-plus']}`;
   }
 
   connectWebsocket(chatId);
   resetMessages(chatId);
   await loadMessages();
+  window.updateUnreadData();
   startObserver();
 }
 
@@ -130,6 +156,7 @@ async function openChatWithUser(chatId, username) {
   const data = await response.json();
   if (data.success) {
     openChatById(data.chat_id, username, data.users_count);
+    addDeleteEditChatBtn("delete");
   }
 }
 
@@ -143,6 +170,12 @@ function bindGroupChatButtons() {
     button.addEventListener("click", () => {
       let users_count =  button.dataset.chatUsers.split(' ').length - 1
       openChatById(button.dataset.chatId, button.dataset.chatTitle, users_count);
+      addDeleteEditChatBtn("add");
+      if(button.dataset.chatAdmin === currentUser.textContent.trim()){
+        addAdminModal(button.dataset.chatId)
+      }
+      const deleteGroupBtn = document.getElementById('deleteGroupBtn');
+      deleteGroup(deleteGroupBtn.dataset.chatId, deleteGroupBtn)
       const openedChat = document.querySelector('.opened-chat');
       if( openedChat){
         openedChat.classList.remove('opened-chat');

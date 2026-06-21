@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from user_app.utils.friends_queries import get_user_by_section
 
 class HomePageView(LoginRequiredMixin, TemplateView):
-    template_name = 'main_app/home.html'
+    template_name = 'home_app/home.html'
     paginate_by = 5
     login_url = reverse_lazy("auth")
     success_url = reverse_lazy("post")

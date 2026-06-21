@@ -5,20 +5,21 @@
     <div class = "group-chat-top">
         <div>
             <img src="{% static 'icons/grey_chat.svg' %}" alt="">
+            <span id="groupUnreadCount"></span>
             <p>Групові чати</p>
         </div>
     </div>
 
     <div id="group-list">
         {% for chat in group_chats %}
-            <button type="button" class="chat-group-button group-div group-chat" data-chat-id="{{ chat.id }}" data-chat-title="{{ chat.name }}" data-chat-users = "{% for user in chat.users.all %}{{ user.username }} {% endfor %}">
+            <button type="button" class="chat-group-button group-div group-chat" data-chat-id="{{ chat.id }}" data-chat-title="{{ chat.name }}" data-chat-admin = "{{ chat.admin.first_name }}" data-chat-users = "{% for user in chat.users.all %}{{ user.username }} {% endfor %}">
                     <img src="{% static 'icons/no_avatar.svg' %}" alt="">
                     <div class = "group-info">
                         <div>
                             <p class="group-title">{{ chat.name }}</p>
-                            <p class="group-message latest-message" data-message-text = "{% for message in chat.messages.all %}{{ message.text }},{% endfor %}">Чудово!</p>
+                            <p class="group-message latest-message"></p>
                         </div> 
-                        <span class="group-time latest-message-time" data-message-time="{% for message in chat.messages.all %}{{ message.created_at }},{% endfor %}">09:41</span>
+                        <span class="group-time latest-message-time"></span>
                     </div>
             </button>
 

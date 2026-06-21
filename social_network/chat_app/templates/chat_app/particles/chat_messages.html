@@ -5,6 +5,7 @@
     <div class = "sidebar-messages-top">
         <div>
             <img src="{% static 'icons/grey_chat.svg' %}" alt="">
+            <span id="pesronalUnreadCount"></span>
             <p>Повідомлення</p>
         </div>
     </div>
@@ -21,9 +22,9 @@
                             <div class = "user-info">
                                 <div>
                                     <h4>{{ person.first_name }}</h4>
-                                    <p class="latest-message" data-message-text = "{% for message in chat.messages.all %}{{ message.text }},{% endfor %}"></p>
+                                    <p class="latest-message"></p>
                                 </div> 
-                                <span class="latest-message-time" data-message-time="{% for message in chat.messages.all %}{{ message.id }},{% endfor %}"></span>
+                                <span class="latest-message-time"></span>
                             </div>
                         </div>
                     </button>

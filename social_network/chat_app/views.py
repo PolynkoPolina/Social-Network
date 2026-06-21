@@ -30,13 +30,12 @@ class ChatView(LoginRequiredMixin, TemplateView):
             is_group=True
         ).order_by('id')
         context['requests_count'] = len(get_user_by_section(self.request.user, 'requests'))
-
         return context
     
 
 class ChatWithView(LoginRequiredMixin, View):
     login_url = reverse_lazy('auth')
-
+    
     def post(self, request, user_id):
         response_dict = get_or_create_chat(request, user_id)
         return JsonResponse(response_dict)
@@ -59,7 +58,7 @@ class MessageHistoryView(LoginRequiredMixin, View):
                         "id": message.id, 
                         "message_text": message.text,
                         "is_read": message.readers.exists(),
-                        "sender": message.sender.username,
+                        "sender": message.sender.first_name,
                         "created_at": timezone.localtime(message.created_at).isoformat(),
                         "sender_avatar": '/static/icons/friends_icon1.svg',
                         "images": [img.image.url for img in message.images.all()]
@@ -108,7 +107,7 @@ class MessageImagesUploadView(LoginRequiredMixin, View):
                 'id': message.id,
                 "is_read": message.readers.exists(),
                 'message_text': message.text,
-                'sender': message.sender.username,
+                'sender': message.sender.first_name,
                 "created_at": timezone.localtime(message.created_at).isoformat(),
                 'sender_avatar': '/static/icons/friends_icon1.svg',
                 "images": image_urls
@@ -119,6 +118,8 @@ class MessageImagesUploadView(LoginRequiredMixin, View):
     
 
 class ReadMessageView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth')
+
     def get(self, request: HttpRequest, message_id):
         message = Message.objects.get(id=message_id)
 
@@ -134,8 +135,19 @@ class ReadMessageView(LoginRequiredMixin, View):
             {
                 "type": "message_read",
                 "id": message.id,
-                "sender": self.request.user.username,
+                "sender": self.request.user.first_name,
             }
         )
 
         return JsonResponse({"success": True})
+    
+class DeleteGroupView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth')
+
+    def post(self, request, chat_id): 
+        chat = Chat.objects.get(id=chat_id, is_group=True, users=request.user)
+        
+        if chat:
+            chat.delete()
+  
+        return JsonResponse({"success": True, "chat_id": chat_id})

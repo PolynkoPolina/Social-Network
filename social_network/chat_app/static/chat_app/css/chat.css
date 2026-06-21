@@ -131,6 +131,11 @@
     align-items: start;
 }
 
+.user-info div h4, .group-title{
+    font-size: 1rem;
+    font-family: var(--mediumFont);
+    font-weight: 500;
+}
 
 
 /* alerts */

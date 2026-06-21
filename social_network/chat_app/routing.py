@@ -9,4 +9,5 @@ from .consumers import *
 
 websocket_urlpatterns = [
     path('chat/<int:chat_id>/', ChatConsumer.as_asgi()),
+    path('chat/unread/', UnreadConsumer.as_asgi())
 ]

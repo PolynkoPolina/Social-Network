@@ -17,25 +17,6 @@ const selectedUsersList = document.querySelector("#selected-users-list");
 const groupUserCheckboxes = document.querySelectorAll(".group-user-checkbox");
 const groupList = document.querySelector("#group-list");
 const deleteBtn = document.querySelector('.delete-user-from-group');
-const editGroupBtn = document.querySelectorAll('.chat-actions');
-const editModal = document.querySelector('.edit-group-div');
-
-
-
-  editGroupBtn.forEach(button =>
-    button.addEventListener('click', () => {
-      editModal.classList.toggle('disabled');
-    })
-  );
-  
-  document.addEventListener('click', (element) => {
-    const isClickInsideModal = editModal.contains(element.target);
-    const isButton = [...editGroupBtn].some(btn => btn.contains(element.target));
-  
-    if (!isClickInsideModal && !isButton) {
-      editModal.classList.add('disabled');
-    }
-  });
 
 
 function openGroupModal() {
@@ -117,7 +98,7 @@ function addGroupButton(chatId, groupName) {
   button.dataset.chatTitle = groupName;
 
   const groupImg = document.createElement("image");
-  groupImg.setAttribute('src', `../../../../static/icons/offline_user.svg`);
+  groupImg.setAttribute('src', 'static/icons/no_avatar.svg');
   groupImg.setAttribute('style', 'height: 4vh; width: 4vh')
   const groupInfo = document.createElement("div");
   groupInfo.classList.add('group-info');
