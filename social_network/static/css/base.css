@@ -237,7 +237,7 @@ input:focus, textarea:focus{
 }
 
 .notification{
-    position: absolute;
+    position: absolute !important;
     left: 20%;
     top: 10%;
     display: flex;
@@ -249,9 +249,9 @@ input:focus, textarea:focus{
 }
 
 .notification p{
-    color: white;
-    font-size: 0.6rem;
-    font-family: var(--mediumFont);
+    color: white !important;
+    font-size: 0.6rem !important;
+    font-family: var(--mediumFont) !important;
 }
 ::-webkit-scrollbar {
     width: 0;

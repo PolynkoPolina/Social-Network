@@ -2,22 +2,28 @@ const headerUnreadCount = document.getElementById("headerUnreadCount");
 const personalUnreadCount = document.getElementById("pesronalUnreadCount");
 const groupUnreadCount = document.getElementById("groupUnreadCount");
 
+
 function unreadText(count) {
   if (count == 0) {
     return "";
+  } else if (count > 99) {
+    return '99+'
   }
-
-  return `(${count})`;
+  return `${count}`;
 }
 
 function setUnreadText(element, count) {
   if (element) {
     element.textContent = unreadText(count);
+    element.parentElement.classList.remove('disabled')
+    if (element.textContent === '') {
+      element.parentElement.classList.add('disabled')
+    }
   }
 }
 
 function updateChatButton(chat) {
-  const button = document.querySelector(`[data-chat-id="${chat.id}"]`);
+  const button = document.querySelector(`[data-chat-id="${String(chat.id)}"]`);
   if (!button) {
     return;
   }
@@ -34,7 +40,7 @@ function updateChatButton(chat) {
   }
 }
 
-function showUnreadData(data){
+export function showUnreadData(data) {
   setUnreadText(headerUnreadCount, data.total);
   setUnreadText(personalUnreadCount, data.personal_total);
   setUnreadText(groupUnreadCount, data.group_total);
@@ -43,15 +49,3 @@ function showUnreadData(data){
   })
 }
 
-const unreadSocket = new WebSocket(`ws://${window.location.host}/chat/unread/`);
-
-unreadSocket.onmessage = function (event) {
-  const data = JSON.parse(event.data);
-  showUnreadData(data);
-};
-
-function updateUnreadData() {
-  unreadSocket.send("{}");
-}
-
-window.updateUnreadData = updateUnreadData;

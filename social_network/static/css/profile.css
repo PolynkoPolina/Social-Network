@@ -48,3 +48,10 @@ a{
 .profile h1{
     font-size: 1.5rem;
 }
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    gap: 4vw;
+    width: 100%;
+}

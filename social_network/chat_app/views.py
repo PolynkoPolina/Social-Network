@@ -145,9 +145,36 @@ class DeleteGroupView(LoginRequiredMixin, View):
     login_url = reverse_lazy('auth')
 
     def post(self, request, chat_id): 
-        chat = Chat.objects.get(id=chat_id, is_group=True, users=request.user)
+        chat = Chat.objects.filter(id=chat_id, is_group=True, users=request.user).first
         
         if chat:
             chat.delete()
   
         return JsonResponse({"success": True, "chat_id": chat_id})
+       
+
+
+class LeaveGroupView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth')
+
+    def post(self, request, chat_id):
+        chat = Chat.objects.filter(id=chat_id, is_group=True).first()
+        chat.users.remove(request.user)
+
+        return JsonResponse({"success": True, "chat_id": chat_id})
+
+
+class EditGroupView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('auth')
+
+    def post(self, request, chat_id):
+        return JsonResponse(edit_group(request, chat_id))
+
+    def get(self, request, chat_id):
+        chat = Chat.objects.filter(id=chat_id, is_group=True).first()
+
+        if not chat:
+            return JsonResponse({"success": False, "error": "Chat not found"})
+
+        users = [{ "id": user.id, "first_name": user.first_name } for user in chat.users.all().exclude(id = self.request.user.id)]
+        return JsonResponse({ "success": True, "chat_id": chat.id,"chat_name": chat.name, "users_in_chat": users})

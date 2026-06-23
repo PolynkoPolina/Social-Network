@@ -9,5 +9,7 @@ urlpatterns = [
     path(route= "<int:chat_id>/messages/", view= MessageHistoryView.as_view(), name= "message_history"),
     path(route= "upload_images/<int:chat_id>/", view= MessageImagesUploadView.as_view(), name= 'message_images_upload'),
     path(route= "read_message/<int:message_id>/", view= ReadMessageView.as_view(), name= 'read_message'),
-    path(route= "delete_group/<int:chat_id>/", view = DeleteGroupView.as_view(), name="delete_group")
+    path(route= "delete_group/<int:chat_id>/", view = DeleteGroupView.as_view(), name="delete_group"),
+    path(route= "leave_group/<int:chat_id>/", view = LeaveGroupView.as_view(), name="leave_group"),
+    path(route= "edit_group/<int:chat_id>/", view = EditGroupView.as_view(), name="edit_group"),
 ]

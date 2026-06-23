@@ -1,6 +1,9 @@
 import {getCSRFToken} from '/static/js/getCSRFToken.js'
 import {activeChatId} from './chatHistory.js'
 import {deleteGroup} from './editGroup.js'
+import { updateUnreadData } from '../../../../static/js/showUnreadMessages.js';
+import { leaveGroup } from './editGroup.js';
+import { openEditGroupModal } from './editGroup.js';
 
 
 let chatSocket = null;
@@ -17,28 +20,47 @@ const beforeChat = document.getElementById('beforeChat');
 const latestMessages = document.querySelectorAll('.latest-message');
 const latestMessagesTimes = document.querySelectorAll('.latest-message-time');
 const chatTop = document.querySelector(".chat-top")
-const editModal = document.querySelector('.edit-group-div');
+const editModal = document.querySelector('.group-actions-modal');
 
 
 function addAdminModal(chatId){
     editModal.innerHTML =  
       `    
-      <div class="edit-group-top">
-          <button popovertarget= 'edit-group-div' popovertargetaction="hide" class = 'chat-actions'></button>
+      <div class="group-actions-top">
+          <button popovertarget= 'group-actions-modal' popovertargetaction="hide" class = 'chat-actions'></button>
       </div>
-      <button class="edit-group-btn" id="mediaBtn">
+      <button class="group-actions-btn" id="mediaBtn">
           <div class="media-img"></div>
           <span>Медіа</span>
       </button>
-      <button class="edit-group-btn" id="editGroupBtn">
+      <button class="group-actions-btn" id="editGroupBtn" popovertarget= 'group-actions-modal' popovertargetaction="hide">
           <div class="edit-group-img"></div>
           <span>Редагувати групу</span>
       </button>
       <hr>
-      <button class="edit-group-btn" id="deleteGroupBtn" data-chat-id = ${chatId}>
+      <button class="group-actions-btn" id="deleteGroupBtn" data-chat-id = ${chatId}>
           <div class="delete-group-img"></div>
           <span>Видалити чат</span>
       </button>
+      ` 
+}
+
+
+function removeAdminModal(chatId){
+    editModal.innerHTML =  
+      `    
+      <div class="group-actions-top">
+        <button popovertarget= 'group-actions-modal' popovertargetaction="hide" class = 'chat-actions'></button>
+    </div>
+    <button class="group-actions-btn" id="mediaBtn">
+        <div class="media-img"></div>
+        <span>Медіа</span>
+    </button>
+    <hr>
+    <button class="group-actions-btn" id="leaveGroupBtn" data-chat-id = ${chatId}>
+        <div class="leave-group-img"></div>
+        <span>Покинути групу</span>
+    </button>
       ` 
 }
 
@@ -50,7 +72,7 @@ function addDeleteEditChatBtn(action){
     const chatEditBtn = document.createElement('button')
     chatEditBtn.classList.add('chat-actions');
     chatEditBtn.setAttribute('type', 'button');
-    chatEditBtn.setAttribute('popovertarget', 'edit-group-div')
+    chatEditBtn.setAttribute('popovertarget', 'group-actions-modal')
     chatTop.appendChild(chatEditBtn);
   } else if(action == 'delete'){
     const chatEditBtn = chatTop.querySelector('.chat-actions');
@@ -144,7 +166,7 @@ async function openChatById(chatId, title, users_count) {
   connectWebsocket(chatId);
   resetMessages(chatId);
   await loadMessages();
-  window.updateUnreadData();
+  updateUnreadData();
   startObserver();
 }
 
@@ -171,11 +193,20 @@ function bindGroupChatButtons() {
       let users_count =  button.dataset.chatUsers.split(' ').length - 1
       openChatById(button.dataset.chatId, button.dataset.chatTitle, users_count);
       addDeleteEditChatBtn("add");
+      
       if(button.dataset.chatAdmin === currentUser.textContent.trim()){
         addAdminModal(button.dataset.chatId)
+        const deleteGroupBtn = document.getElementById('deleteGroupBtn');
+        deleteGroup(deleteGroupBtn.dataset.chatId, deleteGroupBtn);
+        const openEditGroupModalButton = document.querySelector("#editGroupBtn");
+        openEditGroupModal(openEditGroupModalButton, button.dataset.chatId)
+      } else{
+        removeAdminModal(button.dataset.chatId)
+        const leaveGroupBtn = document.getElementById('leaveGroupBtn');
+        leaveGroup(button.dataset.chatId, leaveGroupBtn);
       }
-      const deleteGroupBtn = document.getElementById('deleteGroupBtn');
-      deleteGroup(deleteGroupBtn.dataset.chatId, deleteGroupBtn)
+
+
       const openedChat = document.querySelector('.opened-chat');
       if( openedChat){
         openedChat.classList.remove('opened-chat');

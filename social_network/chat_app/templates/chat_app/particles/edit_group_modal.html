@@ -1,0 +1,68 @@
+{% load static %}
+
+<div id="edit-group-modal" class="edit-group-modal disabled" >
+    <div class="edit-group-modal__box">
+        <div id="edit-group-step-name">
+            <div class = 'close-btn'>
+                <button id="close-edit-group-name-modal" class="edit-group-modal__close" type="button"><img src="{% static 'post_app/icons/cross.svg' %}" alt=""></button>
+            </div>
+            <h2>Нова група</h2>
+            <div class = "title">
+                <label for="edit-group-name">Назва</label>
+                <input id="edit-group-name" type="text" placeholder="Введіть назву">
+            </div>
+            <div class = 'chat-profile'>
+                <img src="{% static 'icons/request_icon3.svg' %}" alt="" class = 'user-avatar'>
+                <div>
+                    <p><img src="{% static 'icons/purple-plus.svg' %}" alt="">Додайте фото</p>
+                    <p><img src="{% static 'icons/purple-img.svg' %}" alt="">Оберіть фото</p>
+                </div>
+            </div>
+            <div class = 'members'>
+                <div class = "members-nav">
+                    <p>Учасники</p>
+                    <span id = 'addMembers'><img src="{% static 'icons/purple-plus.svg' %}" alt="">Додайте учасника</span>
+                </div>
+                <div class="selected-users">
+                    <div id="edit-selected-users-list"></div>
+                </div>
+                <div class="edit-group-modal__actions">
+                    <button id="cancel-edit-group-modal"  type="button"  class="button cancel-btn">Скасувати</button>
+                    <button id="edit-group-confirm" type="button"  class="button">Зберегти зміни</button>
+                </div>
+            </div>
+        </div>
+        <div id="edit-group-step-users" class="disabled">
+            <div class = 'close'>
+                <button id="close-edit-group-modal" class="edit-group-modal__close" type="button"><img src="{% static 'post_app/icons/cross.svg' %}" alt=""></button>
+            </div>
+            <h2>Додати учасника</h2>
+            <div class = "search">
+                <img src="{% static 'icons/search.svg' %}" alt="">
+                <input name= "sidebar-search" placeholder="Пошук" class = 'edit-search-input'>
+            </div>
+            <div class = "chosen">
+                <p>Вибрано: <span id="edit-selected-count">0</span></p>
+            </div>
+            <div class="edit-group-friends-container">
+                {% for friend in friends %}
+                    <hr>
+                    <label class="edit-group-friend">
+                        <div>
+                            <img src="{% static 'icons/friends_icon2.svg' %}" alt="" class = 'user-avatar'>
+                            <span class="friend-username all-friends">{{ friend.first_name }}</span>
+                        </div>
+                        <input class="edit-group-user-checkbox" type="checkbox" value="{{ friend.id }}" data-user-name="{{ friend.first_name }}">
+                        <span class="checkbox add-friend-checkbox"></span>
+                    </label>
+                {% endfor %}
+                <hr>
+            </div>
+            <div class="edit-group-modal__actions">
+                <button type="button" class="button cancel-btn" id = 'closeUsersBtn'>Скасувати</button>
+                <button id="next-edit-group-step" type="button" class="button">Зберегти</button>
+            </div>
+        </div>
+   
+    </div>
+</div>

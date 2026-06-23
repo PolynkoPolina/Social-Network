@@ -38,8 +38,10 @@
                             <span>Друзі</span>
                         </a>
                         <a href="{% url 'chat' %}">
+                            <div class="chat notification">
+                                <p id="headerUnreadCount"></p>
+                            </div>
                             <img src="{% static 'icons/chat.svg' %}" alt="">
-                            <span id="headerUnreadCount"></span>
                             <span>Чати<span>
                         </a>
                         <a href="{% url 'personal-info' %}">
@@ -66,9 +68,10 @@
             
         </main>
         
-            <script src="{% static 'js/urlChosen.js' %}" ></script>
-            <script src="{% static 'js/onlineStatus.js' %}" ></script>
-            <script src="{% static 'js/requestNotification.js' %}" ></script>
+            <script type="module" src="{% static 'js/urlChosen.js' %}" ></script>
+            <script type="module" src="{% static 'js/onlineStatus.js' %}" ></script>
+            <script type="module" src="{% static 'js/requestNotification.js' %}" ></script>
+            <script type="module" src="{% static 'js/showUnreadMessages.js' %}" ></script>
             {% block scripts %}
             {% endblock %}
 </body>

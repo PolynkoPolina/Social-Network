@@ -2,7 +2,7 @@ const container = document.querySelector(".group-friends");
 const friendElements = document.querySelectorAll('.group-friend');
 const searchInput = document.querySelector('.search-input');
 
-function renderFriends(filter = "") {
+export function renderFriends(filter = "", container, friendElements) {
     let friendsDict = {};
 
     friendElements.forEach(el => {
@@ -45,9 +45,9 @@ function renderFriends(filter = "") {
 }
 
 
-renderFriends();
+renderFriends("", container, friendElements);
 
 
 searchInput.addEventListener("input", (e) => {
-    renderFriends(e.target.value);
+    renderFriends(e.target.value, container, friendElements);
 });

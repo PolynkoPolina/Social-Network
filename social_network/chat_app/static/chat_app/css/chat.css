@@ -159,9 +159,15 @@
 }
 
 .sidebar-messages-top div, .group-chat-top div{
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0.6vw;
+}
+
+.messages-personal-not, .messages-group-not{
+    top: -5 !important;
+    left: 8  !important;
 }
 
 
@@ -198,7 +204,7 @@
     border: none;
 }
 
-.group-div:hover, .friend-div:hover, .opened-chat, .opened-group{
+.group-div:hover, .friend-div:hover, .opened-chat, .opened-group, .chat-has-unread{
     background-color: var(--hover);
 }
 
@@ -300,7 +306,7 @@
 .message-form {
     display: flex;
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 1vh;
     align-items: end;
     height: 4.3vh;
 }
@@ -316,7 +322,7 @@
 
 
 .chat-top{
-    padding-bottom: 0.6rem;
+    padding-bottom: 1vh;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid var(--border);
@@ -344,7 +350,7 @@
 .chat-name-users{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.8vh;
 }
 
 #chatName{

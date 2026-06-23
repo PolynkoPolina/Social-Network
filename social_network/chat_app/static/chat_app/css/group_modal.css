@@ -1,5 +1,5 @@
 
-.group-modal {
+.group-modal, .edit-group-modal {
     position: fixed;
     inset: 0;
     display: flex;
@@ -11,7 +11,7 @@
 
 
 
-.group-modal__box {
+.group-modal__box, .edit-group-modal__box {
     width: 32vw;
     height: fit-content;
     max-width: 90vw;
@@ -22,7 +22,7 @@
     position: relative;
 }
 
-#group-step-users{
+#group-step-users, #edit-group-step-users{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -38,8 +38,8 @@
     font-size: 14px;
 }
 
-.group-step-users h2{
-    font-family: GT Walsheim Pro Medium;
+.group-step-users h2, .edit-group-step-users h2, .group-friend span, .edit-group-friend span{
+    font-family: var(--mediumFont);
 }
 
 .search{
@@ -57,12 +57,12 @@
     border: none;
 }
 
-.group-modal__close{
+.group-modal__close, .edit-group-modal__close{
     background-color: transparent;
     border: none;
 }
 
-.group-friends {
+.group-friends, .edit-group-friends-container {
     display: flex;
     flex-direction: column;
     max-height: 40vh;
@@ -71,12 +71,7 @@
     gap: 0.5rem;
 }
 
-
-.group-friend span{
-    font-family: GT Walsheim Pro Medium;
-}
-
-.group-friend {
+.group-friend,  .edit-group-friend{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -85,18 +80,18 @@
     padding: 0rem 1rem 1rem 0rem;
 }
 
-.group-friend div{
+.group-friend div, .edit-group-friend div{
     display: flex;
     gap: 1rem;
     align-items: center;
 }
 
-.group-friend img{
+.group-friend img, .edit-group-friend img{
     width: 40px;
     height: 40px;
 }
 
-.group-user-checkbox{
+.group-user-checkbox, .edit-group-user-checkbox{
     display: none;
 }
 
@@ -111,11 +106,11 @@
     background-repeat: no-repeat;
 }
 
-.group-user-checkbox:checked + .checkbox {
+.group-user-checkbox:checked + .checkbox, .edit-group-user-checkbox:checked + .checkbox {
     background-image: url(../icons/ticked_checkbox.svg);
 }
 
-.group-user-checkbox:checked + .checkbox::after {
+.group-user-checkbox:checked + .checkbox::after, .edit-group-user-checkbox:checked + .checkbox::after {
     background-image: url(../icons/ticked_checkbox.svg);
 }
 
@@ -123,14 +118,14 @@ hr{
     border: 1px solid var(--grey10);
 }
 
-.group-modal__actions {
+.group-modal__actions, .edit-group-modal__actions {
     display: flex;
     justify-content: end;
     width: 26vw;
     gap: 0.7rem;
 }
 
-#group-step-name{
+#group-step-name, #edit-group-step-name{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -169,7 +164,7 @@ hr{
     gap: 1rem;
 }
 
-#selected-users-list{
+#selected-users-list, #edit-selected-users-list{
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -183,19 +178,21 @@ hr{
 
 
 
-.profile{
+
+
+.chat-profile{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
 }
 
-.profile div{
+.chat-profile div{
     display: flex;
     gap: 1.5rem;
 }
 
-.profile p{
+.chat-profile p{
     color: var(--buttonPurple);
     display: flex;
     gap: 0.5rem;
@@ -207,7 +204,7 @@ hr{
     width: 100%;
 }
 
-.delete-user-from-group{
+.delete-user-from-group, .delete-user-from-edit-group{
     border: none;
     background-color: transparent;
     background-image: url("../../../../static/icons/trash.svg");
@@ -250,7 +247,7 @@ hr{
 }
 
 
-.edit-group-div, .edit-group-div-admin{
+.group-actions-modal{
     position: absolute;
     transform: translateX(-50%);
     left: 56.5vw;
@@ -264,13 +261,13 @@ hr{
     border: none;
 }
 
-.edit-group-div:popover-open, .edit-group-div-admin{
+.group-actions-modal:popover-open{
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.edit-group-btn{
+.group-actions-btn{
     display: flex;
     gap: 1vw;
     border: none;
@@ -278,14 +275,15 @@ hr{
     width: 100%;
 }
 
-.edit-group-btn span{
+.group-actions-btn span{
     font-size: 1rem;
 }
 
-.edit-group-div .chat-actions{
+.group-actions-modal .chat-actions{
     margin-top: 0rem !important;
 }
-.edit-group-top{
+
+.group-actions-top{
     width: 100%;
     display: flex;
     justify-content: end;
@@ -330,4 +328,18 @@ hr{
 .edit-media hr{
     width: 100%;
     border: 1px solid var(--border);
+}
+
+.members-nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+.members-nav span{
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--buttonPurple);
+    cursor: pointer;
 }

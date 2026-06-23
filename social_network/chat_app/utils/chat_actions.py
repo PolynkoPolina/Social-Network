@@ -46,3 +46,22 @@ def create_group(request: HttpRequest):
 
     
     return {"success": True, 'chat_id': chat.id, "name":name, "users_count": chat.users.count()}
+
+
+def edit_group(request, chat_id):
+    name = request.POST.get("name", "").strip()
+    user_ids = request.POST.getlist("users")
+
+    chat = Chat.objects.get(id=chat_id, is_group=True, admin=request.user)
+    friend_ids = get_user_by_section(request.user, 'friends').filter(id__in=user_ids).values_list("id", flat=True)
+
+    chat.name = name 
+    users_to_remove = chat.users.exclude(id=chat.admin.id)
+    chat.users.remove(*users_to_remove)
+    chat.users.add(*User.objects.filter(id__in=friend_ids))
+
+    
+
+    chat.save()
+
+    return {"success": True, 'chat_id': chat.id, "name":name, "users_count": chat.users.count()}

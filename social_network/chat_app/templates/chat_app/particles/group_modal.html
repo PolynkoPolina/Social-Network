@@ -20,9 +20,9 @@
                     <label class="group-friend">
                         <div>
                             <img src="{% static 'icons/friends_icon2.svg' %}" alt="" class = 'user-avatar'>
-                            <span class="friend-username">{{ friend.username }}</span>
+                            <span class="friend-username">{{ friend.first_name }}</span>
                         </div>
-                        <input class="group-user-checkbox" type="checkbox" value="{{ friend.id }}" data-user-name="{{ friend.username }}">
+                        <input class="group-user-checkbox" type="checkbox" value="{{ friend.id }}" data-user-name="{{ friend.first_name }}">
                         <span class="checkbox"></span>
                     </label>
                 {% endfor %}
@@ -42,7 +42,7 @@
                 <label for="group-name">Назва</label>
                 <input id="group-name" type="text" placeholder="Введіть назву">
             </div>
-            <div class = 'profile'>
+            <div class = 'chat-profile'>
                 <img src="{% static 'icons/request_icon3.svg' %}" alt="" class = 'user-avatar'>
                 <div>
                     <p><img src="{% static 'icons/purple-plus.svg' %}" alt="">Додайте фото</p>

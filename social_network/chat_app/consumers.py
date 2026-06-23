@@ -119,12 +119,13 @@ class UnreadConsumer(AsyncWebsocketConsumer):
         chat_data = []
         chats = Chat.objects.filter(users = self.user)
         for chat in chats:
+            chat_id = chat.id
             last_message = chat.messages.order_by('-created_at','-id').first()
             last_text = ''
             if last_message:
                 last_text = last_message.text[:20]
             else:
-                last_text = 'Надіслано файл'
+                ...
                 
             unread = chat.messages.exclude(sender = self.user).exclude(readers = self.user).count()  
 
@@ -133,7 +134,7 @@ class UnreadConsumer(AsyncWebsocketConsumer):
             else:
                 personal_total += unread 
             
-            chat_data.append({'id': chat.id, 'unread': unread, 'last': last_text})
+            chat_data.append({'id': chat_id, 'unread': unread, 'last': last_text})
         return {'personal_total': personal_total,'group_total': group_total, 'total': personal_total+group_total, 'chats': chat_data}
     
 

@@ -1,5 +1,5 @@
-requestsCount = document.getElementById('requestsCount').textContent;
-notificationsDiv = document.querySelector('.requests.notification');
+const requestsCount = document.getElementById('requestsCount').textContent;
+const notificationsDiv = document.querySelector('.requests.notification');
 
 if (requestsCount === "0") {
     notificationsDiv.remove();
