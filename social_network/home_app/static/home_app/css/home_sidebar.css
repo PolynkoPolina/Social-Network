@@ -1,0 +1,139 @@
+.sidebar-messages-top div p, .group-chat-top p, .sidebar-top p {
+    color: var(--greyText);
+    font-size: 1.2rem;
+    font-family: var(--mediumFont);
+}
+
+.sidebar-messages-top a {
+    color: var(--buttonPurple);
+    font-family: var(--mediumFont);
+}
+.user{
+    display: flex;
+    align-items: center;
+    padding-left: 1.5vw;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+    padding-right: 1.5vw;
+    gap: 0.5vw;
+    width: 100%;
+}
+
+.user img{
+    height: 4vh;
+}
+
+.user-info{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-info span{
+    color: var(--greyText);
+    font-size: 0.75rem;
+}
+
+.user-info div{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vh;
+    align-items: start;
+}
+
+.user-info div h4, .group-title{
+    font-size: 1rem;
+    font-family: var(--mediumFont);
+    font-weight: 500;
+}
+
+
+
+
+.chat-block{
+    overflow-y: auto;
+}
+
+.sidebar-messages, .group-chats{
+    height: auto;
+}
+
+.sidebar-messages-top, .group-chat-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2vh 1.3vw;
+}
+
+.sidebar-messages-top div, .group-chat-top div{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.6vw;
+}
+
+.messages-personal-not, .messages-group-not{
+    top: -5 !important;
+    left: 8  !important;
+}
+
+
+.sidebar-messages-top a, .group-chat-top a{
+    color: var(--buttonPurple);
+    text-decoration: none;
+}
+
+
+.sidebar-messages, .group-chats{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid var(--border); 
+    border-radius: 10px;
+}
+
+.group-chat{
+    padding-left: 1.5vw;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+    padding-right: 1.5vw; 
+}
+
+.group-div{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5vw;
+    height: 6.2vh;
+    cursor: pointer;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+}
+
+.group-div:hover, .friend-div:hover, .opened-chat, .opened-group, .chat-has-unread{
+    background-color: var(--hover);
+}
+
+.group-div img{
+    height: 4vh;
+}
+
+.group-info{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.group-info span{
+    color: var(--greyText);
+    font-size: 0.75rem;
+}
+
+.group-info div{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vh;
+    align-items: start;
+}

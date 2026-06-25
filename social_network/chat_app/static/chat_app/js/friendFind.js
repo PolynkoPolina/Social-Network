@@ -47,7 +47,6 @@ export function renderFriends(filter = "", container, friendElements) {
 
 renderFriends("", container, friendElements);
 
-
 searchInput.addEventListener("input", (e) => {
     renderFriends(e.target.value, container, friendElements);
 });

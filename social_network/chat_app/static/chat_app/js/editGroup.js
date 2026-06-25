@@ -68,7 +68,7 @@ export async function leaveGroup(chatId, button) {
 
 
 async function renderEditGroupModal(chatId) {
-  const response = await fetch(`/chat/edit_group/${chatId}/`, {
+  const response = await fetch(`/chat/edit_group/${chatId}.=`, {
       method: "GET"
     })
     const data = await response.json();
@@ -94,7 +94,7 @@ async function sendEditGroup(chatId) {
       formData.append("users", checkbox.value);
     }
   });
-  const response = await fetch(`/chat/edit_group/${chatId}/`, {
+  const response = await fetch(`/chat/edit_group/${chatId}`, {
       method: "POST",
         headers: {
           "X-CSRFToken": getCSRFToken(),
@@ -104,7 +104,7 @@ async function sendEditGroup(chatId) {
     const data = await response.json();
     if (!data.success) return;
     
-    window.location.reload()
+    
 }
 
 

@@ -4,6 +4,7 @@
         <span class = "chosen">Авторизація</span>
     </div>
     <h2>Раді тебе знову бачити!</h2>
+    <p id="create-errors"></p>
     <form action="{% url 'login' %}" method="post" id="login-form">
         {% csrf_token %}
         {{ form_login.as_p }}

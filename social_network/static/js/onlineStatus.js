@@ -12,5 +12,12 @@ onlineSocket.onmessage = function (event) {
 
     statusDiv.classList.remove('online', 'offline');
     statusDiv.classList.add(data.status);
+    
+    if (statusDiv.classList.contains("online")) {
+      data.status = "online";
+    } else {
+      data.status = "offline";
+    }
   });
 }
+

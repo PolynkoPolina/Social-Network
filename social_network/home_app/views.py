@@ -4,12 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from user_app.forms import CreateUsernameForm
 from post_app.forms import PostForm, AddTagForm
 from django.urls import reverse_lazy
-from post_app.models import Post
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 
 
+from post_app.models import Post
+from chat_app.models import Chat
 from user_app.utils.friends_queries import get_user_by_section
 
 class HomePageView(LoginRequiredMixin, TemplateView):
@@ -26,6 +27,10 @@ class HomePageView(LoginRequiredMixin, TemplateView):
         context["profile_user"] = self.request.user
         context['requests'] = get_user_by_section(self.request.user, 'requests')
         context['requests_count'] = len(get_user_by_section(self.request.user, 'requests'))
+        context['personal_chats'] = Chat.objects.filter(
+            users=self.request.user,
+            is_group=False
+        ).order_by('id')
         if not self.request.user.username:
             context['create_username_form'] = CreateUsernameForm()
             context['create_username'] = True

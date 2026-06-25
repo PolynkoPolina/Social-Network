@@ -15,7 +15,7 @@ const createPostInput = document.querySelector('.create-post input')
 const editorTextarea = document.querySelector('#editor textarea')
 const openCreatePost = document.getElementById('open-create-post')
 const closePost = document.getElementById('close-create-post')
-
+const addTagForm = document.getElementById('add-tag-form')
 
 openCreatePost.addEventListener('click', () => {
     postModal.classList.remove("disabled")
@@ -129,38 +129,38 @@ addImage.addEventListener('change', function () {
     addImage.value = '';
 });
 
-
-document.getElementById('add-tag-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-
-    fetch(form.action, {
-        method: "POST",
-        headers: {
-        "X-CSRFToken": getCSRFToken(),
-        "X-Requested-With": "XMLHttpRequest",
-        },
-        body: formData,
+if(addTagForm){
+    addTagForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+    
+        fetch(form.action, {
+            method: "POST",
+            headers: {
+            "X-CSRFToken": getCSRFToken(),
+            "X-Requested-With": "XMLHttpRequest",
+            },
+            body: formData,
+        })
+            .then(async (response) => {
+                const data = await response.json()
+                if (!response.ok){
+                    throw data;
+                }
+                return data  
+            })
+            .then((data) => {
+                console.log("Тег успішно створено");
+                tagModal.hidePopover()
+            })
+            .catch((data) => {
+                if (data.errors){
+                    renderErrors("create-errors", data.errors)
+                }
+            })
     })
-        .then(async (response) => {
-            const data = await response.json()
-            if (!response.ok){
-                throw data;
-            }
-            return data  
-        })
-        .then((data) => {
-            console.log("Тег успішно створено");
-            tagModal.hidePopover()
-        })
-        .catch((data) => {
-            if (data.errors){
-                renderErrors("create-errors", data.errors)
-            }
-        })
-})
-
+}
 
 document.getElementById('create-post-form').addEventListener('submit', function(e){
     e.preventDefault();

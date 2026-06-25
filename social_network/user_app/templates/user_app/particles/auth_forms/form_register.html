@@ -4,6 +4,7 @@
         <span class = "auth-btn secondary">Авторизація</span>
     </div>
     <h2>Приєднуйся до World IT</h2>
+    <p id="create-errors"></p>
     <form action="{% url 'register' %}" method="post" id="reg-form">
         {{ form_register.as_p }}
         <button type="submit" id = 'create-user-btn'>Створити акаунт</button>

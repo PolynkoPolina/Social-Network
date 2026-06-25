@@ -1,11 +1,11 @@
 import {getCSRFToken} from '/static/js/getCSRFToken.js'
 import {activeChatId} from './chatHistory.js'
 import {deleteGroup} from './editGroup.js'
-import { updateUnreadData } from '../../../../static/js/showUnreadMessages.js';
+import { updateUnreadData } from '/static/js/showUnreadMessages.js';
 import { leaveGroup } from './editGroup.js';
 import { openEditGroupModal } from './editGroup.js';
 
-
+const onlineSocket = new WebSocket(`ws://${window.location.host}/users/online/`);
 let chatSocket = null;
 let senderAvatar = null;
 const chatName = document.getElementById('chatName');
@@ -148,20 +148,37 @@ function updateDateSeparators() {
 
 window.updateDateSeparators = updateDateSeparators;
 
+onlineSocket.onmessage = function (event) {
+  const data = JSON.parse(event.data);
+  
+    console.log(data.status)
+    console.log(data.user_id)
+    
+    if (data.status = "online"){
+      chatUsers.textContent = "У мережі"
+    } else{
+      chatUsers.textContent = "Не в мережі"
+    }
+  }
+    
+
 async function openChatById(chatId, title, users_count) {
   chatWindow.classList.add("is-open");
   beforeChat.classList.add('disabled');
   messages.innerHTML = "";
   chatName.textContent = `${title}`
+
+  
+
   if (users_count == 1){
     chatUsers.textContent = `${users_count} ${ users_text['one']}`
   } else if (users_count> 2 && users_count<= 4){
     chatUsers.textContent = `${users_count} ${users_text['three-four']}`;
   } else if (users_count== 2){
-    chatUsers.textContent = "у мережі";
-  } else{
-    chatUsers.textContent = `${users_count} ${users_text['five-plus']}`;
-  }
+    
+    } else{
+      chatUsers.textContent = `${users_count} ${users_text['five-plus']}`;
+    }
 
   connectWebsocket(chatId);
   resetMessages(chatId);
@@ -242,7 +259,7 @@ function connectWebsocket(chatId) {
     if (data.action === "message_read") {
     const message = document.querySelector(
       `[data-message-id="${data.id}"]`
-    );
+    );  
 
     if (!message) return;
 

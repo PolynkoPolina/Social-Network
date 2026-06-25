@@ -123,9 +123,10 @@ class UnreadConsumer(AsyncWebsocketConsumer):
             last_message = chat.messages.order_by('-created_at','-id').first()
             last_text = ''
             if last_message:
-                last_text = last_message.text[:20]
+                created_at = timezone.localtime(last_message.created_at)
+                last_text = f"{last_message.text[:20]}/{str(created_at)}"
             else:
-                ...
+                last_text = "Надіслав/ла вам файл"
                 
             unread = chat.messages.exclude(sender = self.user).exclude(readers = self.user).count()  
 

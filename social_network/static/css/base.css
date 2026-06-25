@@ -248,7 +248,7 @@ input:focus, textarea:focus{
     background-image: url(../icons/notification.svg);
 }
 
-.notification p{
+.notification p, .unread-chat span{
     color: white !important;
     font-size: 0.6rem !important;
     font-family: var(--mediumFont) !important;
@@ -257,3 +257,17 @@ input:focus, textarea:focus{
     width: 0;
 }
 
+
+.unread-chat{
+    position: absolute;
+    left: 90%;
+    top: 45%;
+    background-image: url(../../../static/icons/notification.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

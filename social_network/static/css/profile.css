@@ -20,7 +20,7 @@ a{
     flex-direction: column;
     gap: 0.6vh;
 }
-.user-info{
+.user-info-profile{
     display: flex;
     width: 100%;
     justify-content: space-between;
