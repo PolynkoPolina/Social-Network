@@ -1,6 +1,6 @@
 <h1 align = "center">Social Network</h1>
 
-<img src="static_for_readme/home_page.gif" alt="">
+<img src="static_for_readme/home_page.png" alt="">
 <hr>
 
 <h2>Language(Мова): </h2> 
@@ -63,10 +63,20 @@
 <p>The project consists of the following main apps:</p>
 <ul>
     <li><b>social_network</b>— the main project folder. This is where the main project settings are stored</li>
-    <li><b>chat</b> — this app handles the logic of real-time messaging between users</li>
-    <li><b>user</b> — this app stores all user data.</li>
-    <li><b>post</b> — this app handles the logic for creating, editing and displaying user posts.</li>
-    <li><b>home</b> — this app displays the home page and all posts on the network.</li>
+    <li><b>chat</b> — this app handles the logic of real-time messaging between users
+    <img src="static_for_readme/chat_page.png" alt="">
+    </li>
+    <li><b>user</b> — this app stores all user data.
+    <img src="static_for_readme/friends_page.png" alt="">
+    It is also responsible for user registration and authorisation. 
+    <img src="static_for_readme/registration_page.png" alt="">
+    </li>
+    <li><b>post</b> — this app handles the logic for creating, editing and displaying user posts.
+    <img src="static_for_readme/post_page.png" alt="">
+    </li>
+    <li><b>home</b> — this app displays the home page and all posts on the network.
+    <img src="static_for_readme/home_page.png" alt="">
+    </li>
 </ul>
 
 
@@ -152,11 +162,27 @@ source venv/bin/activate</code></pre>
 <h2 id="#structureukr">Структура</h2>
 <p>Проєкт складається з таких основних папок:</p>
 <ul>
-    <li><b>social_network</b>— основна папка проєкту. В ньому зберігаються головні налаштування проєкту</li>
-    <li><b>chat</b> — застосунок чату. В ньому здійснюється логіка переписки користувачів в реальному часі</li>
-    <li><b>user</b> — застосунок користувача/ки. В ньому зберігаються всі дані про юзерів.</li>
-    <li><b>post</b> — застосунок постів. В ньому здійснюється логіка створення, редагування, та відображення користувацьких постів.</li>
-    <li><b>home</b> — застосунок головної сторінки. В ньому здійснюється відображеня головної сторінки та усіх постів мережі.</li>
+    <li>
+        <b>social_network</b>— основна папка проєкту. В ньому зберігаються головні налаштування проєкту
+    </li>
+    <li>
+        <b>chat</b> — застосунок чату. В ньому здійснюється логіка переписки користувачів в реальному часі
+        <img src="static_for_readme/chat_page.png" alt="">
+    </li>
+    <li>
+        <b>user</b> — застосунок користувача/ки. В ньому зберігаються всі дані про юзерів.
+        <img src="static_for_readme/friends_page.png" alt="">
+        Він також відповідає за регістрацію та авторизацію користувачів
+        <img src="static_for_readme/registration_page.png" alt="">
+    </li>
+    <li>
+        <b>post</b> — застосунок постів. В ньому здійснюється логіка створення, редагування, та відображення користувацьких постів.
+        <img src="static_for_readme/post_page.png" alt="">
+    </li>
+    <li>
+        <b>home</b> — застосунок головної сторінки. В ньому здійснюється відображеня головної сторінки та усіх постів мережі.
+        <img src="static_for_readme/home_page.png" alt="">
+    </li>
 </ul>
 
 
